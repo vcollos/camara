@@ -1,0 +1,16 @@
+A Letra Correspondente,Nome da Coluna,Descrição,Tipo de Dado
+A,Tipo,Tipo de transação: A pagar ou A receber.,Texto
+B,CodigoSingular,Código único de identificação da entidade (Operadora ou Prestadora).,Número
+C,NomeSingular,Nome da entidade (Operadora ou Prestadora).,Texto
+D,TipoSingular,Classificação da entidade: Operadora ou Prestadora.,Texto
+E,RegistroANS,"Número de registro da Agência Nacional de Saúde Suplementar (ANS), se aplicável.",Número/Texto
+F,CodigoTipoRecebimento,Código que identifica o tipo de recebimento.,Número
+G,DescricaoTipoRecebimento,Descrição do tipo de recebimento.,Texto
+H,NumeroDocumento,Número do documento de referência.,Número/Texto
+I,Descricao,Descrição detalhada da transação.,Texto
+J,ValorBruto,Valor bruto da transação.,Moeda
+K,TaxaAdministrativa,Valor da taxa administrativa cobrada.,Moeda
+L,Subtotal,Valor subtotal da transação (ValorBruto - TaxaAdministrativa).,Moeda
+M,IRRF,Valor do Imposto de Renda Retido na Fonte (IRRF).,Moeda
+N,OutrosTributos,Valor de outros tributos aplicados.,Moeda
+O,ValorLiquido,Valor líquido da transação (Subtotal - IRRF - OutrosTributos).,Moeda

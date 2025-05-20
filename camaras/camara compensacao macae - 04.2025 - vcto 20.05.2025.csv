@@ -1,0 +1,30 @@
+﻿Tipo;CodigoSingular;NomeSingular;TipoSingular;RegistroANS;CodigoTipoRecebimento;DescricaoTipoRecebimento;NumeroDocumento;Descricao;ValorBruto;TaxaAdministrativa;Subtotal;IRRF;OutrosTributos;ValorLiquido
+A pagar;8;Uniodonto Campinas;Operadora;350494;2;Repasse em Custo Operacional;3117417;Serviços Prestados ;1161,43;0;1161,43;17,43;0;1144
+A pagar;29;Uniodonto Belem;Operadora;368555;2;Repasse em Custo Operacional;00465/25F;abr/25;936,1;0;936,1;14,04;0;922,06
+A pagar;1;UNIODONTO DO BRASIL;Operadora;314315;6;Outros;;Desconto adiantamento de RPP;40000;0;40000;0;0;40000
+A pagar;24;Uniodonto Rio de Janeiro;Operadora;318230;2;Repasse em Custo Operacional;;COMPETÊNCIA 04/2025;270,1;0;270,1;0;0;270,1
+A pagar;17;Uniodonto Rio Grande do Norte;Operadora;345318;2;Repasse em Custo Operacional;1861113;FATURAMENTO ABRIL 2025;674,51;0;674,51;10,12;0;664,39
+A receber;1;UNIODONTO DO BRASIL;Operadora;314315;2;Repasse em Custo Operacional;00047608/25F;COMP 04/2025;1214,64;0;1214,64;18,22;0;1196,42
+A receber;8;Uniodonto Campinas;Operadora;350494;2;Repasse em Custo Operacional;00047609/25F;COMP 04/2025;6481,66;0;6481,66;97,22;0;6384,44
+A receber;17;Uniodonto Rio Grande do Norte;Operadora;345318;2;Repasse em Custo Operacional;00047610/25F;COMP 04/2025;179,08;0;179,08;0;0;179,08
+A receber;24;Uniodonto Rio de Janeiro;Operadora;318230;2;Repasse em Custo Operacional;00047620/25F;COMP 04/2025;205,35;0;205,35;0;0;205,35
+A receber;34;Uniodonto Jundiai;Operadora;347795;2;Repasse em Custo Operacional;00047611/25F;COMP 04/2025;120,25;0;120,25;0;0;120,25
+A receber;61;Uniodonto Sul Fluminense;Operadora;363171;2;Repasse em Custo Operacional;00047612/25F;COMP 04/2025;321,53;0;321,53;0;0;321,53
+A receber;66;Uniodonto Sao Jose dos Campos;Operadora;313751;2;Repasse em Custo Operacional;00047613/25F;COMP 04/2025;205,72;0;205,72;0;0;205,72
+A receber;93;UNIODONTO METROPOLITANA COOPERATIVA ODONTOLOGICA;Operadora;382337;2;Repasse em Custo Operacional;00047614/25F;COMP 04/2025;650,46;0;650,46;0;0;650,46
+A receber;156;UNIODONTO ESPIRITO SANTO COOPERATIVA ODONTOLOGICA;Operadora;370711;2;Repasse em Custo Operacional;00047615/25F;COMP 04/2025;92,13;0;92,13;0;0;92,13
+A receber;161;Uniodonto Campos;Operadora;402516;2;Repasse em Custo Operacional;00047616/25F;COMP 04/2025;2891,18;0;2891,18;43,37;0;2847,81
+A receber;170;Uniodonto Resende;Operadora;406121;2;Repasse em Custo Operacional;00047617/25F;COMP 04/2025;503,94;0;503,94;0;0;503,94
+A receber;909;Federacao Santa Catarina;Operadora;415626;2;Repasse em Custo Operacional;00047619/25F;COMP 04/2025;241,24;0;241,24;0;0;241,24
+A pagar;156;UNIODONTO ESPIRITO SANTO COOPERATIVA ODONTOLOGICA;Operadora;370711;2;Repasse em Custo Operacional;405907;CO - 04/2025;71,04;0;71,04;0;0;71,04
+A pagar;161;Uniodonto Campos;Operadora;402516;2;Repasse em Custo Operacional;207036/91603;CO - 04/2025;472,86;0;472,86;0;0;472,86
+A pagar;19;Uniodonto Salvador;Operadora;310107;2;Repasse em Custo Operacional;COMP.04.2025;CAMARA 20.05.2025;1162,91;0;1162,91;17,44;0;1145,47
+A pagar;34;Uniodonto Jundiai;Operadora;347795;2;Repasse em Custo Operacional;517551/42529;CO - 04/2025;532,06;0;532,06;0;0;532,06
+A pagar;93;UNIODONTO METROPOLITANA COOPERATIVA ODONTOLOGICA;Operadora;382337;2;Repasse em Custo Operacional;18772/25F;abr/25;394,42;0;394,42;0;0;394,42
+A pagar;1;UNIODONTO DO BRASIL;Operadora;314315;3;Taxa de Manutenção;10138198;TAXA DE MANUTENCAO;561,56;0;561,56;0;0;561,56
+A pagar;1;UNIODONTO DO BRASIL;Operadora;314315;4;Fundo de Marketing;10138299;FUNDO DE MARKETING;224,62;0;224,62;0;0;224,62
+A receber;1;UNIODONTO DO BRASIL;Operadora;314315;1;Repasse em Pré-pagamento;00047621/25F;COMP 04/2025;70820,66;0;70820,66;1062,31;0;69758,35
+A pagar;905;FERJES Federacao Rio de Janeiro;Prestadora;;3;Taxa de Manutenção;;TAXA DE MANUTENÇÃO ABRIL/2025;300;0;300;0;0;300
+A receber;176;Uniodonto Nova Iguacu;Prestadora;314315176;2;Repasse em Custo Operacional;00047618/25F;COMP 04/2025;424,76;0;424,76;0;0;424,76
+A pagar;9;Uniodonto Belo Horizonte;Prestadora;409791009;2;Repasse em Custo Operacional;2025104;CO - 04/2025;93,24;0;93,24;0;0;93,24
+A pagar;2;Uniodonto Santos;Prestadora;;2;Repasse em Custo Operacional;19207;abr/25;71,04;0;71,04;0;0;71,04
