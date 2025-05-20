@@ -584,10 +584,9 @@ class NeodontoCsvProcessor:
                 
                 # Reduzir tamanho da fonte para dados
                 ('FONTSIZE', (0, 1), (-1, -1), 8),
-                
-                # Habilitar quebra de texto (word wrap) nas colunas de texto
-                ('WORDWRAP', (1, 1), (1, -2), True),  # Complemento
-                ('WORDWRAP', (3, 1), (5, -2), True),  # Débito, Crédito, Histórico
+                # Forçar word wrap e alinhamento vertical nas células
+                ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+                ('WORDWRAP', (0, 0), (-1, -1), True),
             ])
 
             # Criar tabela uma única vez
