@@ -73,7 +73,15 @@ class NeodontoCsvProcessor:
         tipo_singular = row['TipoSingular']
         codigo_tipo_recebimento = row['CodigoTipoRecebimento']
         nome_singular = str(row['NomeSingular']).upper() if pd.notnull(row['NomeSingular']) else ""
+        descricao = str(row['Descricao']).upper() if pd.notnull(row['Descricao']) else ""
         
+        # Regras especiais para CodigoTipoRecebimento 5
+        if codigo_tipo_recebimento == 5:
+            if "LGPD" in descricao:
+                return 52129
+            elif "ATUARIO" in descricao or "ATUÁRIO" in descricao:
+                return 52451
+
         # A pagar
         if tipo == 'A pagar':
             if tipo_singular == 'Operadora':
@@ -134,7 +142,13 @@ class NeodontoCsvProcessor:
         tipo_singular = row['TipoSingular']
         codigo_tipo_recebimento = row['CodigoTipoRecebimento']
         nome_singular = str(row['NomeSingular']).upper() if pd.notnull(row['NomeSingular']) else ""
+        descricao = str(row['Descricao']).upper() if pd.notnull(row['Descricao']) else ""
         
+        # Regras especiais para CodigoTipoRecebimento 5
+        if codigo_tipo_recebimento == 5:
+            if "LGPD" in descricao or "ATUARIO" in descricao or "ATUÁRIO" in descricao:
+                return 22036
+
         # A pagar
         if tipo == 'A pagar':
             if tipo_singular == 'Operadora':
@@ -207,8 +221,16 @@ class NeodontoCsvProcessor:
         """Calcula o valor do histórico baseado nas condições específicas."""
         tipo = row['Tipo']
         codigo_tipo_recebimento = row['CodigoTipoRecebimento']
+        descricao = str(row['Descricao']).upper() if pd.notnull(row['Descricao']) else ""
         nome_singular = str(row['NomeSingular']).upper() if pd.notnull(row['NomeSingular']) else ""
         
+        # Regras especiais para CodigoTipoRecebimento 5
+        if codigo_tipo_recebimento == 5:
+            if "LGPD" in descricao:
+                return 2005
+            elif "ATUARIO" in descricao or "ATUÁRIO" in descricao:
+                return 2005
+
         # A pagar
         if tipo == 'A pagar':
             if codigo_tipo_recebimento in [1, 2, 6]:
