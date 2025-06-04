@@ -75,12 +75,23 @@ class NeodontoCsvProcessor:
         nome_singular = str(row['NomeSingular']).upper() if pd.notnull(row['NomeSingular']) else ""
         descricao = str(row['Descricao']).upper() if pd.notnull(row['Descricao']) else ""
         
+        # Novas regras para convenção
+        if "CONVENCAO" in descricao or "CONVENÇÃO" in descricao:
+            if tipo == 'A pagar':
+                return 53742
+            elif tipo == 'A receber':
+                return 84679
+
         # Regras especiais para CodigoTipoRecebimento 5
         if codigo_tipo_recebimento == 5:
-            if "LGPD" in descricao:
-                return 52129
-            elif "ATUARIO" in descricao or "ATUÁRIO" in descricao:
-                return 52451
+            if tipo == 'A receber':
+                if "LGPD" in descricao or "ATUARIO" in descricao or "ATUÁRIO" in descricao:
+                    return 84679
+            else:  # A pagar
+                if "LGPD" in descricao:
+                    return 52129
+                elif "ATUARIO" in descricao or "ATUÁRIO" in descricao:
+                    return 52451
 
         # A pagar
         if tipo == 'A pagar':
@@ -144,10 +155,29 @@ class NeodontoCsvProcessor:
         nome_singular = str(row['NomeSingular']).upper() if pd.notnull(row['NomeSingular']) else ""
         descricao = str(row['Descricao']).upper() if pd.notnull(row['Descricao']) else ""
         
+        # Novas regras para convenção
+        if "CONVENCAO" in descricao or "CONVENÇÃO" in descricao:
+            if tipo == 'A pagar':
+                if "PAULISTA" in descricao:
+                    return 22036
+                else:
+                    return 21898
+            elif tipo == 'A receber':
+                if "PAULISTA" in descricao:
+                    return 19265
+                else:
+                    return 11021
+
         # Regras especiais para CodigoTipoRecebimento 5
         if codigo_tipo_recebimento == 5:
-            if "LGPD" in descricao or "ATUARIO" in descricao or "ATUÁRIO" in descricao:
-                return 22036
+            if tipo == 'A receber':
+                if "LGPD" in descricao:
+                    return 30173
+                elif "ATUARIO" in descricao or "ATUÁRIO" in descricao:
+                    return 30088
+            else:  # A pagar
+                if "LGPD" in descricao or "ATUARIO" in descricao or "ATUÁRIO" in descricao:
+                    return 22036
 
         # A pagar
         if tipo == 'A pagar':
@@ -218,18 +248,28 @@ class NeodontoCsvProcessor:
         return ''
     
     def calculate_history(self, row):
-        """Calcula o valor do histórico baseado nas condições específicas."""
+        """Calcula o histórico baseado nas condições específicas."""
         tipo = row['Tipo']
+        tipo_singular = row['TipoSingular']
         codigo_tipo_recebimento = row['CodigoTipoRecebimento']
-        descricao = str(row['Descricao']).upper() if pd.notnull(row['Descricao']) else ""
         nome_singular = str(row['NomeSingular']).upper() if pd.notnull(row['NomeSingular']) else ""
+        descricao = str(row['Descricao']).upper() if pd.notnull(row['Descricao']) else ""
         
+        # Novas regras para convenção
+        if "CONVENCAO" in descricao or "CONVENÇÃO" in descricao:
+            if tipo == 'A pagar':
+                return 2005
+            elif tipo == 'A receber':
+                return 1021
+
         # Regras especiais para CodigoTipoRecebimento 5
         if codigo_tipo_recebimento == 5:
-            if "LGPD" in descricao:
-                return 2005
-            elif "ATUARIO" in descricao or "ATUÁRIO" in descricao:
-                return 2005
+            if tipo == 'A receber':
+                if "LGPD" in descricao or "ATUARIO" in descricao or "ATUÁRIO" in descricao:
+                    return 1021
+            else:  # A pagar
+                if "LGPD" in descricao or "ATUARIO" in descricao or "ATUÁRIO" in descricao:
+                    return 2005
 
         # A pagar
         if tipo == 'A pagar':
@@ -394,25 +434,30 @@ class NeodontoCsvProcessor:
     def process_csv_file(self, uploaded_file):
         """Processa um arquivo CSV carregado."""
         try:
-            # Tenta ler o arquivo com diferentes encodings e separadores
-            try:
-                df = pd.read_csv(uploaded_file, sep=";", encoding='utf-8')
-            except:
-                try:
-                    df = pd.read_csv(uploaded_file, sep=",", encoding='utf-8')
-                except:
+            # Lista de encodings para tentar
+            encodings = ['utf-8', 'latin1', 'iso-8859-1', 'windows-1252', 'cp1252']
+            separators = [';', ',']
+            
+            # Tenta diferentes combinações de encoding e separador
+            for encoding in encodings:
+                for sep in separators:
                     try:
-                        df = pd.read_csv(uploaded_file, sep=";", encoding='latin1')
+                        uploaded_file.seek(0)  # Volta ao início do arquivo
+                        df = pd.read_csv(uploaded_file, sep=sep, encoding=encoding)
+                        # Se chegou aqui, conseguiu ler o arquivo
+                        break
                     except:
-                        # Último recurso: tenta detectar o separador
-                        uploaded_file.seek(0)
-                        sample = uploaded_file.read(1024).decode('utf-8', errors='ignore')
-                        if ',' in sample and ';' not in sample:
-                            sep = ','
-                        else:
-                            sep = ';'
-                        uploaded_file.seek(0)
-                        df = pd.read_csv(uploaded_file, sep=sep, encoding='utf-8', on_bad_lines='skip')
+                        continue
+                else:
+                    continue
+                break
+            else:
+                # Se nenhuma combinação funcionou, tenta detectar o separador
+                uploaded_file.seek(0)
+                sample = uploaded_file.read(1024).decode('utf-8', errors='ignore')
+                sep = ',' if ',' in sample and ';' not in sample else ';'
+                uploaded_file.seek(0)
+                df = pd.read_csv(uploaded_file, sep=sep, encoding='utf-8', on_bad_lines='skip')
             
             # Processa o DataFrame
             processed_df = self.process_dataframe(df)
