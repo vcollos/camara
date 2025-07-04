@@ -1,0 +1,23 @@
+nohup: ignoring input
+
+Collecting usage statistics. To deactivate, set browser.gatherUsageStats to false.
+
+
+  You can now view your Streamlit app in your browser.
+
+  URL: http://0.0.0.0:8502
+
+2025-07-03 20:12:54.059 Uncaught app execution
+Traceback (most recent call last):
+  File "/home/collos/infraestrutura_collos/projetos/camara/.venv/lib/python3.12/site-packages/streamlit/runtime/scriptrunner/exec_code.py", line 121, in exec_func_with_error_handling
+    result = func()
+             ^^^^^^
+  File "/home/collos/infraestrutura_collos/projetos/camara/.venv/lib/python3.12/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 645, in code_to_exec
+    exec(code, module.__dict__)
+  File "/home/collos/infraestrutura_collos/projetos/camara/app.py", line 3115, in <module>
+    main()
+  File "/home/collos/infraestrutura_collos/projetos/camara/app.py", line 2335, in main
+    saldo_final = valor_a_receber - valor_a_pagar
+                  ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for -: 'str' and 'str'
+  Stopping...

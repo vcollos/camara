@@ -1,0 +1,18 @@
+nohup: ignoring input
+
+Collecting usage statistics. To deactivate, set browser.gatherUsageStats to false.
+
+
+  You can now view your Streamlit app in your browser.
+
+  URL: http://0.0.0.0:8502
+
+2025-07-03 18:58:12.738 Received event for non-watched file: /home/collos/infraestrutura_collos/projetos/camara/app.py
+2025-07-03 18:58:15.755 Received event for non-watched file: /home/collos/infraestrutura_collos/projetos/camara/app.py
+2025-07-03 18:58:15.757 Received event for non-watched file: /home/collos/infraestrutura_collos/projetos/camara/app.py
+2025-07-03 19:00:14.142 Received event for non-watched file: /home/collos/infraestrutura_collos/projetos/camara/app.py
+2025-07-03 19:00:23.372 Received event for non-watched file: /home/collos/infraestrutura_collos/projetos/camara/app.py
+2025-07-03 19:00:33.142 Received event for non-watched file: /home/collos/infraestrutura_collos/projetos/camara/app.py
+2025-07-03 19:01:18.334 Received event for non-watched file: /home/collos/infraestrutura_collos/projetos/camara/app.py
+2025-07-03 19:01:18.335 Received event for non-watched file: /home/collos/infraestrutura_collos/projetos/camara/app.py
+  Stopping...

@@ -1,0 +1,11 @@
+nohup: ignoring input
+
+Collecting usage statistics. To deactivate, set browser.gatherUsageStats to false.
+
+
+  You can now view your Streamlit app in your browser.
+
+  URL: http://0.0.0.0:8502
+
+2025-07-03 19:42:02.826 Session with id 0ef15a48-8355-4539-94dd-79933d4b434b is already connected! Connecting to a new session.
+  Stopping...

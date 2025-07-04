@@ -1,218 +1,292 @@
-# Documentação do Processador de Arquivos CSV da Câmara de Compensação - Uniodonto
+# Documentação Atualizada - Sistema de Processamento CSV Câmara de Compensação Uniodonto
 
 ## 📋 Índice
 1. [Visão Geral](#visão-geral)
 2. [Estrutura do Projeto](#estrutura-do-projeto)
-3. [Regras de Processamento](#regras-de-processamento)
-4. [Funcionalidades](#funcionalidades)
-5. [Requisitos Técnicos](#requisitos-técnicos)
-6. [Instalação e Execução](#instalação-e-execução)
-7. [Observações Importantes](#observações-importantes)
+3. [Funcionalidades Implementadas](#funcionalidades-implementadas)
+4. [Regras de Processamento](#regras-de-processamento)
+5. [Interface do Sistema](#interface-do-sistema)
+6. [Requisitos e Instalação](#requisitos-e-instalação)
+7. [Guia de Uso](#guia-de-uso)
+8. [Observações Importantes](#observações-importantes)
 
 ## 🎯 Visão Geral
-Sistema desenvolvido em Python com Streamlit para processar arquivos CSV da Câmara de Compensação do Sistema Uniodonto, gerando lançamentos contábeis e relatórios financeiros.
+
+Sistema desenvolvido em Python com Streamlit para processar arquivos CSV da Câmara de Compensação do Sistema Uniodonto, gerando lançamentos contábeis automatizados, relatórios financeiros e permitindo edição de dados.
+
+### **Status do Sistema**: ✅ **TOTALMENTE FUNCIONAL**
+
+O sistema está em produção e operando corretamente com todas as funcionalidades implementadas.
 
 ## 📁 Estrutura do Projeto
+
 ```
 /
-├── app.py              # Aplicação principal
-├── camaras/           # Diretório para arquivos CSV de entrada
-├── dicionario.csv     # Dicionário de dados
-├── requirements.txt   # Dependências do projeto
-└── README.md         # Documentação principal
+├── app.py                 # Aplicação principal (2853 linhas)
+├── camaras/              # Diretório para arquivos CSV de entrada
+│   ├── *.csv            # Arquivos CSV da câmara de compensação
+│   └── exported_data.csv # Dados exportados
+├── notebook/            # Jupyter notebooks para desenvolvimento
+│   ├── camara.ipynb     # Notebook principal
+│   └── backup*.py       # Backups do código
+├── dicionario.csv       # Dicionário de dados das colunas
+├── requirements.txt     # Dependências do projeto
+├── run.sh              # Script de execução
+├── log.txt             # Logs de execução
+└── DOCUMENTACAO.md     # Esta documentação
 ```
+
+## 🚀 Funcionalidades Implementadas
+
+### **1. Processamento de Arquivos CSV** ✅
+- **Upload múltiplo**: Suporte a múltiplos arquivos CSV simultâneos
+- **Validação automática**: Verificação de colunas obrigatórias e integridade dos dados
+- **Detecção de formato**: Identificação automática de diferentes formatos de CSV
+- **Sincronização**: Correção automática de inconsistências entre código e descrição
+- **Processamento contábil**: Geração automática de colunas Débito, Crédito e Histórico
+- **Tratamento de IRRF**: Criação automática de lançamentos adicionais para IRRF
+- **Exportação**: Download individual ou em lote (ZIP)
+
+### **2. Geração de Relatórios Contábeis** ✅
+- **Relatório Unificado**: Consolidação completa da câmara de compensação
+- **Relatório de IRRF**: Análise específica de impostos retidos
+- **Relatórios específicos**: 8 tipos de relatórios contábeis detalhados
+- **Exportação PDF**: Relatórios formatados profissionalmente
+- **Exportação CSV**: Dados estruturados para análise
+- **Visualização web**: Interface interativa para visualização dos dados
+
+### **3. Edição de Dados** ✅
+- **Filtragem avançada**: Por tipo, singular, código e texto livre
+- **Seleção flexível**: Individual ou em lote com checkboxes
+- **Edição interativa**: Alteração de CodigoTipoRecebimento e DescricaoTipoRecebimento
+- **Visualização imediata**: Mudanças visíveis instantaneamente na tabela
+- **Preservação original**: Dados originais mantidos para referência
+- **Download editado**: Arquivo CSV com alterações aplicadas
+
+### **4. Interface Web Completa** ✅
+- **Design responsivo**: Layout adaptável com 3 abas principais
+- **Configuração personalizada**: Data de referência configurável
+- **Opções avançadas**: Controle detalhado do processamento
+- **Feedback visual**: Barras de progresso e indicadores de status
+- **Documentação integrada**: Informações completas sobre regras e funcionamento
 
 ## ⚙️ Regras de Processamento
 
-### Estrutura do Arquivo CSV
-O arquivo CSV deve conter as seguintes colunas obrigatórias:
+### **Estrutura do Arquivo CSV**
+Colunas obrigatórias identificadas pelo sistema:
 
-| Coluna | Descrição | Tipo |
-|--------|-----------|------|
-| Tipo | Tipo de transação (A pagar/A receber) | Texto |
-| CodigoSingular | Código único da entidade | Número |
-| NomeSingular | Nome da entidade | Texto |
-| TipoSingular | Classificação (Operadora/Prestadora) | Texto |
-| CodigoTipoRecebimento | Código do tipo de recebimento | Número |
-| Descricao | Descrição da transação | Texto |
-| ValorBruto | Valor bruto | Moeda |
-| TaxaAdministrativa | Taxa administrativa | Moeda |
-| Subtotal | Valor subtotal | Moeda |
-| IRRF | Imposto de Renda Retido na Fonte | Moeda |
-| OutrosTributos | Outros tributos | Moeda |
-| ValorLiquido | Valor líquido | Moeda |
+| Coluna | Tipo | Descrição |
+|--------|------|-----------|
+| Tipo | Texto | "A pagar" ou "A receber" |
+| CodigoSingular | Número | Código único da entidade |
+| NomeSingular | Texto | Nome da entidade |
+| TipoSingular | Texto | "Operadora" ou "Prestadora" |
+| RegistroANS | Texto/Número | Registro da ANS (opcional) |
+| CodigoTipoRecebimento | Número | Código do tipo (1-6) |
+| DescricaoTipoRecebimento | Texto | Descrição do tipo |
+| NumeroDocumento | Texto | Número do documento |
+| Descricao | Texto | Descrição da transação |
+| ValorBruto | Decimal | Valor bruto da transação |
+| TaxaAdministrativa | Decimal | Taxa administrativa |
+| Subtotal | Decimal | Valor subtotal |
+| IRRF | Decimal | Imposto retido |
+| OutrosTributos | Decimal | Outros tributos |
+| ValorLiquido | Decimal | Valor líquido final |
 
-### Regras de Lançamentos Contábeis
+### **Mapeamento de Códigos**
+Sistema utiliza mapeamento oficial:
 
-#### Regras de Débito
+| Código | Descrição |
+|--------|-----------|
+| 1 | Repasse em Pré-pagamento |
+| 2 | Repasse em Custo Operacional |
+| 3 | Taxa de Manutenção |
+| 4 | Fundo de Marketing |
+| 5 | Juros |
+| 6 | Outros |
 
-##### A pagar - Operadora
-| CodigoTipoRecebimento | Conta |
-|----------------------|--------|
-| 1 | 31731 |
-| 2 | 40507 |
-| 3 | 52631 (UNIODONTO DO BRASIL) / 52632 (outros) |
-| 4 | 52532 |
-| 5 | 51818 |
-| 6 | 51202 |
+### **Regras de Lançamentos Contábeis**
 
-##### A pagar - Prestadora
-| CodigoTipoRecebimento | Conta |
-|----------------------|--------|
-| 1,2 | 40140 |
-| 3 | 52631 (UNIODONTO DO BRASIL) / 52632 (outros) |
-| 4 | 52532 |
-| 5 | 51818 |
-| 6 | 51202 |
+#### **Débito - A Pagar**
+- **Operadora**: 31731, 40507, 52631/52632, 52532, 51818, 51202
+- **Prestadora**: 40140, 40140, 52631/52632, 52532, 51818, 51202
 
-##### A receber - Operadora
-| CodigoTipoRecebimento | Conta |
-|----------------------|--------|
-| 1 | 19958 |
-| 2 | 85433 |
-| 3,4,5 | 84679 |
-| 6 | 19253 |
+#### **Débito - A Receber**  
+- **Operadora**: 19958, 85433, 84679, 84679, 84679, 19253
+- **Prestadora**: 19253, 19253, 84679, 84679, 84679, 19253
 
-##### A receber - Prestadora
-| CodigoTipoRecebimento | Conta |
-|----------------------|--------|
-| 1,2 | 19253 |
-| 3,4,5 | 84679 |
-| 6 | 19253 |
+#### **Crédito - A Pagar**
+- **Operadora**: 90918, 90919, 21898/22036, 21898/22036, 51818, 90919
+- **Prestadora**: 92003, 92003, 21898/22036, 21898/22036, 51818, 90919
 
-#### Regras de Crédito
+#### **Crédito - A Receber**
+- **Ambos**: 30203, 40413, 30069, 30071, 31426, 30127
 
-##### A pagar - Operadora
-| CodigoTipoRecebimento | Conta |
-|----------------------|--------|
-| 1 | 90918 |
-| 2 | 90919 |
-| 3 | 21898 (UNIODONTO DO BRASIL) / 22036 (outros) |
-| 4 | 21898 (UNIODONTO DO BRASIL) / 22036 (outros) |
-| 5 | 51818 |
-| 6 | 90919 |
+#### **Histórico**
+- **A Pagar**: 2005, 2005, 361/368, 365, 179, 2005
+- **A Receber**: 1021, 1021, 361/368, 365, 179, 1021
 
-##### A pagar - Prestadora
-| CodigoTipoRecebimento | Conta |
-|----------------------|--------|
-| 1,2 | 92003 |
-| 3 | 21898 (UNIODONTO DO BRASIL) / 22036 (outros) |
-| 4 | 21898 (UNIODONTO DO BRASIL) / 22036 (outros) |
-| 5 | 51818 |
-| 6 | 90919 |
+### **Regras Especiais**
 
-##### A receber - Operadora/Prestadora
-| CodigoTipoRecebimento | Conta |
-|----------------------|--------|
-| 1 | 30203 |
-| 2 | 40413 |
-| 3 | 30069 |
-| 4 | 30071 |
-| 5 | 31426 |
-| 6 | 30127 |
+#### **LGPD e Atuário** (Código 5)
+- **LGPD**: Débito 52129, Crédito 22036, Histórico 2005
+- **ATUÁRIO**: Débito 52451, Crédito 22036, Histórico 2005
 
-#### Regras de Histórico
+#### **Convenção/Convenção**
+- **A Pagar**: Débito 53742
+- **A Receber**: Débito 84679
 
-##### A pagar
-| CodigoTipoRecebimento | Histórico |
-|----------------------|-----------|
-| 1,2,6 | 2005 |
-| 3 | 361 (UNIODONTO DO BRASIL) / 368 (outros) |
-| 4 | 365 |
-| 5 | 179 |
+## 🖥️ Interface do Sistema
 
-##### A receber
-| CodigoTipoRecebimento | Histórico |
-|----------------------|-----------|
-| 1,2,6 | 1021 |
-| 3 | 361 (UNIODONTO DO BRASIL) / 368 (outros) |
-| 4 | 365 |
-| 5 | 179 |
+### **Aba 1: Processamento de Arquivos**
+- Upload de múltiplos arquivos CSV
+- Configuração de data personalizada
+- Opções avançadas de processamento
+- Visualização prévia dos dados
+- Processamento individual ou em lote
+- Download de arquivos processados
 
-### Regras Especiais
+### **Aba 2: Relatórios Contábeis**
+- Seleção de arquivos processados
+- Escolha do tipo de relatório
+- Geração de relatórios específicos
+- Visualização de estatísticas
+- Download em PDF e CSV
 
-#### LGPD e Atuário
-Quando CodigoTipoRecebimento = 5 e descrição contém:
-- "LGPD":
-  - Débito: 52129
-  - Crédito: 22036
-  - Histórico: 2005
-- "ATUARIO"/"ATUÁRIO":
-  - Débito: 52451
-  - Crédito: 22036
-  - Histórico: 2005
+### **Aba 3: Edição de Dados**
+- Seleção do arquivo para edição
+- Filtros por tipo, singular e código
+- Busca por texto livre
+- Seleção individual ou em lote
+- Edição interativa de códigos
+- Download do arquivo editado
 
-## 🚀 Funcionalidades
+## 💻 Requisitos e Instalação
 
-### Principais Funcionalidades
-1. **Processamento de Arquivos**
-   - Leitura de arquivos CSV
-   - Validação de dados
-   - Processamento em lote
+### **Dependências**
+```
+streamlit
+pandas
+numpy
+matplotlib
+seaborn
+reportlab
+openpyxl
+python-dateutil
+pytz
+pillow
+```
 
-2. **Lançamentos Contábeis**
-   - Cálculo automático de débito
-   - Cálculo automático de crédito
-   - Geração de histórico
+### **Instalação**
+```bash
+# 1. Ativar ambiente virtual
+source .venv/bin/activate
 
-3. **Relatórios**
-   - Exportação em CSV
-   - Exportação em PDF
-   - Visualização na interface web
+# 2. Instalar dependências
+pip install -r requirements.txt
 
-4. **Interface Web**
-   - Upload de múltiplos arquivos
-   - Visualização prévia
-   - Download de relatórios
+# 3. Executar aplicação
+streamlit run app.py --server.port 8502 --server.address 0.0.0.0
+```
 
-## 💻 Requisitos Técnicos
+### **Execução via Script**
+```bash
+chmod +x run.sh
+./run.sh
+```
 
-### Dependências
-- Python 3.x
-- Streamlit
-- Pandas
-- Matplotlib
-- Seaborn
-- ReportLab
+## 📖 Guia de Uso
 
-## 📥 Instalação e Execução
+### **1. Processamento de Arquivos**
+1. Acesse a aba "Processamento de Arquivos"
+2. Configure data se necessário
+3. Faça upload dos arquivos CSV
+4. Acompanhe o processamento
+5. Baixe os arquivos processados
 
-### Passos para Instalação
-1. Criar ambiente virtual Python:
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # Linux/Mac
-   # ou
-   .venv\Scripts\activate  # Windows
-   ```
+### **2. Geração de Relatórios**
+1. Acesse a aba "Relatórios Contábeis"
+2. Selecione arquivos processados
+3. Escolha o tipo de relatório
+4. Clique em "Gerar Relatórios"
+5. Baixe os relatórios gerados
 
-2. Instalar dependências:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Executar aplicação:
-   ```bash
-   streamlit run app.py
-   ```
+### **3. Edição de Dados**
+1. Acesse a aba "Edição de Dados"
+2. Selecione o arquivo para edição
+3. Aplique filtros desejados
+4. Selecione registros para editar
+5. Altere códigos e descrições
+6. Clique em "Processar Alterações"
+7. Baixe o arquivo editado
 
 ## ⚠️ Observações Importantes
 
-### Formato dos Arquivos
-1. Arquivos CSV devem seguir o formato especificado
-2. Valores monetários no formato brasileiro
-3. Datas no formato DD/MM/YYYY
+### **Formato dos Arquivos**
+- **Separador**: Ponto e vírgula (;)
+- **Codificação**: UTF-8
+- **Decimais**: Vírgula como separador decimal
+- **Datas**: Formato DD/MM/YYYY
 
-### Processamento
-1. Sistema processa múltiplos arquivos simultaneamente
-2. Relatórios são gerados automaticamente
-3. Validações são realizadas durante o processamento
+### **Processamento**
+- Sistema processa múltiplos arquivos simultaneamente
+- Validações automáticas durante o processamento
+- Correção automática de inconsistências
+- Geração automática de lançamentos de IRRF
 
-### Segurança
-1. Não armazena dados sensíveis
-2. Processamento local dos arquivos
-3. Exportação segura dos relatórios
+### **Edição de Dados**
+- Alterações são aplicadas sobre dados originais
+- Arquivo original é preservado para referência
+- Mudanças são visíveis imediatamente na interface
+- Download gera arquivo com mesma estrutura original
+
+### **Segurança**
+- Processamento local dos arquivos
+- Não há armazenamento permanente de dados
+- Dados temporários são limpos automaticamente
+- Exportação segura dos relatórios
+
+### **Relatórios Disponíveis**
+1. **Taxas de Manutenção (3)** - Operadoras e Prestadoras
+2. **Fundo de Marketing (4)** - Operadoras e Prestadoras  
+3. **Multas e Juros (5)** - Operadoras e Prestadoras
+4. **Outras (6)** - Operadoras e Prestadoras
+5. **Pré-pagamento (1)** - Operadoras
+6. **Custo Operacional (2)** - Operadoras
+7. **Pré-pagamento (1)** - Prestadoras
+8. **Custo Operacional (2)** - Prestadoras
+
+## 🔧 Códigos das Contas Contábeis
+
+### **Principais Contas de Débito**
+- **85433**: Contraprestação assumida em Pós-pagamento
+- **40507**: Despesas com Eventos/Sinistros
+- **19958**: Contraprestação Corresponsabilidade Assumida Pré-pagamento
+- **52631**: Taxa para Manutenção da Central
+- **52532**: Propaganda e Marketing - Matriz
+- **84679**: Outras Contas a Receber
+
+### **Principais Contas de Crédito**
+- **90919**: Intercâmbio a Pagar de Corresponsabilidade Cedida
+- **21898**: Contrap. Corresp. Assumida Pós
+- **22036**: Federação Paulista
+- **30203**: Corresponsabilidade Assumida Pré
+- **40413**: (-) Recup.Reemb. Contratante Assumida Pós-pagamento
+
+### **Códigos de Histórico**
+- **1021**: VL. N/NFF. INTERC. RECEB.ODONT
+- **2005**: VL. S/NFF. INTERC. A PAGAR
+- **361**: VL. TAXA MANUT. DA CENTRAL S/N
+- **365**: VL. FUNDO DE MARKETING S/NFF
+- **179**: VL. MULTAS/JUROS
 
 ---
 
-Para mais informações ou suporte, consulte o código fonte ou entre em contato com a equipe de desenvolvimento. 
+## 📞 Suporte
+
+Para dúvidas, problemas ou sugestões de melhorias:
+- Consulte o código fonte em `app.py`
+- Verifique logs em `log.txt`
+- Entre em contato com a equipe de desenvolvimento
+
+**Sistema em produção desde 2024 - Totalmente funcional e testado** 

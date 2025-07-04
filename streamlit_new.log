@@ -1,0 +1,13 @@
+nohup: ignoring input
+
+Collecting usage statistics. To deactivate, set browser.gatherUsageStats to false.
+
+
+  You can now view your Streamlit app in your browser.
+
+  URL: http://0.0.0.0:8502
+
+2025-07-03 19:28:29.094 Session with id 4046568c-95a3-429c-b9e9-18e0f3c71084 is already connected! Connecting to a new session.
+2025-07-03 19:33:57.122 Received event for non-watched file: /home/collos/infraestrutura_collos/projetos/camara/app.py
+2025-07-03 19:34:51.564 Received event for non-watched file: /home/collos/infraestrutura_collos/projetos/camara/app.py
+  Stopping...
