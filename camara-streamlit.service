@@ -1,0 +1,31 @@
+[Unit]
+Description=Camara Streamlit Application
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=collos
+Group=collos
+WorkingDirectory=/home/collos/infraestrutura_collos/projetos/camara
+ExecStart=/home/collos/infraestrutura_collos/projetos/camara/run.sh
+Restart=always
+RestartSec=3
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=camara-streamlit
+
+# Variáveis de ambiente
+Environment=PATH=/home/collos/infraestrutura_collos/projetos/camara/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+Environment=PYTHONPATH=/home/collos/infraestrutura_collos/projetos/camara
+
+# Configurações de segurança
+PrivateTmp=true
+NoNewPrivileges=true
+
+# Configurações de timeout
+TimeoutStartSec=30
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target 
