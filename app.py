@@ -433,18 +433,6 @@ class NeodontoCsvProcessor:
             value_str = value_str.replace(",", ".")
         try:
             result = float(value_str)
-            # Verificação de sanidade: se o valor for muito grande (mais de 1 milhão), 
-            # pode ter havido conversão incorreta
-            if result > 1000000:
-                # Verificar se o valor original tinha formato monetário
-                original_str = str(value).strip()
-                if ',' in original_str and len(original_str.split(',')[-1]) <= 2:
-                    # Pode ter sido convertido incorretamente
-                    # Tentar dividir por 100
-                    potential_correct = result / 100
-                    if potential_correct < 10000:  # Valor mais razoável
-                        return potential_correct
-            
             return result
         except ValueError:
             return 0
@@ -508,33 +496,9 @@ class NeodontoCsvProcessor:
         # Normaliza e converte a coluna valor para float
         df['valor'] = df['valor'].apply(self.normalize_value)
         
-        # VERIFICAÇÃO: Detectar valores convertidos incorretamente (muito grandes)
-        problematic_values = df[df['valor'] > 100000]  # Valores maiores que 100k são suspeitos
-        if len(problematic_values) > 0:
-            st.warning(f"⚠️ **ATENÇÃO**: {len(problematic_values)} valores parecem ter sido convertidos incorretamente (muito grandes)")
-            
-            # Tentar corrigir valores problemáticos
-            for idx in problematic_values.index:
-                original_val = original_valor_bruto.iloc[idx]
-                converted_val = df.loc[idx, 'valor']
-                
-                # Se o valor original era uma string com vírgula como decimal
-                if isinstance(original_val, str) and ',' in str(original_val):
-                    # Tentar reconverter usando lógica mais cuidadosa
-                    corrected_val = self.normalize_value(original_val)
-                    
-                    # Se ainda está muito grande, tentar dividir por 100
-                    if corrected_val > 10000:
-                        corrected_val = corrected_val / 100
-                    
-                    df.loc[idx, 'valor'] = corrected_val
-                    st.info(f"🔧 Valor corrigido: {original_val} → {corrected_val} (era {converted_val})")
-                elif converted_val > 10000:
-                    # Para valores numéricos muito grandes, tentar dividir por 100
-                    corrected_val = converted_val / 100
-                    df.loc[idx, 'valor'] = corrected_val
-                    st.info(f"🔧 Valor corrigido: {converted_val} → {corrected_val}")
-        
+        # Removida correção automática de valores muito grandes (conforme solicitado pelo usuário).
+        # Agora o sistema somente normaliza o valor exatamente como está no arquivo,
+        # sem tentar "adivinhar" divisões por 100 ou outras correções heurísticas.
         # Cria a coluna complemento com o formato especificado + tipo
         df['complemento'] = (df['NomeSingular'].fillna('') + " | " + 
                            df['DescricaoTipoRecebimento'].fillna('') + " | " + 

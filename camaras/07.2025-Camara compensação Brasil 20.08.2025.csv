@@ -1,0 +1,413 @@
+﻿Tipo;CodigoSingular;NomeSingular;TipoSingular;RegistroANS;CodigoTipoRecebimento;DescricaoTipoRecebimento;NumeroDocumento;Descricao;ValorBruto;TaxaAdministrativa;Subtotal;IRRF;OutrosTributos;ValorLiquido
+A receber;42;UNIODONTO SUDESTE MINEIRO COOPERATIVA DE SAUDE ODONTOLOGICA LTDA;Operadora;327441;3;Taxa de Manutenção;10164513;TAXA DE MANUTENCAO;2005,58;0;2005,58;0;0;2005,58
+A receber;129;Uniodonto Pindamonhangaba;Operadora;331104;4;Fundo de Marketing;10164557;FUNDO DE MARKETING;722,01;0;722,01;0;0;722,01
+A receber;129;Uniodonto Pindamonhangaba;Operadora;331104;3;Taxa de Manutenção;10164654;TAXA DE MANUTENCAO;1805,02;0;1805,02;0;0;1805,02
+A receber;3;Uniodonto Vale Taquari Rio Pardo;Operadora;353752;4;Fundo de Marketing;10164678;FUNDO DE MARKETING;722,01;0;722,01;0;0;722,01
+A receber;3;Uniodonto Vale Taquari Rio Pardo;Operadora;353752;3;Taxa de Manutenção;10164582;TAXA DE MANUTENCAO;1805,02;0;1805,02;0;0;1805,02
+A receber;26;Uniodonto Sao Jose do Rio Preto;Operadora;303259;3;Taxa de Manutenção;10164501;TAXA DE MANUTENCAO;1805,02;0;1805,02;0;0;1805,02
+A receber;26;Uniodonto Sao Jose do Rio Preto;Operadora;303259;4;Fundo de Marketing;10164599;FUNDO DE MARKETING;722,01;0;722,01;0;0;722,01
+A receber;65;Uniodonto Rio Claro;Operadora;349011;4;Fundo de Marketing;10164626;FUNDO DE MARKETING;722,01;0;722,01;0;0;722,01
+A receber;65;Uniodonto Rio Claro;Operadora;349011;3;Taxa de Manutenção;10164528;TAXA DE MANUTENCAO;1805,02;0;1805,02;0;0;1805,02
+A receber;160;Uniodonto Passos;Operadora;419729;3;Taxa de Manutenção;10164569;TAXA DE MANUTENCAO;1203,35;0;1203,35;0;0;1203,35
+A receber;160;Uniodonto Passos;Operadora;419729;4;Fundo de Marketing;10164664;FUNDO DE MARKETING;481,34;0;481,34;0;0;481,34
+A receber;43;Uniodonto Limeira;Operadora;369462;4;Fundo de Marketing;10164612;FUNDO DE MARKETING;481,34;0;481,34;0;0;481,34
+A receber;43;Uniodonto Limeira;Operadora;369462;3;Taxa de Manutenção;10164514;TAXA DE MANUTENCAO;1203,35;0;1203,35;0;0;1203,35
+A receber;128;Uniodonto Taubate;Operadora;319350;4;Fundo de Marketing;10164556;FUNDO DE MARKETING;481,34;0;481,34;0;0;481,34
+A receber;128;Uniodonto Taubate;Operadora;319350;3;Taxa de Manutenção;10164653;TAXA DE MANUTENCAO;1203,35;0;1203,35;0;0;1203,35
+A receber;157;Uniodonto Rio Grande Litoral;Operadora;367966;4;Fundo de Marketing;10164663;FUNDO DE MARKETING;320,89;0;320,89;0;0;320,89
+A receber;157;Uniodonto Rio Grande Litoral;Operadora;367966;3;Taxa de Manutenção;10164568;TAXA DE MANUTENCAO;802,23;0;802,23;0;0;802,23
+A receber;18;UNIODONTO SUL MS;Operadora;313807;4;Fundo de Marketing;10164497;FUNDO DE MARKETING;320,89;0;320,89;0;0;320,89
+A receber;18;UNIODONTO SUL MS;Operadora;313807;3;Taxa de Manutenção;10164595;TAXA DE MANUTENCAO;802,23;0;802,23;0;0;802,23
+A receber;169;UNIODONTO DE RIO BRANCO - ACRE;Operadora;403997;4;Fundo de Marketing;10164670;FUNDO DE MARKETING;320,89;0;320,89;0;0;320,89
+A receber;169;UNIODONTO DE RIO BRANCO - ACRE;Operadora;403997;3;Taxa de Manutenção;10164575;TAXA DE MANUTENCAO;802,23;0;802,23;0;0;802,23
+A receber;90;Uniodonto Cacapava;Operadora;347302;3;Taxa de Manutenção;10164541;TAXA DE MANUTENCAO;802,23;0;802,23;0;0;802,23
+A receber;90;Uniodonto Cacapava;Operadora;347302;4;Fundo de Marketing;10164639;FUNDO DE MARKETING;320,89;0;320,89;0;0;320,89
+A receber;120;Uniodonto Taquaritinga;Operadora;350290;4;Fundo de Marketing;10164553;FUNDO DE MARKETING;224,62;0;224,62;0;0;224,62
+A receber;120;Uniodonto Taquaritinga;Operadora;350290;3;Taxa de Manutenção;10164650;TAXA DE MANUTENCAO;561,56;0;561,56;0;0;561,56
+A receber;64;Uniodonto Macae;Operadora;300195;4;Fundo de Marketing;10164527;FUNDO DE MARKETING;224,62;0;224,62;0;0;224,62
+A receber;64;Uniodonto Macae;Operadora;300195;3;Taxa de Manutenção;10164625;TAXA DE MANUTENCAO;561,56;0;561,56;0;0;561,56
+A receber;112;Uniodonto Serido;Operadora;343919;4;Fundo de Marketing;10164646;FUNDO DE MARKETING;224,62;0;224,62;0;0;224,62
+A receber;112;Uniodonto Serido;Operadora;343919;3;Taxa de Manutenção;10164549;TAXA DE MANUTENCAO;561,56;0;561,56;0;0;561,56
+A receber;52;Uniodonto Ponta Grossa;Operadora;315818;3;Taxa de Manutenção;10164520;TAXA DE MANUTENCAO;561,56;0;561,56;0;0;561,56
+A receber;52;Uniodonto Ponta Grossa;Operadora;315818;4;Fundo de Marketing;10164618;FUNDO DE MARKETING;224,62;0;224,62;0;0;224,62
+A receber;19;Uniodonto Salvador;Operadora;310107;4;Fundo de Marketing;10164596;FUNDO DE MARKETING;160,45;0;160,45;0;0;160,45
+A receber;19;Uniodonto Salvador;Operadora;310107;3;Taxa de Manutenção;10164498;TAXA DE MANUTENCAO;401,12;0;401,12;0;0;401,12
+A receber;162;Uniodonto Paulo Afonso;Operadora;402109;3;Taxa de Manutenção;10164571;TAXA DE MANUTENCAO;401,12;0;401,12;0;0;401,12
+A receber;162;Uniodonto Paulo Afonso;Operadora;402109;4;Fundo de Marketing;10164666;FUNDO DE MARKETING;160,45;0;160,45;0;0;160,45
+A receber;105;Uniodonto Monte Alto;Operadora;336238;4;Fundo de Marketing;10164548;FUNDO DE MARKETING;160,45;0;160,45;0;0;160,45
+A receber;105;Uniodonto Monte Alto;Operadora;336238;3;Taxa de Manutenção;10164645;TAXA DE MANUTENCAO;401,12;0;401,12;0;0;401,12
+A receber;54;Uniodonto Aracaju;Operadora;349283;4;Fundo de Marketing;10164521;FUNDO DE MARKETING;160,45;0;160,45;0;0;160,45
+A receber;54;Uniodonto Aracaju;Operadora;349283;3;Taxa de Manutenção;10164619;TAXA DE MANUTENCAO;401,12;0;401,12;0;0;401,12
+A receber;118;Uniodonto Roraima;Operadora;418242;3;Taxa de Manutenção;10164552;TAXA DE MANUTENCAO;401,12;0;401,12;0;0;401,12
+A receber;118;Uniodonto Roraima;Operadora;418242;4;Fundo de Marketing;10164649;FUNDO DE MARKETING;160,45;0;160,45;0;0;160,45
+A receber;151;Uniodonto Tres Rios;Operadora;359726;6;Outros;;"Item 10.7 - Multa moratória de 10%	";125,22;0;125,22;0;0;125,22
+A pagar;41;Uniodonto Itajuba;Operadora;419028;2;Repasse em Custo Operacional;76209/23052;CO - 07/2025;320,76;0;320,76;0;0;320,76
+A receber;61;Uniodonto Sul Fluminense;Operadora;363171;6;Outros;;"Desconto adiantamento de RPP	";260000;0;260000;0;0;260000
+A receber;16;Uniodonto Piracicaba;Operadora;346004;3;Taxa de Manutenção;10164835;TAXA DE MANUTENCAO;4813,38;0;4813,38;0;0;4813,38
+A receber;16;Uniodonto Piracicaba;Operadora;346004;4;Fundo de Marketing;10164842;FUNDO DE MARKETING;1925,35;0;1925,35;0;0;1925,35
+A receber;17;Uniodonto Rio Grande do Norte;Operadora;345318;3;Taxa de Manutenção;10164594;TAXA DE MANUTENCAO;4171,6;0;4171,6;0;0;4171,6
+A receber;11;UNIODONTO DE SC COOPERATIVA ADMINISTRADORA DE CONTRATOS;Operadora;342203;4;Fundo de Marketing;10164679;FUNDO DE MARKETING;1668,64;0;1668,64;0;0;1668,64
+A receber;33;Uniodonto Joao Pessoa;Operadora;361569;3;Taxa de Manutenção;10164506;TAXA DE MANUTENCAO;4171,6;0;4171,6;0;0;4171,6
+A receber;33;Uniodonto Joao Pessoa;Operadora;361569;4;Fundo de Marketing;10164604;FUNDO DE MARKETING;1668,64;0;1668,64;0;0;1668,64
+A receber;37;Uniodonto Manaus;Operadora;311391;4;Fundo de Marketing;10164607;FUNDO DE MARKETING;1540,28;0;1540,28;0;0;1540,28
+A receber;37;Uniodonto Manaus;Operadora;311391;3;Taxa de Manutenção;10164509;TAXA DE MANUTENCAO;3850,7;0;3850,7;0;0;3850,7
+A receber;59;Uniodonto Americana;Operadora;347604;3;Taxa de Manutenção;10164523;TAXA DE MANUTENCAO;3850,7;0;3850,7;0;0;3850,7
+A receber;59;Uniodonto Americana;Operadora;347604;4;Fundo de Marketing;10164621;FUNDO DE MARKETING;1540,28;0;1540,28;0;0;1540,28
+A receber;15;Uniodonto Uberaba;Operadora;370568;4;Fundo de Marketing;10164592;FUNDO DE MARKETING;1540,28;0;1540,28;0;0;1540,28
+A receber;15;Uniodonto Uberaba;Operadora;370568;3;Taxa de Manutenção;10164494;TAXA DE MANUTENCAO;3850,7;0;3850,7;0;0;3850,7
+A receber;56;Uniodonto Sul Goiano;Operadora;358339;3;Taxa de Manutenção;10164522;TAXA DE MANUTENCAO;3369,37;0;3369,37;0;0;3369,37
+A receber;56;Uniodonto Sul Goiano;Operadora;358339;4;Fundo de Marketing;10164620;FUNDO DE MARKETING;1347,75;0;1347,75;0;0;1347,75
+A receber;34;Uniodonto Jundiai;Operadora;347795;4;Fundo de Marketing;10164605;FUNDO DE MARKETING;1347,75;0;1347,75;0;0;1347,75
+A receber;34;Uniodonto Jundiai;Operadora;347795;3;Taxa de Manutenção;10164507;TAXA DE MANUTENCAO;3369,37;0;3369,37;0;0;3369,37
+A receber;48;Uniodonto Araraquara;Operadora;316997;4;Fundo de Marketing;10164517;FUNDO DE MARKETING;1347,75;0;1347,75;0;0;1347,75
+A receber;48;Uniodonto Araraquara;Operadora;316997;3;Taxa de Manutenção;10164517;TAXA DE MANUTENCAO;3369,37;0;3369,37;0;0;3369,37
+A receber;182;Uniodonto Pocos de Caldas;Operadora;409791;3;Taxa de Manutenção;10164579;TAXA DE MANUTENCAO;3369,37;0;3369,37;0;0;3369,37
+A receber;182;Uniodonto Pocos de Caldas;Operadora;409791;4;Fundo de Marketing;10164674;FUNDO DE MARKETING;1347,75;0;1347,75;0;0;1347,75
+A receber;134;Uniodonto Vale Historico;Operadora;382655;4;Fundo de Marketing;10164656;FUNDO DE MARKETING;1091,03;0;1091,03;0;0;1091,03
+A receber;134;Uniodonto Vale Historico;Operadora;382655;3;Taxa de Manutenção;10164560;TAXA DE MANUTENCAO;2727,58;0;2727,58;0;0;2727,58
+A receber;138;Uniodonto Amapá;Operadora;365785;3;Taxa de Manutenção;10164832;TAXA DE MANUTENCAO;2727,58;0;2727,58;0;0;2727,58
+A receber;138;Uniodonto Amapá;Operadora;365785;4;Fundo de Marketing;10164833;FUNDO DE MARKETING;1091,03;0;1091,03;0;0;1091,03
+A receber;98;Uniodonto Maringa;Operadora;381144;4;Fundo de Marketing;10164642;FUNDO DE MARKETING;1091,03;0;1091,03;0;0;1091,03
+A receber;98;Uniodonto Maringa;Operadora;381144;3;Taxa de Manutenção;10164544;TAXA DE MANUTENCAO;2727,58;0;2727,58;0;0;2727,58
+A receber;51;Uniodonto Bebedouro;Operadora;327093;3;Taxa de Manutenção;10164519;TAXA DE MANUTENCAO;2727,58;0;2727,58;0;0;2727,58
+A receber;51;Uniodonto Bebedouro;Operadora;327093;4;Fundo de Marketing;10164617;FUNDO DE MARKETING;1091,03;0;1091,03;0;0;1091,03
+A receber;156;UNIODONTO ESPIRITO SANTO COOPERATIVA ODONTOLOGICA;Operadora;370711;4;Fundo de Marketing;10164662;FUNDO DE MARKETING;1091,03;0;1091,03;0;0;1091,03
+A receber;156;UNIODONTO ESPIRITO SANTO COOPERATIVA ODONTOLOGICA;Operadora;370711;3;Taxa de Manutenção;10164567;TAXA DE MANUTENCAO;2727,58;0;2727,58;0;0;2727,58
+A receber;83;Uniodonto Catanduva;Operadora;354686;3;Taxa de Manutenção;10164537;TAXA DE MANUTENCAO;2005,58;0;2005,58;0;0;2005,58
+A receber;83;Uniodonto Catanduva;Operadora;354686;4;Fundo de Marketing;10164635;FUNDO DE MARKETING;802,23;0;802,23;0;0;802,23
+A receber;79;Uniodonto Jacarei;Operadora;343056;4;Fundo de Marketing;10164633;FUNDO DE MARKETING;802,23;0;802,23;0;0;802,23
+A receber;79;Uniodonto Jacarei;Operadora;343056;3;Taxa de Manutenção;10164535;TAXA DE MANUTENCAO;2005,58;0;2005,58;0;0;2005,58
+A receber;46;Uniodonto Londrina;Operadora;350770;3;Taxa de Manutenção;10164516;TAXA DE MANUTENCAO;2005,58;0;2005,58;0;0;2005,58
+A receber;46;Uniodonto Londrina;Operadora;350770;4;Fundo de Marketing;10164614;FUNDO DE MARKETING;802,23;0;802,23;0;0;802,23
+A receber;28;Uniodonto Sao Carlos;Operadora;335525;4;Fundo de Marketing;10164600;FUNDO DE MARKETING;802,23;0;802,23;0;0;802,23
+A receber;28;Uniodonto Sao Carlos;Operadora;335525;3;Taxa de Manutenção;10164502;TAXA DE MANUTENCAO;2005,58;0;2005,58;0;0;2005,58
+A receber;170;Uniodonto Resende;Operadora;406121;3;Taxa de Manutenção;10164576;TAXA DE MANUTENCAO;2005,58;0;2005,58;0;0;2005,58
+A receber;170;Uniodonto Resende;Operadora;406121;4;Fundo de Marketing;10164671;FUNDO DE MARKETING;802,23;0;802,23;0;0;802,23
+A receber;41;Uniodonto Itajuba;Operadora;419028;4;Fundo de Marketing;10164610;FUNDO DE MARKETING;802,23;0;802,23;0;0;802,23
+A receber;41;Uniodonto Itajuba;Operadora;419028;3;Taxa de Manutenção;10164512;TAXA DE MANUTENCAO;2005,58;0;2005,58;0;0;2005,58
+A receber;76;UNIODONTO ATHENAS PAULISTA;Operadora;340120;3;Taxa de Manutenção;10164533;TAXA DE MANUTENCAO;2005,58;0;2005,58;0;0;2005,58
+A receber;76;UNIODONTO ATHENAS PAULISTA;Operadora;340120;4;Fundo de Marketing;10164631;FUNDO DE MARKETING;802,23;0;802,23;0;0;802,23
+A receber;61;Uniodonto Sul Fluminense;Operadora;363171;4;Fundo de Marketing;10164622;FUNDO DE MARKETING;802,23;0;802,23;0;0;802,23
+A receber;61;Uniodonto Sul Fluminense;Operadora;363171;3;Taxa de Manutenção;10164524;TAXA DE MANUTENCAO;2005,58;0;2005,58;0;0;2005,58
+A receber;62;Uniodonto Mato Grosso;Operadora;343404;4;Fundo de Marketing;10164525;FUNDO DE MARKETING;802,23;0;802,23;0;0;802,23
+A receber;62;Uniodonto Mato Grosso;Operadora;343404;3;Taxa de Manutenção;10164623;TAXA DE MANUTENCAO;2005,58;0;2005,58;0;0;2005,58
+A receber;122;Uniodonto Botucatu;Operadora;347477;3;Taxa de Manutenção;10164555;TAXA DE MANUTENCAO;2005,58;0;2005,58;0;0;2005,58
+A receber;122;Uniodonto Botucatu;Operadora;347477;4;Fundo de Marketing;10164652;FUNDO DE MARKETING;802,23;0;802,23;0;0;802,23
+A receber;42;UNIODONTO SUDESTE MINEIRO COOPERATIVA DE SAUDE ODONTOLOGICA LTDA;Operadora;327441;4;Fundo de Marketing;10164611;FUNDO DE MARKETING;802,23;0;802,23;0;0;802,23
+A receber;167;Uniodonto Arapiraca;Operadora;403512;6;Outros;10164724;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;350;0;350;0;0;350
+A receber;76;UNIODONTO ATHENAS PAULISTA;Operadora;340120;6;Outros;10164709;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;1750;0;1750;0;0;1750
+A receber;72;Uniodonto Avare;Operadora;311669;6;Outros;10164707;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;700;0;700;0;0;700
+A receber;81;UNIODONTO DE ILHEUS;Operadora;383929;6;Outros;10164712;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;525;0;525;0;0;525
+A receber;51;Uniodonto Bebedouro;Operadora;327093;6;Outros;10164701;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;700;0;700;0;0;700
+A receber;90;Uniodonto Cacapava;Operadora;347302;6;Outros;10164714;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;175;0;175;0;0;175
+A receber;8;Uniodonto Campinas;Operadora;350494;6;Outros;10164684;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;1050;0;1050;0;0;1050
+A receber;83;Uniodonto Catanduva;Operadora;354686;6;Outros;10164713;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;525;0;525;0;0;525
+A receber;156;UNIODONTO ESPIRITO SANTO COOPERATIVA ODONTOLOGICA;Operadora;370711;6;Outros;10164721;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;350;0;350;0;0;350
+A receber;906;Federacao Regiao Nordeste;Operadora;416177;6;Outros;10164847;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;7000;0;7000;0;0;7000
+A receber;801;UNIODONTO RS FEDERACAO DAS COOPERATIVAS;Operadora;305421;6;Outros;10164727;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;1400;0;1400;0;0;1400
+A receber;909;Federacao Santa Catarina;Operadora;415626;6;Outros;10164848;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;700;0;700;0;0;700
+A receber;40;Uniodonto Fortaleza;Operadora;335258;6;Outros;10164696;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;700;0;700;0;0;700
+A receber;104;Uniodonto Garanhuns;Operadora;342335;6;Outros;10164716;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;350;0;350;0;0;350
+A receber;20;Uniodonto Goiania;Operadora;358436;6;Outros;10164690;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;1050;0;1050;0;0;1050
+A receber;41;Uniodonto Itajuba;Operadora;419028;6;Outros;10164697;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;1400;0;1400;0;0;1400
+A receber;79;Uniodonto Jacarei;Operadora;343056;6;Outros;10164711;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;350;0;350;0;0;350
+A receber;34;Uniodonto Jundiai;Operadora;347795;6;Outros;10164693;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;700;0;700;0;0;700
+A receber;46;Uniodonto Londrina;Operadora;350770;6;Outros;10164699;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;1225;0;1225;0;0;1225
+A receber;38;Uniodonto Maceio;Operadora;321125;6;Outros;10164695;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;8400;0;8400;0;0;8400
+A receber;37;Uniodonto Manaus;Operadora;311391;6;Outros;10164694;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;1400;0;1400;0;0;1400
+A receber;98;Uniodonto Maringa;Operadora;381144;6;Outros;10164715;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;525;0;525;0;0;525
+A receber;62;Uniodonto Mato Grosso;Operadora;343404;6;Outros;10164704;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;525;0;525;0;0;525
+A receber;160;Uniodonto Passos;Operadora;419729;6;Outros;10164722;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;350;0;350;0;0;350
+A receber;162;Uniodonto Paulo Afonso;Operadora;402109;6;Outros;10164723;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;700;0;700;0;0;700
+A receber;129;Uniodonto Pindamonhangaba;Operadora;331104;6;Outros;10164719;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;700;0;700;0;0;700
+A receber;16;Uniodonto Piracicaba;Operadora;346004;6;Outros;10164686;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;700;0;700;0;0;700
+A receber;182;Uniodonto Pocos de Caldas;Operadora;409791;6;Outros;10164726;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;525;0;525;0;0;525
+A receber;6;Uniodonto Porto Alegre;Operadora;366439;6;Outros;10164682;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;2100;0;2100;0;0;2100
+A receber;75;Uniodonto Presidente Prudente;Operadora;336017;6;Outros;10164708;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;1400;0;1400;0;0;1400
+A receber;169;UNIODONTO DE RIO BRANCO - ACRE;Operadora;403997;6;Outros;10164725;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;1050;0;1050;0;0;1050
+A receber;65;Uniodonto Rio Claro;Operadora;349011;6;Outros;10164705;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;525;0;525;0;0;525
+A receber;17;Uniodonto Rio Grande do Norte;Operadora;345318;6;Outros;10164687;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;525;0;525;0;0;525
+A receber;19;Uniodonto Salvador;Operadora;310107;6;Outros;10164689;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;175;0;175;0;0;175
+A receber;28;Uniodonto Sao Carlos;Operadora;335525;6;Outros;10164691;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;700;0;700;0;0;700
+A receber;66;Uniodonto Sao Jose dos Campos;Operadora;313751;6;Outros;10164706;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;525;0;525;0;0;525
+A receber;31;Uniodonto Sorocaba;Operadora;334243;6;Outros;10164692;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;525;0;525;0;0;525
+A receber;42;UNIODONTO SUDESTE MINEIRO COOPERATIVA DE SAUDE ODONTOLOGICA LTDA;Operadora;327441;6;Outros;10164698;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;525;0;525;0;0;525
+A receber;18;UNIODONTO SUL MS;Operadora;313807;6;Outros;10164688;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;700;0;700;0;0;700
+A receber;120;Uniodonto Taquaritinga;Operadora;350290;6;Outros;10164718;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;700;0;700;0;0;700
+A receber;15;Uniodonto Uberaba;Operadora;370568;6;Outros;10164685;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;3500;0;3500;0;0;3500
+A receber;3;Uniodonto Vale Taquari Rio Pardo;Operadora;353752;6;Outros;10164728;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;5600;0;5600;0;0;5600
+A receber;132;Uniodonto Jales;Operadora;309257;4;Fundo de Marketing;10164844;FUNDO DE MARKETING;128,36;0;128,36;0;0;128,36
+A receber;900;Federacao Paulista;Operadora;361593;3;Taxa de Manutenção;10164846;TAXA DE MANUTENCAO;1203,35;0;1203,35;0;0;1203,35
+A receber;900;Federacao Paulista;Operadora;361593;4;Fundo de Marketing;10164676;FUNDO DE MARKETING;481,34;0;481,34;0;0;481,34
+A pagar;64;Uniodonto Macae;Operadora;300195;1;Repasse em Pré-pagamento;00047680/25F;COMP 07/2025;66125,53;0;66125,53;991,88;0;65133,65
+A pagar;61;Uniodonto Sul Fluminense;Operadora;363171;1;Repasse em Pré-pagamento;;RECEBIMENTO DE CONTRA PRESTAÇÃO EM PRÉ PAGAMENTO;279768,16;0;279768,16;4196,52;0;275571,64
+A receber;17;Uniodonto Rio Grande do Norte;Operadora;345318;4;Fundo de Marketing;10164496;FUNDO DE MARKETING;1668,64;0;1668,64;0;0;1668,64
+A receber;75;Uniodonto Presidente Prudente;Operadora;336017;3;Taxa de Manutenção;10164532;TAXA DE MANUTENCAO;2727,58;0;2727,58;0;0;2727,58
+A receber;75;Uniodonto Presidente Prudente;Operadora;336017;4;Fundo de Marketing;10164630;FUNDO DE MARKETING;1091,03;0;1091,03;0;0;1091,03
+A receber;130;Uniodonto Sudoeste Goiano;Operadora;314871;4;Fundo de Marketing;10164558;FUNDO DE MARKETING;802,23;0;802,23;0;0;802,23
+A receber;130;Uniodonto Sudoeste Goiano;Operadora;314871;3;Taxa de Manutenção;10164655;TAXA DE MANUTENCAO;2005,58;0;2005,58;0;0;2005,58
+A receber;85;Uniodonto Sertaozinho;Operadora;373109;3;Taxa de Manutenção;10164539;TAXA DE MANUTENCAO;2005,58;0;2005,58;0;0;2005,58
+A receber;85;Uniodonto Sertaozinho;Operadora;373109;4;Fundo de Marketing;10164637;FUNDO DE MARKETING;802,23;0;802,23;0;0;802,23
+A receber;81;UNIODONTO DE ILHEUS;Operadora;383929;4;Fundo de Marketing;10164634;FUNDO DE MARKETING;802,23;0;802,23;0;0;802,23
+A receber;81;UNIODONTO DE ILHEUS;Operadora;383929;3;Taxa de Manutenção;10164536;TAXA DE MANUTENCAO;2005,58;0;2005,58;0;0;2005,58
+A receber;4;Uniodonto Campo Grande;Operadora;347183;4;Fundo de Marketing;10164587;FUNDO DE MARKETING;722,01;0;722,01;0;0;722,01
+A receber;4;Uniodonto Campo Grande;Operadora;347183;3;Taxa de Manutenção;10164488;TAXA DE MANUTENCAO;1805,02;0;1805,02;0;0;1805,02
+A receber;100;Uniodonto Votuporanga;Operadora;350630;4;Fundo de Marketing;10164838;FUNDO DE MARKETING;722,01;0;722,01;0;0;722,01
+A receber;100;Uniodonto Votuporanga;Operadora;350630;3;Taxa de Manutenção;10164843;TAXA DE MANUTENCAO;1805,02;0;1805,02;0;0;1805,02
+A receber;93;UNIODONTO METROPOLITANA COOPERATIVA ODONTOLOGICA;Operadora;382337;4;Fundo de Marketing;10164640;FUNDO DE MARKETING;722,01;0;722,01;0;0;722,01
+A receber;84;Uniodonto Lins;Operadora;344681;4;Fundo de Marketing;10164636;FUNDO DE MARKETING;481,34;0;481,34;0;0;481,34
+A receber;84;Uniodonto Lins;Operadora;344681;3;Taxa de Manutenção;10164538;TAXA DE MANUTENCAO;1203,35;0;1203,35;0;0;1203,35
+A receber;104;Uniodonto Garanhuns;Operadora;342335;3;Taxa de Manutenção;10164547;TAXA DE MANUTENCAO;1203,35;0;1203,35;0;0;1203,35
+A receber;104;Uniodonto Garanhuns;Operadora;342335;4;Fundo de Marketing;10164644;FUNDO DE MARKETING;481,34;0;481,34;0;0;481,34
+A receber;174;Uniodonto Vale dos Sinos;Operadora;406295;3;Taxa de Manutenção;10164577;TAXA DE MANUTENCAO;802,23;0;802,23;0;0;802,23
+A receber;174;Uniodonto Vale dos Sinos;Operadora;406295;4;Fundo de Marketing;10164672;FUNDO DE MARKETING;320,89;0;320,89;0;0;320,89
+A receber;94;Uniodonto Sao Jose do Rio Pardo;Operadora;378682;3;Taxa de Manutenção;10164543;TAXA DE MANUTENCAO;802,23;0;802,23;0;0;802,23
+A receber;94;Uniodonto Sao Jose do Rio Pardo;Operadora;378682;4;Fundo de Marketing;10164641;FUNDO DE MARKETING;320,89;0;320,89;0;0;320,89
+A receber;167;Uniodonto Arapiraca;Operadora;403512;3;Taxa de Manutenção;10164574;TAXA DE MANUTENCAO;561,56;0;561,56;0;0;561,56
+A receber;167;Uniodonto Arapiraca;Operadora;403512;4;Fundo de Marketing;10164669;FUNDO DE MARKETING;224,62;0;224,62;0;0;224,62
+A receber;72;Uniodonto Avare;Operadora;311669;3;Taxa de Manutenção;10164628;TAXA DE MANUTENCAO;561,56;0;561,56;0;0;561,56
+A receber;72;Uniodonto Avare;Operadora;311669;4;Fundo de Marketing;10164530;FUNDO DE MARKETING;224,62;0;224,62;0;0;224,62
+A receber;161;Uniodonto Campos;Operadora;402516;3;Taxa de Manutenção;10164570;TAXA DE MANUTENCAO;561,56;0;561,56;0;0;561,56
+A receber;161;Uniodonto Campos;Operadora;402516;4;Fundo de Marketing;10164665;FUNDO DE MARKETING;224,62;0;224,62;0;0;224,62
+A receber;144;Uniodonto Pirassununga;Operadora;378941;4;Fundo de Marketing;10164563;FUNDO DE MARKETING;224,62;0;224,62;0;0;224,62
+A receber;144;Uniodonto Pirassununga;Operadora;378941;3;Taxa de Manutenção;10164658;TAXA DE MANUTENCAO;561,56;0;561,56;0;0;561,56
+A receber;88;Uniodonto Caruaru;Operadora;414891;4;Fundo de Marketing;10164638;FUNDO DE MARKETING;160,45;0;160,45;0;0;160,45
+A receber;74;UNIODONTO FRONTEIRA OESTE;Operadora;341894;4;Fundo de Marketing;10164629;FUNDO DE MARKETING;224,62;0;224,62;0;0;224,62
+A receber;74;UNIODONTO FRONTEIRA OESTE;Operadora;341894;3;Taxa de Manutenção;10164531;TAXA DE MANUTENCAO;561,56;0;561,56;0;0;561,56
+A receber;121;Uniodonto Fernandopolis;Operadora;301647;4;Fundo de Marketing;10164651;FUNDO DE MARKETING;224,62;0;224,62;0;0;224,62
+A receber;121;Uniodonto Fernandopolis;Operadora;301647;3;Taxa de Manutenção;10164554;TAXA DE MANUTENCAO;561,56;0;561,56;0;0;561,56
+A receber;113;Uniodonto Aracatuba;Operadora;362824;3;Taxa de Manutenção;10164550;TAXA DE MANUTENCAO;401,12;0;401,12;0;0;401,12
+A receber;113;Uniodonto Aracatuba;Operadora;362824;4;Fundo de Marketing;10164647;FUNDO DE MARKETING;160,45;0;160,45;0;0;160,45
+A receber;148;Uniodonto Mossoro;Operadora;303291;4;Fundo de Marketing;10164659;FUNDO DE MARKETING;160,45;0;160,45;0;0;160,45
+A receber;148;Uniodonto Mossoro;Operadora;303291;3;Taxa de Manutenção;10164564;TAXA DE MANUTENCAO;401,12;0;401,12;0;0;401,12
+A receber;166;Uniodonto Rondonia;Operadora;336025;3;Taxa de Manutenção;10164573;TAXA DE MANUTENCAO;401,12;0;401,12;0;0;401,12
+A receber;166;Uniodonto Rondonia;Operadora;336025;4;Fundo de Marketing;10164668;FUNDO DE MARKETING;160,45;0;160,45;0;0;160,45
+A receber;88;Uniodonto Caruaru;Operadora;414891;3;Taxa de Manutenção;10164540;TAXA DE MANUTENCAO;401,12;0;401,12;0;0;401,12
+A receber;36;Uniodonto Recife;Operadora;305740;3;Taxa de Manutenção;10164508;TAXA DE MANUTENCAO;401,12;0;401,12;0;0;401,12
+A receber;36;Uniodonto Recife;Operadora;305740;4;Fundo de Marketing;10164606;FUNDO DE MARKETING;160,45;0;160,45;0;0;160,45
+A receber;30;Uniodonto Feira de Santana;Operadora;400556;4;Fundo de Marketing;10164602;FUNDO DE MARKETING;128,36;0;128,36;0;0;128,36
+A receber;138;Uniodonto Amapá;Operadora;365785;6;Outros;10164720;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;350;0;350;0;0;350
+A receber;59;Uniodonto Americana;Operadora;347604;6;Outros;10164703;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;700;0;700;0;0;700
+A receber;54;Uniodonto Aracaju;Operadora;349283;6;Outros;10164702;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;350;0;350;0;0;350
+A receber;801;UNIODONTO RS FEDERACAO DAS COOPERATIVAS;Operadora;305421;2;Repasse em Custo Operacional;10164807/154795;CO - 07/2025;2475,07;0;2475,07;37,13;0;2437,94
+A receber;900;Federacao Paulista;Operadora;361593;2;Repasse em Custo Operacional;10164808/154796;CO - 07/2025;7221,93;0;8018,97;108,33;0;7113,6
+A receber;909;Federacao Santa Catarina;Operadora;415626;2;Repasse em Custo Operacional;10164809/154797;CO - 07/2025;8719,09;0;8719,09;130,79;0;8588,3
+A pagar;34;Uniodonto Jundiai;Operadora;347795;2;Repasse em Custo Operacional;529371/44052;CO - 07/2025;3042;0;3042;45,63;0;2996,37
+A pagar;83;Uniodonto Catanduva;Operadora;354686;2;Repasse em Custo Operacional;71596/25F;jun/25;412,92;0;412,92;0;0;412,92
+A pagar;59;Uniodonto Americana;Operadora;347604;2;Repasse em Custo Operacional;1039566;CUSTO OPERACIONAL;11957,4;0;11957,4;179,36;0;11778,04
+A pagar;26;Uniodonto Sao Jose do Rio Preto;Operadora;303259;1;Repasse em Pré-pagamento;55907/25F;referente 20-08-2025;5855,4;0;5855,4;87,83;0;5767,57
+A pagar;144;Uniodonto Pirassununga;Operadora;378941;2;Repasse em Custo Operacional;6275/NFE;serviço prestado;1735,56;0;1735,56;26,03;0;1709,53
+A pagar;37;Uniodonto Manaus;Operadora;311391;2;Repasse em Custo Operacional;NF 605930;REF. JULHO 2025;9657,36;0;9657,36;144,86;0;9512,5
+A pagar;156;UNIODONTO ESPIRITO SANTO COOPERATIVA ODONTOLOGICA;Operadora;370711;2;Repasse em Custo Operacional;418416;CO - 07/2025;1856,16;0;1856,16;27,84;0;1828,32
+A pagar;81;UNIODONTO DE ILHEUS;Operadora;383929;2;Repasse em Custo Operacional;202507/1864;Ref. 07/2025;1423,44;0;1423,44;21,35;0;1402,09
+A pagar;79;Uniodonto Jacarei;Operadora;343056;2;Repasse em Custo Operacional;26826;Referente Mês 07/2025;6319,08;0;6319,08;94,79;0;6224,29
+A pagar;166;Uniodonto Rondonia;Operadora;336025;2;Repasse em Custo Operacional;1;REF JULHO/2025 | VENC 20/08/2025;1834,56;0;1834,56;27,52;0;1807,04
+A pagar;54;Uniodonto Aracaju;Operadora;349283;1;Repasse em Pré-pagamento;08858/25F;FATURA SESCOOP;4112,02;0;4112,02;61,68;0;4050,34
+A pagar;54;Uniodonto Aracaju;Operadora;349283;2;Repasse em Custo Operacional;08857/25F;COMPETÊNCIA 06/2025;3051,36;0;3051,36;45,77;0;3005,59
+A pagar;18;UNIODONTO SUL MS;Operadora;313807;2;Repasse em Custo Operacional;1030115;repasse;2974,68;0;2974,68;44,62;0;2930,06
+A pagar;28;Uniodonto Sao Carlos;Operadora;335525;2;Repasse em Custo Operacional;01371/25F;INTERC REPASSE - SERV PRESTADO;1061,28;0;1061,28;15,92;0;1045,36
+A receber;64;Uniodonto Macae;Operadora;300195;6;Outros;;"Item 10.7 - Multa moratória de 10%	";1256,33;0;1256,33;0;0;1256,33
+A receber;64;Uniodonto Macae;Operadora;300195;6;Outros;;"Desconto adiantamento de RPP	";40000;0;40000;0;0;40000
+A pagar;48;Uniodonto Araraquara;Operadora;316997;2;Repasse em Custo Operacional;80925;jul/25;3657,24;0;3657,24;54,86;0;3602,38
+A pagar;42;UNIODONTO SUDESTE MINEIRO COOPERATIVA DE SAUDE ODONTOLOGICA LTDA;Operadora;327441;2;Repasse em Custo Operacional;219690/29489;CO - 07/2025;3640,68;0;3640,68;54,61;0;3586,07
+A pagar;113;Uniodonto Aracatuba;Operadora;362824;2;Repasse em Custo Operacional;26236;ORÇAMENTOS;3482,64;0;3482,64;52,24;0;3430,4
+A pagar;129;Uniodonto Pindamonhangaba;Operadora;331104;2;Repasse em Custo Operacional;51731;Competência Faturamento 20/07/2025;18131,04;0;18131,04;271,97;0;17859,07
+A pagar;52;Uniodonto Ponta Grossa;Operadora;315818;2;Repasse em Custo Operacional;37318;Intercâmbio competência julho/2025;17828,28;0;17828,28;267,42;0;17560,86
+A pagar;17;Uniodonto Rio Grande do Norte;Operadora;345318;2;Repasse em Custo Operacional;1922951;FATURAMENTO JULHO 2025;6535,8;0;6535,8;98,04;0;6437,76
+A pagar;3;Uniodonto Vale Taquari Rio Pardo;Operadora;353752;2;Repasse em Custo Operacional;20251022/20233499;Intercâmbio pré pagamento;941,76;0;941,76;14,13;0;927,63
+A pagar;122;Uniodonto Botucatu;Operadora;347477;2;Repasse em Custo Operacional;28700/25F;jul/25;299,52;0;299,52;0;0;299,52
+A pagar;85;Uniodonto Sertaozinho;Operadora;373109;2;Repasse em Custo Operacional;;FATURAMENTO 20.08.2025;131,04;0;131,04;0;0;131,04
+A pagar;128;Uniodonto Taubate;Operadora;319350;2;Repasse em Custo Operacional;12962;jul/25;3026,16;0;3026,16;45,39;0;2980,77
+A pagar;20;Uniodonto Goiania;Operadora;358436;2;Repasse em Custo Operacional;856585;Cobrança de Intercâmbio;10954,96;0;10954,96;164,32;0;10790,64
+A pagar;20;Uniodonto Goiania;Operadora;358436;1;Repasse em Pré-pagamento;856586;Repasse Empresa Hypera vencimento julho de 2025;9475,88;0;9475,88;142,14;0;9333,74
+A pagar;6;Uniodonto Porto Alegre;Operadora;366439;2;Repasse em Custo Operacional;202549418;CO - 07/2025;15914,52;0;15914,52;238,72;0;15675,8
+A pagar;6;Uniodonto Porto Alegre;Operadora;366439;1;Repasse em Pré-pagamento;202549466;PP - 07/2025;82584;0;82584;1238,76;0;81345,24
+A pagar;148;Uniodonto Mossoro;Operadora;303291;2;Repasse em Custo Operacional;;FATURAMENTO DE INTERCÂMBIO;526,32;0;526,32;0;0;526,32
+A pagar;29;Uniodonto Belem;Operadora;368555;2;Repasse em Custo Operacional;02186/25F ;jul/25;7695;0;7695;115,43;0;7579,57
+A pagar;66;Uniodonto Sao Jose dos Campos;Operadora;313751;2;Repasse em Custo Operacional;1906425;jul/25;16368,84;0;16368,84;245,53;0;16123,31
+A pagar;138;Uniodonto Amapá;Operadora;365785;2;Repasse em Custo Operacional;1991527;CO - 07/2025;884,88;0;884,88;13,27;0;871,61
+A pagar;76;UNIODONTO ATHENAS PAULISTA;Operadora;340120;2;Repasse em Custo Operacional;7145;C.O 06/2025;785,88;0;785,88;0;0;785,88
+A pagar;31;Uniodonto Sorocaba;Operadora;334243;2;Repasse em Custo Operacional;NF72955;jul/25;11175,12;0;11175,12;167,63;0;11007,49
+A pagar;31;Uniodonto Sorocaba;Operadora;334243;2;Repasse em Custo Operacional;NF72957;jul/25;1404;0;1404;21,96;0;1382,04
+A pagar;38;Uniodonto Maceio;Operadora;321125;2;Repasse em Custo Operacional;202507/3316;jun/25;8673,84;0;8673,84;130,11;0;8543,73
+A pagar;31;Uniodonto Sorocaba;Operadora;334243;2;Repasse em Custo Operacional;NF72956;jul/25;56,52;0;56,52;0,85;0;55,67
+A pagar;51;Uniodonto Bebedouro;Operadora;327093;2;Repasse em Custo Operacional;72131;jul/25;1132,56;0;1132,56;16,99;0;1115,57
+A pagar;174;Uniodonto Vale dos Sinos;Operadora;406295;2;Repasse em Custo Operacional;2025126;SERVIÇOS PRESTADOS;980,64;0;980,64;14,71;0;965,93
+A pagar;24;Uniodonto Rio de Janeiro;Operadora;318230;2;Repasse em Custo Operacional;;COMPETÊNCIA 07/2025;5828,76;0;5828,76;87,43;0;5741,33
+A pagar;160;Uniodonto Passos;Operadora;419729;2;Repasse em Custo Operacional;87379;CO - 07/2025;875,88;0;875,88;13,14;0;862,74
+A pagar;64;Uniodonto Macae;Operadora;300195;2;Repasse em Custo Operacional;00047659/25F;CO - 07/2025;2471,76;0;2471,76;37,08;0;2434,68
+A pagar;45;UNIODONTO REGIONAL DE UBERLANDIA;Operadora;344451;2;Repasse em Custo Operacional;10698205/786112;CO - 07/2025;4501,04;0;5741,28;67,52;0;4433,52
+A pagar;182;Uniodonto Pocos de Caldas;Operadora;409791;2;Repasse em Custo Operacional;;CO - 06/2025;193,32;0;193,32;0;0;193,32
+A pagar;93;UNIODONTO METROPOLITANA COOPERATIVA ODONTOLOGICA;Operadora;382337;2;Repasse em Custo Operacional;19333/25F;jul/25;1348,56;0;1348,56;20,23;0;1328,33
+A receber;3;Uniodonto Vale Taquari Rio Pardo;Operadora;353752;2;Repasse em Custo Operacional;10164759/154747;CO - 07/2025;627,5;0;627,5;0;0;627,5
+A receber;4;Uniodonto Campo Grande;Operadora;347183;2;Repasse em Custo Operacional;10164760/154748;CO - 07/2025;17806,81;0;17806,81;267,1;0;17539,71
+A receber;6;Uniodonto Porto Alegre;Operadora;366439;2;Repasse em Custo Operacional;10164761/154749;CO - 07/2025;7790,12;0;7790,12;116,85;0;7673,27
+A receber;8;Uniodonto Campinas;Operadora;350494;2;Repasse em Custo Operacional;10164762/154750;CO - 07/2025;29160,96;0;30054,23;437,41;0;28723,55
+A receber;11;UNIODONTO DE SC COOPERATIVA ADMINISTRADORA DE CONTRATOS;Operadora;342203;2;Repasse em Custo Operacional;10164763/154751;CO - 07/2025;2222,71;0;2222,71;33,34;0;2189,37
+A receber;15;Uniodonto Uberaba;Operadora;370568;2;Repasse em Custo Operacional;10164764/154752;CO - 07/2025;3432,44;0;3432,44;51,49;0;3380,95
+A receber;16;Uniodonto Piracicaba;Operadora;346004;2;Repasse em Custo Operacional;10164765/154753;CO - 07/2025;480,98;0;480,98;0;0;480,98
+A receber;17;Uniodonto Rio Grande do Norte;Operadora;345318;2;Repasse em Custo Operacional;10164766/154754;CO - 07/2025;1022,94;0;1608,14;15,34;0;1007,6
+A receber;19;Uniodonto Salvador;Operadora;310107;2;Repasse em Custo Operacional;10164767/154755;CO - 07/2025;283,22;0;283,22;0;0;283,22
+A receber;20;Uniodonto Goiania;Operadora;358436;2;Repasse em Custo Operacional;10164768/154756;CO - 07/2025;17678,2;0;17678,2;265,17;0;17413,03
+A receber;24;Uniodonto Rio de Janeiro;Operadora;318230;2;Repasse em Custo Operacional;10164769/154757;CO - 07/2025;1865,42;0;1865,42;27,98;0;1837,44
+A receber;28;Uniodonto Sao Carlos;Operadora;335525;2;Repasse em Custo Operacional;10164770/154758;CO - 07/2025;20,52;0;20,52;0;0;20,52
+A receber;29;Uniodonto Belem;Operadora;368555;2;Repasse em Custo Operacional;10164771/154759;CO - 07/2025;1322,31;0;1356,87;19,83;0;1302,48
+A receber;33;Uniodonto Joao Pessoa;Operadora;361569;2;Repasse em Custo Operacional;10164772/154760;CO - 07/2025;281,04;0;281,04;0;0;281,04
+A receber;34;Uniodonto Jundiai;Operadora;347795;2;Repasse em Custo Operacional;10164773/154761;CO - 07/2025;1280,84;0;1280,84;19,21;0;1261,63
+A receber;37;Uniodonto Manaus;Operadora;311391;2;Repasse em Custo Operacional;10164774/154762;CO - 07/2025;1005,76;0;1090,36;15,09;0;990,67
+A receber;38;Uniodonto Maceio;Operadora;321125;2;Repasse em Custo Operacional;10164775/154763;CO - 07/2025;995,57;0;995,57;14,93;0;980,64
+A receber;40;Uniodonto Fortaleza;Operadora;335258;2;Repasse em Custo Operacional;10164776/154764;CO - 07/2025;2549;0;2549;38,24;0;2510,76
+A receber;41;Uniodonto Itajuba;Operadora;419028;2;Repasse em Custo Operacional;10164777/154765;CO - 07/2025;93,24;0;93,24;0;0;93,24
+A receber;42;UNIODONTO SUDESTE MINEIRO COOPERATIVA DE SAUDE ODONTOLOGICA LTDA;Operadora;327441;2;Repasse em Custo Operacional;10164778/154766;CO - 07/2025;20,52;0;20,52;0;0;20,52
+A receber;45;UNIODONTO REGIONAL DE UBERLANDIA;Operadora;344451;2;Repasse em Custo Operacional;10164779/154767;CO - 07/2025;3068,84;0;3137,96;46,03;0;3022,81
+A receber;46;Uniodonto Londrina;Operadora;350770;2;Repasse em Custo Operacional;10164780/154768;CO - 07/2025;2468,11;0;2468,11;37,02;0;2431,09
+A receber;48;Uniodonto Araraquara;Operadora;316997;2;Repasse em Custo Operacional;10164781/154769;CO - 07/2025;933,85;0;933,85;14,01;0;919,84
+A receber;51;Uniodonto Bebedouro;Operadora;327093;2;Repasse em Custo Operacional;10164782/154770;CO - 07/2025;255,96;0;255,96;0;0;255,96
+A receber;52;Uniodonto Ponta Grossa;Operadora;315818;2;Repasse em Custo Operacional;10164783/154771;CO - 07/2025;375,76;0;375,76;0;0;375,76
+A receber;56;Uniodonto Sul Goiano;Operadora;358339;2;Repasse em Custo Operacional;10164784/154772;CO - 07/2025;1705,48;0;1705,48;25,58;0;1679,9
+A receber;59;Uniodonto Americana;Operadora;347604;2;Repasse em Custo Operacional;10164785/154773;CO - 07/2025;360,08;0;360,08;0;0;360,08
+A receber;62;Uniodonto Mato Grosso;Operadora;343404;2;Repasse em Custo Operacional;10164786/154774;CO - 07/2025;81,3;0;81,3;0;0;81,3
+A receber;64;Uniodonto Macae;Operadora;300195;2;Repasse em Custo Operacional;10164787/154775;CO - 07/2025;123,84;0;123,84;0;0;123,84
+A receber;66;Uniodonto Sao Jose dos Campos;Operadora;313751;2;Repasse em Custo Operacional;10164788/154776;CO - 07/2025;9501,37;0;9501,37;142,52;0;9358,85
+A receber;74;UNIODONTO FRONTEIRA OESTE;Operadora;341894;2;Repasse em Custo Operacional;10164789/154777;CO - 07/2025;90,2;0;90,2;0;0;90,2
+A receber;79;Uniodonto Jacarei;Operadora;343056;2;Repasse em Custo Operacional;10164790/154778;CO - 07/2025;555,02;0;616,08;0;0;555,02
+A receber;81;UNIODONTO DE ILHEUS;Operadora;383929;2;Repasse em Custo Operacional;10164791/154779;CO - 07/2025;631,94;0;631,94;0;0;631,94
+A receber;85;Uniodonto Sertaozinho;Operadora;373109;2;Repasse em Custo Operacional;10164792/154780;CO - 07/2025;102,34;0;102,34;0;0;102,34
+A receber;90;Uniodonto Cacapava;Operadora;347302;2;Repasse em Custo Operacional;10164793/154781;CO - 07/2025;239,77;0;239,77;0;0;239,77
+A receber;93;UNIODONTO METROPOLITANA COOPERATIVA ODONTOLOGICA;Operadora;382337;2;Repasse em Custo Operacional;10164794/154782;CO - 07/2025;32334,24;0;33670,52;485,01;0;31849,23
+A receber;98;Uniodonto Maringa;Operadora;381144;2;Repasse em Custo Operacional;10164795/154783;CO - 07/2025;2910,39;0;2910,39;43,66;0;2866,73
+A receber;113;Uniodonto Aracatuba;Operadora;362824;2;Repasse em Custo Operacional;10164796/154784;CO - 07/2025;90;0;90;0;0;90
+A receber;122;Uniodonto Botucatu;Operadora;347477;2;Repasse em Custo Operacional;10164797/154785;CO - 07/2025;250,2;0;250,2;0;0;250,2
+A receber;134;Uniodonto Vale Historico;Operadora;382655;2;Repasse em Custo Operacional;10164798/154786;CO - 07/2025;1428,79;0;1500,43;21,43;0;1407,36
+A receber;138;Uniodonto Amapá;Operadora;365785;2;Repasse em Custo Operacional;10164799/154787;CO - 07/2025;784,28;0;784,28;11,76;0;772,52
+A receber;161;Uniodonto Campos;Operadora;402516;2;Repasse em Custo Operacional;10164800/154788;CO - 07/2025;678,92;0;678,92;10,18;0;668,74
+A receber;166;Uniodonto Rondonia;Operadora;336025;2;Repasse em Custo Operacional;10164801/154789;CO - 07/2025;306,73;0;315,02;0;0;306,73
+A receber;169;UNIODONTO DE RIO BRANCO - ACRE;Operadora;403997;2;Repasse em Custo Operacional;10164802/154790;CO - 07/2025;82,56;0;82,56;0;0;82,56
+A receber;182;Uniodonto Pocos de Caldas;Operadora;409791;2;Repasse em Custo Operacional;10164804/154792;CO - 07/2025;33,82;0;33,82;0;0;33,82
+A pagar;88;Uniodonto Caruaru;Operadora;414891;2;Repasse em Custo Operacional;;jul/25;1176,48;0;1176,48;17,65;0;1158,83
+A pagar;118;Uniodonto Roraima;Operadora;418242;2;Repasse em Custo Operacional;NF2022;REF AGOSTO 2025;784,08;0;784,08;11,76;0;772,32
+A pagar;75;Uniodonto Presidente Prudente;Operadora;336017;2;Repasse em Custo Operacional;67714/25F;Faturamento de Intercambio Vencimento 20/08/2025;1953,72;0;1953,72;29,31;0;1924,41
+A pagar;112;Uniodonto Serido;Operadora;343919;2;Repasse em Custo Operacional;;FATURAMENTO VENC 20/08/2025;151,56;0;151,56;0;0;151,56
+A pagar;33;Uniodonto Joao Pessoa;Operadora;361569;2;Repasse em Custo Operacional;;20.08.25;10608,84;0;10608,84;159,13;0;10449,71
+A pagar;121;Uniodonto Fernandopolis;Operadora;301647;2;Repasse em Custo Operacional;23601/25F;INTERCÂMBIO;124,2;0;124,2;0;0;124,2
+A pagar;74;UNIODONTO FRONTEIRA OESTE;Operadora;341894;2;Repasse em Custo Operacional;105430/2025;jul/25;530,28;0;530,28;0;0;530,28
+A pagar;170;Uniodonto Resende;Operadora;406121;2;Repasse em Custo Operacional;28680/07;jul/25;255,24;0;255,24;0;0;255,24
+A pagar;801;UNIODONTO RS FEDERACAO DAS COOPERATIVAS;Operadora;305421;2;Repasse em Custo Operacional;45583;Intercâmbio pós pagamento;4127,04;0;4127,04;61,91;0;4065,13
+A pagar;100;Uniodonto Votuporanga;Operadora;350630;2;Repasse em Custo Operacional;;Intercambio;534,96;0;534,96;0;0;534,96
+A pagar;4;Uniodonto Campo Grande;Operadora;347183;2;Repasse em Custo Operacional;116236;CO - 07/2025;1839,96;0;1839,96;27,6;0;1812,36
+A pagar;900;Federacao Paulista;Operadora;361593;5;Juros;RECIBO;CONVENÇÃO FEDERAÇÃO PAULISTA 2025;300;0;300;0;0;300
+A pagar;46;Uniodonto Londrina;Operadora;350770;2;Repasse em Custo Operacional;247781;SERVIÇOS PRESTADOS 07/2025;4656,96;0;4656,96;69,85;0;4587,11
+A pagar;98;Uniodonto Maringa;Operadora;381144;2;Repasse em Custo Operacional;NF 285937;jul/25;19452,6;0;19452,6;291,79;0;19160,81
+A pagar;43;Uniodonto Limeira;Operadora;369462;2;Repasse em Custo Operacional;20913/25F;INTERCAMBIO REF. 07/2025;1354,68;0;1354,68;20,32;0;1334,36
+A pagar;43;Uniodonto Limeira;Operadora;369462;1;Repasse em Pré-pagamento;20905/25F;AJINOMOTO REF. 07/2025;53889,47;0;53889,47;808,34;0;53081,13
+A pagar;120;Uniodonto Taquaritinga;Operadora;350290;2;Repasse em Custo Operacional;117314;CO - 06/2025;1312,56;0;1312,56;19,69;0;1292,87
+A pagar;36;Uniodonto Recife;Operadora;305740;2;Repasse em Custo Operacional; 202507/0699;jul/25;6576,12;0;6576,12;98,64;0;6477,48
+A receber;24;Uniodonto Rio de Janeiro;Operadora;318230;3;Taxa de Manutenção;10164500;TAXA DE MANUTENCAO;561,56;0;561,56;0;0;561,56
+A receber;24;Uniodonto Rio de Janeiro;Operadora;318230;4;Fundo de Marketing;10164598;FUNDO DE MARKETING;224,62;0;224,62;0;0;224,62
+A receber;151;Uniodonto Tres Rios;Operadora;359726;3;Taxa de Manutenção;10164565;TAXA DE MANUTENCAO;401,12;0;401,12;0;0;401,12
+A receber;151;Uniodonto Tres Rios;Operadora;359726;4;Fundo de Marketing;10164660;FUNDO DE MARKETING;160,45;0;160,45;0;0;160,45
+A receber;93;UNIODONTO METROPOLITANA COOPERATIVA ODONTOLOGICA;Operadora;382337;3;Taxa de Manutenção;10164542;TAXA DE MANUTENCAO;1805,02;0;1805,02;0;0;1805,02
+A receber;30;Uniodonto Feira de Santana;Operadora;400556;3;Taxa de Manutenção;10164836;TAXA DE MANUTENCAO;246,84;0;246,84;0;0;246,84
+A receber;132;Uniodonto Jales;Operadora;309257;3;Taxa de Manutenção;10164839;TAXA DE MANUTENCAO;320,89;0;320,89;0;0;320,89
+A receber;31;Uniodonto Sorocaba;Operadora;334243;3;Taxa de Manutenção;10164505;TAXA DE MANUTENCAO;3369,37;0;3369,37;0;0;3369,37
+A receber;31;Uniodonto Sorocaba;Operadora;334243;4;Fundo de Marketing;10164603;FUNDO DE MARKETING;1347,75;0;1347,75;0;0;1347,75
+A receber;8;Uniodonto Campinas;Operadora;350494;3;Taxa de Manutenção;10164491;TAXA DE MANUTENCAO;5134,27;0;5134,27;0;0;5134,27
+A receber;8;Uniodonto Campinas;Operadora;350494;4;Fundo de Marketing;10164590;FUNDO DE MARKETING;2053,71;0;2053,71;0;0;2053,71
+A receber;66;Uniodonto Sao Jose dos Campos;Operadora;313751;4;Fundo de Marketing;10164627;FUNDO DE MARKETING;2053,71;0;2053,71;0;0;2053,71
+A receber;66;Uniodonto Sao Jose dos Campos;Operadora;313751;3;Taxa de Manutenção;10164529;TAXA DE MANUTENCAO;5134,27;0;5134,27;0;0;5134,27
+A receber;29;Uniodonto Belem;Operadora;368555;3;Taxa de Manutenção;10164503;TAXA DE MANUTENCAO;5134,27;0;5134,27;0;0;5134,27
+A receber;29;Uniodonto Belem;Operadora;368555;4;Fundo de Marketing;10164601;FUNDO DE MARKETING;2053,71;0;2053,71;0;0;2053,71
+A receber;40;Uniodonto Fortaleza;Operadora;335258;4;Fundo de Marketing;10164609;FUNDO DE MARKETING;1925,35;0;1925,35;0;0;1925,35
+A receber;40;Uniodonto Fortaleza;Operadora;335258;3;Taxa de Manutenção;10164511;TAXA DE MANUTENCAO;4813,38;0;4813,38;0;0;4813,38
+A receber;20;Uniodonto Goiania;Operadora;358436;3;Taxa de Manutenção;10164499;TAXA DE MANUTENCAO;4813,38;0;4813,38;0;0;4813,38
+A receber;20;Uniodonto Goiania;Operadora;358436;4;Fundo de Marketing;10164597;FUNDO DE MARKETING;1925,35;0;1925,35;0;0;1925,35
+A receber;45;UNIODONTO REGIONAL DE UBERLANDIA;Operadora;344451;3;Taxa de Manutenção;10164613;TAXA DE MANUTENCAO;4813,38;0;4813,38;0;0;4813,38
+A receber;45;UNIODONTO REGIONAL DE UBERLANDIA;Operadora;344451;4;Fundo de Marketing;10164515;FUNDO DE MARKETING;1925,35;0;1925,35;0;0;1925,35
+A receber;38;Uniodonto Maceio;Operadora;321125;3;Taxa de Manutenção;10164510;TAXA DE MANUTENCAO;4171,6;0;4171,6;0;0;4171,6
+A receber;38;Uniodonto Maceio;Operadora;321125;4;Fundo de Marketing;10164608;FUNDO DE MARKETING;1668,64;0;1668,64;0;0;1668,64
+A receber;6;Uniodonto Porto Alegre;Operadora;366439;4;Fundo de Marketing;10164589;FUNDO DE MARKETING;1668,64;0;1668,64;0;0;1668,64
+A receber;6;Uniodonto Porto Alegre;Operadora;366439;3;Taxa de Manutenção;10164490;TAXA DE MANUTENCAO;4171,6;0;4171,6;0;0;4171,6
+A receber;11;UNIODONTO DE SC COOPERATIVA ADMINISTRADORA DE CONTRATOS;Operadora;342203;3;Taxa de Manutenção;10164583;TAXA DE MANUTENCAO;4171,6;0;4171,6;0;0;4171,6
+A pagar;90;Uniodonto Cacapava;Operadora;347302;2;Repasse em Custo Operacional;12040;Faturamento mês 07/2025;1185,48;0;1185,48;17,78;0;1167,7
+A pagar;61;Uniodonto Sul Fluminense;Operadora;363171;2;Repasse em Custo Operacional;;INTERCAMBIO REPASSADO;1414,8;0;1414,8;21,22;0;1393,58
+A pagar;105;Uniodonto Monte Alto;Operadora;336238;2;Repasse em Custo Operacional;786;Repasse em Custo Operacional;235,44;0;235,44;0;0;235,44
+A pagar;16;Uniodonto Piracicaba;Operadora;346004;2;Repasse em Custo Operacional;49675;CO - 07/2025;29484;0;29484;442,26;0;29041,74
+A pagar;40;Uniodonto Fortaleza;Operadora;335258;2;Repasse em Custo Operacional;2828841;COMPETÊNCIA JULHO 2025;29149,56;0;29149,56;437,24;0;28712,32
+A pagar;94;Uniodonto Sao Jose do Rio Pardo;Operadora;378682;2;Repasse em Custo Operacional;37538;intercâmbio;149,04;0;149,04;0;0;149,04
+A pagar;30;Uniodonto Feira de Santana;Operadora;400556;2;Repasse em Custo Operacional;202507/0319;comp 07;653,04;0;653,04;0;0;653,04
+A pagar;65;Uniodonto Rio Claro;Operadora;349011;2;Repasse em Custo Operacional;28371/25F;jul/25;1193,04;0;1193,04;17,9;0;1175,14
+A pagar;8;Uniodonto Campinas;Operadora;350494;2;Repasse em Custo Operacional;3250694;Serviço prestado;36954,72;0;36954,72;554,32;0;36400,4
+A pagar;161;Uniodonto Campos;Operadora;402516;2;Repasse em Custo Operacional;210559/93234;CO - 07/2025;227,16;0;227,16;0;0;227,16
+A pagar;19;Uniodonto Salvador;Operadora;310107;2;Repasse em Custo Operacional;COMP.07.2025;CAMARA 20.08.2025;3590,28;0;3590,28;53,85;0;3536,43
+A pagar;134;Uniodonto Vale Historico;Operadora;382655;2;Repasse em Custo Operacional;69575/25F;jul/25;4809,96;0;4809,96;72,15;0;4737,81
+A pagar;130;Uniodonto Sudoeste Goiano;Operadora;314871;2;Repasse em Custo Operacional;;CO - 07/2025;368,64;0;368,64;0;0;368,64
+A pagar;169;UNIODONTO DE RIO BRANCO - ACRE;Operadora;403997;2;Repasse em Custo Operacional;06880/25F N114713;COMP.07/2025;2116,8;0;2116,8;31,75;0;2085,05
+A pagar;157;Uniodonto Rio Grande Litoral;Operadora;367966;2;Repasse em Custo Operacional;16265;CO - 07/2025;415,08;0;415,08;0;0;415,08
+A pagar;900;Federacao Paulista;Operadora;361593;2;Repasse em Custo Operacional;89982;CUSTO OPERACIONAL;26316,36;0;26316,36;394,75;0;25921,61
+A pagar;15;Uniodonto Uberaba;Operadora;370568;2;Repasse em Custo Operacional;1220930/202500000024657;CO - 06/2025;46,44;0;46,44;0;0;46,44
+A pagar;56;Uniodonto Sul Goiano;Operadora;358339;2;Repasse em Custo Operacional;17418;CO 08/2025;2557,44;0;2557,44;38,36;0;2519,08
+A pagar;62;Uniodonto Mato Grosso;Operadora;343404;2;Repasse em Custo Operacional;18152/25F;COMP.: 07.2025.;3132;0;3132;46,98;0;3085,02
+A pagar;167;Uniodonto Arapiraca;Operadora;403512;2;Repasse em Custo Operacional;2025070877;FATURA;665,64;0;665,64;0;0;665,64
+A receber;183;Uniodonto Missoes;Prestadora;;3;Taxa de Manutenção;10164840;TAXA DE MANUTENCAO;123,42;0;123,42;0;0;123,42
+A receber;5;Uniodonto Erechim;Prestadora;;3;Taxa de Manutenção;10164834;TAXA DE MANUTENCAO;401,12;0;401,12;0;0;401,12
+A receber;192;Uniodonto Curitiba;Prestadora;314315192;3;Taxa de Manutenção;10164486;TAXA DE MANUTENCAO;561,56;0;561,56;0;0;561,56
+A receber;192;Uniodonto Curitiba;Prestadora;314315192;4;Fundo de Marketing;10164585;FUNDO DE MARKETING;224,62;0;224,62;0;0;224,62
+A receber;63;Uniodonto Patrocinio;Prestadora;;3;Taxa de Manutenção;10164526;TAXA DE MANUTENCAO;561,56;0;561,56;0;0;561,56
+A receber;63;Uniodonto Patrocinio;Prestadora;;4;Fundo de Marketing;10164624;FUNDO DE MARKETING;224,62;0;224,62;0;0;224,62
+A receber;155;Uniodonto Braganca Paulista;Prestadora;;3;Taxa de Manutenção;10164566;TAXA DE MANUTENCAO;401,12;0;401,12;0;0;401,12
+A receber;155;Uniodonto Braganca Paulista;Prestadora;;4;Fundo de Marketing;10164661;FUNDO DE MARKETING;160,45;0;160,45;0;0;160,45
+A pagar;49;Uniodonto Araguari;Prestadora;370568049;2;Repasse em Custo Operacional;;CO - 07/2025;51,12;0;51,12;0;0;51,12
+A receber;2;Uniodonto Santos;Prestadora;;6;Outros;10164681;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;233,34;0;233,34;0;0;233,34
+A receber;191;UNIODONTO CENTRO OESTE MINAS;Prestadora;344451191;4;Fundo de Marketing;10164584;FUNDO DE MARKETING;64,18;0;64,18;0;0;64,18
+A pagar;192;Uniodonto Curitiba;Prestadora;314315192;2;Repasse em Custo Operacional;3420;CO - 08/2025;4844,16;0;4844,16;72,66;0;4771,5
+A receber;190;UNIODONTO SANTA CATARINA COOPERATIVA ODONTOLOGICA;Prestadora;;3;Taxa de Manutenção;10164581;TAXA DE MANUTENCAO;4813,38;0;4813,38;0;0;4813,38
+A receber;190;UNIODONTO SANTA CATARINA COOPERATIVA ODONTOLOGICA;Prestadora;;4;Fundo de Marketing;10164677;FUNDO DE MARKETING;1925,35;0;1925,35;0;0;1925,35
+A receber;49;Uniodonto Araguari;Prestadora;370568049;3;Taxa de Manutenção;10164837;TAXA DE MANUTENCAO;401,12;0;401,12;0;0;401,12
+A receber;49;Uniodonto Araguari;Prestadora;370568049;4;Fundo de Marketing;10164615;FUNDO DE MARKETING;160,45;0;160,45;0;0;160,45
+A receber;2;Uniodonto Santos;Prestadora;;2;Repasse em Custo Operacional;10164758/154746;CO - 07/2025;297,88;0;669,4;0;0;297,88
+A receber;9;Uniodonto Belo Horizonte;Prestadora;409791009;3;Taxa de Manutenção;10164492;TAXA DE MANUTENCAO;401,12;0;401,12;0;0;401,12
+A receber;5;Uniodonto Erechim;Prestadora;;4;Fundo de Marketing;10164841;FUNDO DE MARKETING;160,45;0;160,45;0;0;160,45
+A receber;183;Uniodonto Missoes;Prestadora;;4;Fundo de Marketing;10164845;FUNDO DE MARKETING;49,37;0;49,37;0;0;49,37
+A receber;114;Uniodonto Nova Friburgo;Prestadora;345822;6;Outros;10164903;Referente protocolo 31431520250527000046;400;0;400;0;0;400
+A receber;164;Uniodonto Sul Catarinense;Prestadora;;4;Fundo de Marketing;10164667;FUNDO DE MARKETING;128,36;0;128,36;0;0;128,36
+A receber;114;Uniodonto Nova Friburgo;Prestadora;345822;6;Outros;10164904;Referente protocolo 31431520250527000019;1080;0;1080;0;0;1080
+A receber;9;Uniodonto Belo Horizonte;Prestadora;409791009;4;Fundo de Marketing;10164820;FUNDO DE MARKETING;160,45;0;160,45;0;0;160,45
+A pagar;176;Uniodonto Nova Iguacu;Prestadora;314315176;2;Repasse em Custo Operacional;;CO - 07/2025;1374,84;0;1374,84;20,62;0;1354,22
+A pagar;176;Uniodonto Nova Iguacu;Prestadora;314315176;1;Repasse em Pré-pagamento;;RPP;49198,38;0;49198,38;737,98;0;48460,4
+A pagar;114;Uniodonto Nova Friburgo;Prestadora;345822;1;Repasse em Pré-pagamento;434;Repasse;9684,9;0;9684,9;145,27;0;9539,63
+A receber;176;Uniodonto Nova Iguacu;Prestadora;314315176;6;Outros;;"Desconto adiantamento de RPP	";10000;0;10000;0;0;10000
+A receber;164;Uniodonto Sul Catarinense;Prestadora;;3;Taxa de Manutenção;10164572;TAXA DE MANUTENCAO;320,89;0;320,89;0;0;320,89
+A receber;191;UNIODONTO CENTRO OESTE MINAS;Prestadora;344451191;3;Taxa de Manutenção;10164485;TAXA DE MANUTENCAO;160,45;0;160,45;0;0;160,45
+A receber;139;Uniodonto Circuito das Aguas;Prestadora;;3;Taxa de Manutenção;10164657;TAXA DE MANUTENCAO;320,89;0;320,89;0;0;320,89
+A pagar;155;Uniodonto Braganca Paulista;Prestadora;;2;Repasse em Custo Operacional;357;intercambio;992,16;0;992,16;14,88;0;977,28
+A receber;78;UNIODONTO DE ITABUNA;Prestadora;402010;6;Outros;10164710;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;700;0;700;0;0;700
+A receber;101;UNIODONTO CENTRO OESTE PAULISTA - COOPERATIVA ODONTOLOGICA;Prestadora;354821;4;Fundo de Marketing;10164643;FUNDO DE MARKETING;224,62;0;224,62;0;0;224,62
+A receber;101;UNIODONTO CENTRO OESTE PAULISTA - COOPERATIVA ODONTOLOGICA;Prestadora;354821;3;Taxa de Manutenção;10164546;TAXA DE MANUTENCAO;561,56;0;561,56;0;0;561,56
+A receber;14;Uniodonto Passo Fundo;Prestadora;305421014;4;Fundo de Marketing;10164591;FUNDO DE MARKETING;224,62;0;224,62;0;0;224,62
+A receber;14;Uniodonto Passo Fundo;Prestadora;305421014;3;Taxa de Manutenção;10164493;TAXA DE MANUTENCAO;561,56;0;561,56;0;0;561,56
+A receber;192;Uniodonto Curitiba;Prestadora;314315192;6;Outros;10164680;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;175;0;175;0;0;175
+A pagar;101;UNIODONTO CENTRO OESTE PAULISTA - COOPERATIVA ODONTOLOGICA;Prestadora;354821;2;Repasse em Custo Operacional;175170/12841;CO - 08/2025;3243,6;0;3243,6;48,65;0;3194,95
+A pagar;5;Uniodonto Erechim;Prestadora;;2;Repasse em Custo Operacional;15399/25;Fatura de intercâmbio;7739,9;0;7739,9;116,1;0;7623,8
+A receber;78;UNIODONTO DE ITABUNA;Prestadora;402010;4;Fundo de Marketing;10164632;FUNDO DE MARKETING;320,89;0;320,89;0;0;320,89
+A receber;78;UNIODONTO DE ITABUNA;Prestadora;402010;3;Taxa de Manutenção;10164534;TAXA DE MANUTENCAO;802,23;0;802,23;0;0;802,23
+A receber;49;Uniodonto Araguari;Prestadora;370568049;6;Outros;10164700;TAXA DE INSCRIÇÃO CONVENÇÃO NACIONAL;700;0;700;0;0;700
+A pagar;78;UNIODONTO DE ITABUNA;Prestadora;402010;2;Repasse em Custo Operacional;;PRODUÇÃO 07;500,4;0;500,4;0;0;500,4
+A pagar;190;UNIODONTO SANTA CATARINA COOPERATIVA ODONTOLOGICA;Prestadora;;2;Repasse em Custo Operacional;25313;AURORA;229882,51;0;229882,51;3448,24;0;226434,27
+A pagar;190;UNIODONTO SANTA CATARINA COOPERATIVA ODONTOLOGICA;Prestadora;;2;Repasse em Custo Operacional;25272;CUSTO OPERACIONAL;40168,8;0;40168,8;602,53;0;39566,27
+A receber;176;Uniodonto Nova Iguacu;Prestadora;314315176;2;Repasse em Custo Operacional;10164803/154791;CO - 07/2025;72,96;0;72,96;0;0;72,96
+A receber;2;Uniodonto Santos;Prestadora;;4;Fundo de Marketing;10164586;FUNDO DE MARKETING;320,89;0;320,89;0;0;320,89
+A receber;139;Uniodonto Circuito das Aguas;Prestadora;;4;Fundo de Marketing;10164562;FUNDO DE MARKETING;128,36;0;128,36;0;0;128,36
+A receber;114;Uniodonto Nova Friburgo;Prestadora;345822;4;Fundo de Marketing;10164648;FUNDO DE MARKETING;128,36;0;128,36;0;0;128,36
+A receber;114;Uniodonto Nova Friburgo;Prestadora;345822;3;Taxa de Manutenção;10164551;TAXA DE MANUTENCAO;320,89;0;320,89;0;0;320,89
+A receber;190;UNIODONTO SANTA CATARINA COOPERATIVA ODONTOLOGICA;Prestadora;;2;Repasse em Custo Operacional;10164805/154793;CO - 07/2025;151,7;0;151,7;0;0;151,7
+A receber;192;Uniodonto Curitiba;Prestadora;314315192;2;Repasse em Custo Operacional;10164806/154794;CO - 07/2025;387,18;0;387,18;0;0;387,18
+A receber;2;Uniodonto Santos;Prestadora;;3;Taxa de Manutenção;10164487;TAXA DE MANUTENCAO;802,23;0;802,23;0;0;802,23
+A pagar;14;Uniodonto Passo Fundo;Prestadora;305421014;2;Repasse em Custo Operacional;6013;72025;8099,28;0;8099,28;121,49;0;7977,79
+A pagar;5;Uniodonto Erechim;Prestadora;;2;Repasse em Custo Operacional;15381/25;Fatura de Intercâmbio;25831,8;0;25831,8;387,48;0;25444,32
+A pagar;192;Uniodonto Curitiba;Prestadora;314315192;1;Repasse em Pré-pagamento;3431;REPASSE PRE PAGAMENTO;33338,38;0;33338,38;500,08;0;32838,3
+A pagar;2;Uniodonto Santos;Prestadora;;2;Repasse em Custo Operacional;19268;jul/25;2030,4;0;2030,4;30,46;0;1999,94
+A receber;176;Uniodonto Nova Iguacu;Prestadora;314315176;4;Fundo de Marketing;10164673;FUNDO DE MARKETING;224,62;0;224,62;0;0;224,62
+A receber;176;Uniodonto Nova Iguacu;Prestadora;314315176;3;Taxa de Manutenção;10164578;TAXA DE MANUTENCAO;561,56;0;561,56;0;0;561,56
+A pagar;164;Uniodonto Sul Catarinense;Prestadora;;2;Repasse em Custo Operacional;3658;SERVICOS PRESTADOS;192,06;0;192,06;0;0;192,06
+A pagar;63;Uniodonto Patrocinio;Prestadora;;2;Repasse em Custo Operacional;;CO - 07/2025;179,28;0;179,28;0;0;179,28
+A pagar;9;Uniodonto Belo Horizonte;Prestadora;409791009;2;Repasse em Custo Operacional;2025184;CO - 07/2025;4321,08;0;4321,08;64,82;0;4256,26
