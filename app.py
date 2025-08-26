@@ -80,6 +80,30 @@ class NeodontoCsvProcessor:
         # Mapeamento reverso para sincronização
         self.descricao_codigo_map = {v: k for k, v in self.codigo_descricao_map.items()}
     
+    def get_pdf_config(self):
+        """
+        Retorna configurações padrão para geração de PDF (pagesize, margens, estilos).
+        Usado para manter formatação consistente entre relatórios.
+        """
+        styles = getSampleStyleSheet()
+        cell_style = styles['Normal'].clone('CellStyle')
+        cell_style.fontSize = 6
+        cell_style.leading = 8
+        cell_style.alignment = 0
+        cell_style.wordWrap = 'CJK'
+        margins = {
+            'left': 1.2 * cm,
+            'right': 1.2 * cm,
+            'top': 1.2 * cm,
+            'bottom': 1.2 * cm
+        }
+        return {
+            'pagesize': letter,
+            'margins': margins,
+            'styles': styles,
+            'cell_style': cell_style
+        }
+
     def sync_codigo_descricao(self, df):
         """
         Sincroniza CodigoTipoRecebimento e DescricaoTipoRecebimento para garantir consistência.
@@ -1028,15 +1052,10 @@ class NeodontoCsvProcessor:
         pdf_files = []
         csv_files = []
 
-        # Configurar estilos para o PDF
-        styles = getSampleStyleSheet()
-        
-        # Criar estilo personalizado para células da tabela
-        cell_style = styles['Normal'].clone('CellStyle')
-        cell_style.fontSize = 7
-        cell_style.leading = 9
-        cell_style.alignment = 0  # Alinhamento à esquerda
-        cell_style.wordWrap = 'CJK'
+        # Configurar estilos para o PDF (usar configuração padrão unificada)
+        pdf_cfg = self.get_pdf_config()
+        styles = pdf_cfg['styles']
+        cell_style = pdf_cfg['cell_style']
         
         # Verificar se temos as colunas necessárias
         required_columns = ['CodigoTipoRecebimento', 'TipoSingular', 'Tipo', 'DATA', 'valor', 'complemento', 'Debito', 'Credito', 'Historico']
@@ -1090,7 +1109,11 @@ class NeodontoCsvProcessor:
                 lambda x: f"{x} - {NOMES_CONTAS_CONTABEIS.get(int(x), 'Descrição não encontrada')}" if pd.notnull(x) and str(x).isdigit() else "")
             
             # Gerar PDF com totalizações
-            doc = SimpleDocTemplate(pdf_file, pagesize=letter, leftMargin=1.2*cm, rightMargin=1.2*cm, topMargin=1.2*cm, bottomMargin=1.2*cm)
+            doc = SimpleDocTemplate(pdf_file, pagesize=pdf_cfg['pagesize'],
+                                    leftMargin=pdf_cfg['margins']['left'],
+                                    rightMargin=pdf_cfg['margins']['right'],
+                                    topMargin=pdf_cfg['margins']['top'],
+                                    bottomMargin=pdf_cfg['margins']['bottom'])
             elements = []
             
             # Título
@@ -1133,8 +1156,16 @@ class NeodontoCsvProcessor:
             for _, row in display_df.iterrows():
                 row_data = []
                 for i, (col, val) in enumerate(row.items()):
-                    if col == 'Valor' and isinstance(val, (int, float)):
-                        val = f"R$ {val:.2f}".replace('.', ',')
+                    if col == 'Data':
+                        # Garantir que a Data use o estilo de célula unificado
+                        val = Paragraph(str(val), cell_style)
+                    elif col == 'Valor':
+                        # Garantir que o valor seja formatado e renderizado com o estilo de célula
+                        if isinstance(val, (int, float)):
+                            val_str = f"R$ {val:.2f}".replace('.', ',')
+                        else:
+                            val_str = str(val)
+                        val = Paragraph(val_str, cell_style)
                     elif col == 'Complemento':
                         # Usar função auxiliar para quebra inteligente de linhas
                         val_str = str(val)
@@ -1181,7 +1212,7 @@ class NeodontoCsvProcessor:
                 data.append(row_data)
             
             # Adicionar linha de total no final
-            total_row = ['', 'TOTAL', f"R$ {total_value:.2f}".replace('.', ','), '', '', '']
+            total_row = ['', 'TOTAL', Paragraph(f"R$ {total_value:.2f}".replace('.', ','), cell_style), '', '', '']
             data.append(total_row)
             
             # Criar tabela com larguras de coluna otimizadas para retrato A4
@@ -1254,7 +1285,11 @@ class NeodontoCsvProcessor:
         
         # Criar um relatório de resumo geral
         summary_file = os.path.join(output_dir, "resumo_relatorios.pdf")
-        doc = SimpleDocTemplate(summary_file, pagesize=letter)
+        doc = SimpleDocTemplate(summary_file, pagesize=pdf_cfg['pagesize'],
+                                leftMargin=pdf_cfg['margins']['left'],
+                                rightMargin=pdf_cfg['margins']['right'],
+                                topMargin=pdf_cfg['margins']['top'],
+                                bottomMargin=pdf_cfg['margins']['bottom'])
         elements = []
         
         # Título
@@ -1447,23 +1482,20 @@ class NeodontoCsvProcessor:
         df_a_pagar_bruto = df[(df['Tipo'] == 'A pagar') & mask_nao_irrf]
         df_a_receber_bruto = df[(df['Tipo'] == 'A receber') & mask_nao_irrf]
         
-        # Configurar estilos para o PDF
-        styles = getSampleStyleSheet()
-        
-        # Criar estilo personalizado para células da tabela
-        cell_style = styles['Normal'].clone('CellStyle')
-        cell_style.fontSize = 7
-        cell_style.leading = 9
-        cell_style.alignment = 0
-        cell_style.wordWrap = 'CJK'
+        # Configurar estilos para o PDF (usar configuração padrão unificada)
+        pdf_cfg = self.get_pdf_config()
+        styles = pdf_cfg['styles']
+        cell_style = pdf_cfg['cell_style']
         
         # Nome do arquivo
         pdf_file = os.path.join(output_dir, "relatorio_camara_compensacao.pdf")
         
         # Gerar PDF
-        doc = SimpleDocTemplate(pdf_file, pagesize=letter, 
-                              leftMargin=1.2*cm, rightMargin=1.2*cm, 
-                              topMargin=1.2*cm, bottomMargin=1.2*cm)
+        doc = SimpleDocTemplate(pdf_file, pagesize=pdf_cfg['pagesize'],
+                              leftMargin=pdf_cfg['margins']['left'],
+                              rightMargin=pdf_cfg['margins']['right'],
+                              topMargin=pdf_cfg['margins']['top'],
+                              bottomMargin=pdf_cfg['margins']['bottom'])
         elements = []
         
         # Função para criar tabela simples do CSV
@@ -1516,11 +1548,11 @@ class NeodontoCsvProcessor:
                 
                 # Adicionar linha à tabela
                 table_data.append([
-                    row['DATA'],
+                    Paragraph(str(row['DATA']), cell_style),
                     complemento,
-                    self.format_currency(valor_bruto),
-                    self.format_currency(irrf),
-                    self.format_currency(valor_liquido),
+                    Paragraph(self.format_currency(valor_bruto), cell_style),
+                    Paragraph(self.format_currency(irrf), cell_style),
+                    Paragraph(self.format_currency(valor_liquido), cell_style),
                     str(row['Debito']),
                     str(row['Credito']),
                     str(row['Historico'])
@@ -1551,7 +1583,8 @@ class NeodontoCsvProcessor:
                 ('ALIGN', (2, 1), (4, -1), 'RIGHT'),   # Valores à direita
                 ('ALIGN', (5, 1), (-1, -1), 'CENTER'), # Códigos centralizados
                 ('VALIGN', (0, 0), (-1, -1), 'TOP'),   # Alinhamento vertical superior
-                ('FONTSIZE', (0, 1), (-1, -1), 7),
+                ('FONTSIZE', (0, 1), (-1, -1), 6),
+                ('FONTSIZE', (0, 1), (-1, -1), 6),
                 
                 # Bordas simples
                 ('GRID', (0, 0), (-1, -1), 1, colors.black),
@@ -1723,23 +1756,20 @@ class NeodontoCsvProcessor:
         else:
             df_irrf = pd.DataFrame()
         
-        # Configurar estilos para o PDF
-        styles = getSampleStyleSheet()
-        
-        # Criar estilo personalizado para células da tabela
-        cell_style = styles['Normal'].clone('CellStyle')
-        cell_style.fontSize = 8
-        cell_style.leading = 10
-        cell_style.alignment = 0
-        cell_style.wordWrap = 'CJK'
+        # Configurar estilos para o PDF (usar configuração padrão unificada)
+        pdf_cfg = self.get_pdf_config()
+        styles = pdf_cfg['styles']
+        cell_style = pdf_cfg['cell_style']
         
         # Nome do arquivo
         pdf_file = os.path.join(output_dir, "relatorio_irrf.pdf")
         
         # Gerar PDF
-        doc = SimpleDocTemplate(pdf_file, pagesize=letter, 
-                              leftMargin=1.2*cm, rightMargin=1.2*cm, 
-                              topMargin=1.2*cm, bottomMargin=1.2*cm)
+        doc = SimpleDocTemplate(pdf_file, pagesize=pdf_cfg['pagesize'],
+                              leftMargin=pdf_cfg['margins']['left'],
+                              rightMargin=pdf_cfg['margins']['right'],
+                              topMargin=pdf_cfg['margins']['top'],
+                              bottomMargin=pdf_cfg['margins']['bottom'])
         elements = []
         
         # Título principal
@@ -1764,17 +1794,17 @@ class NeodontoCsvProcessor:
                 entidade = entidade[:27] + '...'
             
             table_data.append([
-                row['Tipo'],
+                Paragraph(str(row['Tipo']), cell_style),
                 Paragraph(entidade, cell_style),
-                self.format_currency(valor_irrf),
-                "IRRF dos dados originais"
+                Paragraph(self.format_currency(valor_irrf), cell_style),
+                Paragraph("IRRF dos dados originais", cell_style)
             ])
         
         # Adicionar linha de total
         table_data.append([
             '',
             Paragraph('<b>TOTAL</b>', cell_style),
-            f'<b>{self.format_currency(irrf_info["total_irrf"])}</b>',
+            Paragraph(f'<b>{self.format_currency(irrf_info["total_irrf"])}</b>', cell_style),
             ''
         ])
         
@@ -1799,7 +1829,7 @@ class NeodontoCsvProcessor:
             ('BACKGROUND', (0, 1), (-1, -2), colors.white),
             ('ALIGN', (2, 1), (-1, -1), 'RIGHT'),   # Valores à direita
             ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-            ('FONTSIZE', (0, 1), (-1, -2), 7),
+                ('FONTSIZE', (0, 1), (-1, -2), 6),
             
             # Linha de total
             ('BACKGROUND', (0, -1), (-1, -1), colors.lightgrey),
@@ -2008,17 +2038,27 @@ def main():
             .download-button {
                 display: inline-block;
                 padding: 0.5em 1em;
-                background-color: #4CAF50;
-                color: white;
+                background-color: #0d6efd;
+                color: #ffffff;
                 text-align: center;
                 text-decoration: none;
                 font-size: 16px;
                 border-radius: 4px;
-                transition: background-color 0.3s;
+                transition: background-color 0.2s;
                 margin: 10px 0;
             }
             .download-button:hover {
-                background-color: #45a049;
+                background-color: #0b5ed7;
+            }
+            a.download-button { text-decoration: none; color: #ffffff; }
+            /* Estiliza também os botões nativos do Streamlit para manter consistência */
+            .stButton>button, .stButton button {
+                background-color: #0d6efd !important;
+                color: #ffffff !important;
+                border: none !important;
+            }
+            .stButton>button:hover, .stButton button:hover {
+                background-color: #0b5ed7 !important;
             }
             .file-header {
                 margin-top: 20px;
@@ -2528,7 +2568,11 @@ def main():
                         
                         else:
                             # Gerar relatórios tradicionais
-                            report_results = processor.generate_accounting_reports(consolidated_df, output_dir, display_result=False, debug=debug_mode)
+                            try:
+                                from . import reports
+                            except Exception:
+                                import reports
+                            report_results = reports.generate_accounting_reports(processor, NOMES_CONTAS_CONTABEIS, consolidated_df, output_dir=output_dir, display_result=False, debug=debug_mode)
                             
                             # Criar link de download para o ZIP com todos os relatórios
                             if "zip_file" in report_results and os.path.exists(report_results["zip_file"]):
