@@ -149,7 +149,7 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
         total_row = ['', 'TOTAL', Paragraph(f"R$ {total_value:.2f}".replace('.', ','), cell_style), '', '', '']
         data.append(total_row)
 
-        col_widths = [0.6*inch, 1.8*inch, 0.7*inch, 1.4*inch, 1.4*inch, 0.8*inch]
+        col_widths = [0.6*inch, 3.2*inch, 0.7*inch, 0.7*inch, 0.7*inch, 0.7*inch]
 
         table_style = TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
