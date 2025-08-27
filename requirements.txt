@@ -8,3 +8,4 @@ openpyxl
 python-dateutil
 pytz
 pillow
+pypdf

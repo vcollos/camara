@@ -81,9 +81,9 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
         csv_file = os.path.join(output_dir, f"{report_config['name']}.csv")
         pdf_file = os.path.join(output_dir, f"{report_config['name']}.pdf")
 
-        # Exportar para CSV
-        processor.export_to_csv(filtered_df, csv_file)
-        csv_files.append(csv_file)
+        # CSV export skipped: gerar apenas PDFs
+        # processor.export_to_csv(filtered_df, csv_file)
+        # csv_files.append(csv_file)
 
         # Manter apenas o código nas colunas de conta/histórico (não inserir descrições longas)
         filtered_df['Debito_Code'] = filtered_df['Debito'].apply(lambda x: str(int(x)) if pd_notnull_and_digits(x) else '')
@@ -240,14 +240,31 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
     doc.build(elements)
     pdf_files.append(summary_file)
 
+    # Merge all generated PDFs into a single PDF (preserving sequence)
+    try:
+        # Prefer the modern 'pypdf' package, fallback to PyPDF2 if available
+        from pypdf import PdfMerger
+    except Exception:
+        try:
+            from PyPDF2 import PdfMerger
+        except Exception:
+            raise RuntimeError("Biblioteca para mesclar PDFs não encontrada. Instale 'pypdf' (recomendado) ou 'PyPDF2': pip install pypdf")
+
+    merger = PdfMerger()
+    for pdf_file in pdf_files:
+        merger.append(pdf_file)
+
+    merged_file = os.path.join(output_dir, "relatorios_contabeis_unificados.pdf")
+    with open(merged_file, "wb") as mf:
+        merger.write(mf)
+    merger.close()
+
+    # Opcional: criar um ZIP contendo apenas o PDF unificado (mantendo compatibilidade com callers)
     zip_file = os.path.join(output_dir, "relatorios_contabeis.zip")
     with zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        for pdf_file in pdf_files:
-            zipf.write(pdf_file, os.path.basename(pdf_file))
-        for csv_file in csv_files:
-            zipf.write(csv_file, os.path.basename(csv_file))
+        zipf.write(merged_file, os.path.basename(merged_file))
 
-    return {"reports": results, "summary_file": summary_file, "zip_file": zip_file}
+    return {"reports": results, "summary_file": summary_file, "merged_file": merged_file, "zip_file": zip_file}
 
 
 def generate_unified_report(processor, df, output_dir=None, display_result=False):
