@@ -1,5 +1,4 @@
 import os
-import zipfile
 from datetime import datetime
 from reportlab.lib import colors
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
@@ -35,7 +34,6 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
 
     results = {}
     pdf_files = []
-    csv_files = []
 
     config = processor.get_pdf_config()
     styles = config['styles']
@@ -78,12 +76,7 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
             results[report_config["name"]] = {"count": 0, "sum": 0, "file": None}
             continue
 
-        csv_file = os.path.join(output_dir, f"{report_config['name']}.csv")
         pdf_file = os.path.join(output_dir, f"{report_config['name']}.pdf")
-
-        # CSV export skipped: gerar apenas PDFs
-        # processor.export_to_csv(filtered_df, csv_file)
-        # csv_files.append(csv_file)
 
         # Manter apenas o código nas colunas de conta/histórico (não inserir descrições longas)
         filtered_df['Debito_Code'] = filtered_df['Debito'].apply(lambda x: str(int(x)) if pd_notnull_and_digits(x) else '')
@@ -265,12 +258,9 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
         except Exception:
             raise RuntimeError("Biblioteca para mesclar PDFs não encontrada. Instale 'pypdf' (recomendado) ou 'PyPDF2': pip install pypdf")
 
-    # Opcional: criar um ZIP contendo apenas o PDF unificado (mantendo compatibilidade com callers)
-    zip_file = os.path.join(output_dir, "relatorios_contabeis.zip")
-    with zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        zipf.write(merged_file, os.path.basename(merged_file))
+    # Não gerar ZIP: saída será apenas o PDF unificado (mantendo compatibilidade mínima)
 
-    return {"reports": results, "summary_file": summary_file, "merged_file": merged_file, "zip_file": zip_file}
+    return {"reports": results, "summary_file": summary_file, "merged_file": merged_file}
 
 
 def generate_unified_report(processor, df, output_dir=None, display_result=False):
