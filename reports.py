@@ -241,23 +241,29 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
     pdf_files.append(summary_file)
 
     # Merge all generated PDFs into a single PDF (preserving sequence)
+    merged_file = os.path.join(output_dir, "relatorios_contabeis_unificados.pdf")
+    # Primeiro, tente usar pypdf (PdfReader + PdfWriter)
     try:
-        # Prefer the modern 'pypdf' package, fallback to PyPDF2 if available
-        from pypdf import PdfMerger
+        from pypdf import PdfReader, PdfWriter
+        writer = PdfWriter()
+        for pdf_file in pdf_files:
+            reader = PdfReader(pdf_file)
+            for page in reader.pages:
+                writer.add_page(page)
+        with open(merged_file, "wb") as mf:
+            writer.write(mf)
     except Exception:
+        # Fallback para PyPDF2 (PdfMerger)
         try:
             from PyPDF2 import PdfMerger
+            merger = PdfMerger()
+            for pdf_file in pdf_files:
+                merger.append(pdf_file)
+            with open(merged_file, "wb") as mf:
+                merger.write(mf)
+            merger.close()
         except Exception:
             raise RuntimeError("Biblioteca para mesclar PDFs não encontrada. Instale 'pypdf' (recomendado) ou 'PyPDF2': pip install pypdf")
-
-    merger = PdfMerger()
-    for pdf_file in pdf_files:
-        merger.append(pdf_file)
-
-    merged_file = os.path.join(output_dir, "relatorios_contabeis_unificados.pdf")
-    with open(merged_file, "wb") as mf:
-        merger.write(mf)
-    merger.close()
 
     # Opcional: criar um ZIP contendo apenas o PDF unificado (mantendo compatibilidade com callers)
     zip_file = os.path.join(output_dir, "relatorios_contabeis.zip")
