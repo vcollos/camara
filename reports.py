@@ -1,7 +1,8 @@
 import os
 from datetime import datetime
+import pandas as pd
 from reportlab.lib import colors
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 from reportlab.lib.units import inch
 
 # Helper: format numbers in BRL style with thousands '.' and decimal ','
