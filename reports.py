@@ -71,7 +71,9 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
     else:
         os.makedirs(output_dir, exist_ok=True)
 
-    reports_config = [
+    # Configuração base de relatórios por tipo. Em seguida expandimos para criar variantes
+    # que separem também por 'Tipo' (ex.: 'A pagar' e 'A receber') quando fizer sentido
+    reports_config_base = [
         {"name": "taxas_manutencao", "title": "Relatório de Taxas de Manutenção", "filters": {"CodigoTipoRecebimento": 3}},
         {"name": "taxas_marketing", "title": "Relatório de Taxas de Marketing", "filters": {"CodigoTipoRecebimento": 4}},
         {"name": "multas_juros", "title": "Relatório de Multas e Juros", "filters": {"CodigoTipoRecebimento": 5}},
@@ -90,6 +92,32 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
         {"name": "pos_pagamento_prestadoras_a_receber", "title": "Relatório de Pós-pagamento - Prestadoras - A receber", "filters": {"CodigoTipoRecebimento": 2, "TipoSingular": "Prestadora", "Tipo": "A receber"}},
     ]
 
+    # Expandir a configuração base para gerar relatórios adicionais separando por 'Tipo'
+    # (A pagar / A receber) para os casos de pré-pagamento e custo operacional (CodigoTipoRecebimento 1 e 2).
+    reports_config = []
+    for rc in reports_config_base:
+        # Adiciona o relatório original
+        reports_config.append(rc)
+        try:
+            codigo = rc.get('filters', {}).get('CodigoTipoRecebimento')
+        except Exception:
+            codigo = None
+
+        # Para pré-pagamento (1) e custo operacional (2), gerar duas variantes:
+        # uma para 'A pagar' e outra para 'A receber'
+        if codigo in (1, 2):
+            base_name = rc['name']
+            for tipo in ('A pagar', 'A receber'):
+                tipo_suffix = tipo.replace(' ', '_').lower()
+                new_filters = dict(rc.get('filters', {}))  # copia dos filtros originais
+                new_filters['Tipo'] = tipo
+                new_rc = {
+                    "name": f"{base_name}_{tipo_suffix}",
+                    "title": f"{rc['title']} - {tipo}",
+                    "filters": new_filters
+                }
+                reports_config.append(new_rc)
+
     results = {}
     pdf_files = []
 
@@ -102,6 +130,25 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
     # geração usada no rodapé
     generation_date = datetime.now().strftime('%d/%m/%Y')
     footer_cb = make_footer_callback(generation_date)
+
+    # Helper local para formatar valores em moeda brasileira (1.234.567,89)
+    def format_brl(v):
+        try:
+            # Preferir o formatador do processor se existir
+            if hasattr(processor, 'format_currency'):
+                return processor.format_currency(v)
+        except Exception:
+            pass
+        try:
+            if v is None:
+                v = 0
+            # Formata com separador de milhares como ',' e decimal '.' -> "1,234.56"
+            temp = "{:,.2f}".format(float(v))
+            # Troca para formato BR: milhares '.' e decimal ','
+            br = temp.replace(",", "X").replace(".", ",").replace("X", ".")
+            return f"R$ {br}"
+        except Exception:
+            return f"R$ {v}"
 
     required_columns = ['CodigoTipoRecebimento', 'TipoSingular', 'Tipo', 'DATA', 'valor', 'complemento', 'Debito', 'Credito', 'Historico']
     missing_columns = [col for col in required_columns if col not in df.columns]
@@ -116,7 +163,18 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
 
         for key, value in report_config["filters"].items():
             if key in filtered_df.columns:
-                filtered_df = filtered_df[filtered_df[key] == value]
+                # Normalizar comparação para o campo 'Tipo' (case-insensitive, trim)
+                if key == 'Tipo':
+                    try:
+                        # garantir que estamos trabalhando com strings e normalizar espaços/caixa
+                        filtered_df[key] = filtered_df[key].astype(str).str.strip().str.lower()
+                        comp_value = str(value).strip().lower()
+                        filtered_df = filtered_df[filtered_df[key] == comp_value]
+                    except Exception:
+                        # fallback: aplicar comparação direta se algo der errado
+                        filtered_df = filtered_df[filtered_df[key] == value]
+                else:
+                    filtered_df = filtered_df[filtered_df[key] == value]
             else:
                 if display_result:
                     # usar st se disponível via processor context
@@ -253,7 +311,7 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
         if display_result:
             try:
                 import streamlit as st
-                st.success(f"✅ Relatório gerado: {report_config['title']} - {record_count} registros, Total: R$ {total_value:.2f}")
+                st.success(f"✅ Relatório gerado: {report_config['title']} - {record_count} registros, Total: {format_brl(total_value)}")
             except Exception:
                 pass
 
