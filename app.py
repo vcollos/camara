@@ -2574,12 +2574,12 @@ def main():
                                 import reports
                             report_results = reports.generate_accounting_reports(processor, NOMES_CONTAS_CONTABEIS, consolidated_df, output_dir=output_dir, display_result=False, debug=debug_mode)
                             
-                            # Criar link de download para o ZIP com todos os relatórios
-                            if "zip_file" in report_results and os.path.exists(report_results["zip_file"]):
-                                with open(report_results["zip_file"], "rb") as f:
-                                    zip_data = f.read()
-                                    b64 = base64.b64encode(zip_data).decode()
-                                    href = f'<a href="data:application/zip;base64,{b64}" download="relatorios_contabeis.zip" class="download-button">Baixar todos os relatórios (ZIP)</a>'
+                            # Criar link de download para o PDF unificado com todos os relatórios
+                            if "merged_file" in report_results and os.path.exists(report_results["merged_file"]):
+                                with open(report_results["merged_file"], "rb") as f:
+                                    pdf_data = f.read()
+                                    b64 = base64.b64encode(pdf_data).decode()
+                                    href = f'<a href="data:application/pdf;base64,{b64}" download="relatorios_contabeis_unificados.pdf" class="download-button">Baixar todos os relatórios (PDF)</a>'
                                     st.markdown(href, unsafe_allow_html=True)
                             
                             # Exibir resultados dos relatórios
