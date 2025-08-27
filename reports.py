@@ -1,21 +1,69 @@
 import os
 from datetime import datetime
 from reportlab.lib import colors
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak
 from reportlab.lib.units import inch
+
+# Helper: format numbers in BRL style with thousands '.' and decimal ','
+def format_brl(value, symbol=True):
+    try:
+        if value is None:
+            value = 0
+        value = float(value)
+    except Exception:
+        return f"R$ 0,00" if symbol else "0,00"
+    negative = value < 0
+    value = abs(value)
+    integer_part = int(value)
+    decimal_part = round((value - integer_part) * 100)
+    int_str = f"{integer_part:,}".replace(",", ".")
+    dec_str = f"{decimal_part:02d}"
+    formatted = f"{int_str},{dec_str}"
+    if negative:
+        formatted = f"-{formatted}"
+    return f"R$ {formatted}" if symbol else formatted
+
+# Helper: attempt to retrieve company/empresa name from processor or pdf config
+def get_company_name(processor, config):
+    try:
+        if hasattr(processor, 'get_company_name'):
+            name = processor.get_company_name()
+            if name:
+                return name
+    except Exception:
+        pass
+    if isinstance(config, dict):
+        for key in ('company_name', 'company', 'empresa', 'empresa_nome'):
+            if key in config and config[key]:
+                return config[key]
+    return ""
+
+# Footer callback factory to add fixed footer on each page
+def make_footer_callback(generation_date):
+    def footer(canvas, doc):
+        try:
+            canvas.saveState()
+            footer_text = f"Contag - Todos os direitos reservados {generation_date}"
+            x = doc.leftMargin
+            y = 10
+            canvas.setFont("Helvetica", 8)
+            canvas.drawString(x, y, footer_text)
+            canvas.restoreState()
+        except Exception:
+            pass
+    return footer
 
 def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, display_result=False, debug=False):
     """
     Gera relatórios específicos solicitados pelo contador.
     Parâmetros:
-      - processor: instância de NeodontoCsvProcessor (usa helpers como format_currency, truncate_lines, etc.)
+      - processor: instância de Processador que fornece get_pdf_config(), truncate_lines(), normalize_value(), is_irrf_record(), etc.
       - nomes_contas: dicionário com descrições das contas contábeis (NOMES_CONTAS_CONTABEIS)
       - df: DataFrame consolidado
     Retorna dicionário com resultados e paths dos arquivos gerados.
     """
     import tempfile
 
-    # Usar diretório temporário se não for especificado
     if output_dir is None:
         output_dir = tempfile.mkdtemp()
     else:
@@ -26,10 +74,18 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
         {"name": "taxas_marketing", "title": "Relatório de Taxas de Marketing", "filters": {"CodigoTipoRecebimento": 4}},
         {"name": "multas_juros", "title": "Relatório de Multas e Juros", "filters": {"CodigoTipoRecebimento": 5}},
         {"name": "outras", "title": "Relatório de Outras", "filters": {"CodigoTipoRecebimento": 6}},
-        {"name": "pre_pagamento_operadoras", "title": "Relatório de Pré-pagamento - Operadoras", "filters": {"CodigoTipoRecebimento": 1, "TipoSingular": "Operadora"}},
-        {"name": "custo_operacional_operadoras", "title": "Relatório de Custo Operacional - Operadoras", "filters": {"CodigoTipoRecebimento": 2, "TipoSingular": "Operadora"}},
-        {"name": "pre_pagamento_prestadoras", "title": "Relatório de Pré-pagamento - Prestadoras", "filters": {"CodigoTipoRecebimento": 1, "TipoSingular": "Prestadora"}},
-        {"name": "custo_operacional_prestadoras", "title": "Relatório de Custo Operacional  - Prestadoras", "filters": {"CodigoTipoRecebimento": 2, "TipoSingular": "Prestadora"}}
+        # Pré-pagamento - Operadoras (A pagar / A receber)
+        {"name": "pre_pagamento_operadoras_a_pagar", "title": "Relatório de Pré-pagamento - Operadoras - A pagar", "filters": {"CodigoTipoRecebimento": 1, "TipoSingular": "Operadora", "Tipo": "A pagar"}},
+        {"name": "pre_pagamento_operadoras_a_receber", "title": "Relatório de Pré-pagamento - Operadoras - A receber", "filters": {"CodigoTipoRecebimento": 1, "TipoSingular": "Operadora", "Tipo": "A receber"}},
+        # Pré-pagamento - Prestadoras (A pagar / A receber)
+        {"name": "pre_pagamento_prestadoras_a_pagar", "title": "Relatório de Pré-pagamento - Prestadoras - A pagar", "filters": {"CodigoTipoRecebimento": 1, "TipoSingular": "Prestadora", "Tipo": "A pagar"}},
+        {"name": "pre_pagamento_prestadoras_a_receber", "title": "Relatório de Pré-pagamento - Prestadoras - A receber", "filters": {"CodigoTipoRecebimento": 1, "TipoSingular": "Prestadora", "Tipo": "A receber"}},
+        # Pós-pagamento / Custo Operacional - Operadoras (A pagar / A receber)
+        {"name": "pos_pagamento_operadoras_a_pagar", "title": "Relatório de Pós-pagamento - Operadoras - A pagar", "filters": {"CodigoTipoRecebimento": 2, "TipoSingular": "Operadora", "Tipo": "A pagar"}},
+        {"name": "pos_pagamento_operadoras_a_receber", "title": "Relatório de Pós-pagamento - Operadoras - A receber", "filters": {"CodigoTipoRecebimento": 2, "TipoSingular": "Operadora", "Tipo": "A receber"}},
+        # Pós-pagamento / Custo Operacional - Prestadoras (A pagar / A receber)
+        {"name": "pos_pagamento_prestadoras_a_pagar", "title": "Relatório de Pós-pagamento - Prestadoras - A pagar", "filters": {"CodigoTipoRecebimento": 2, "TipoSingular": "Prestadora", "Tipo": "A pagar"}},
+        {"name": "pos_pagamento_prestadoras_a_receber", "title": "Relatório de Pós-pagamento - Prestadoras - A receber", "filters": {"CodigoTipoRecebimento": 2, "TipoSingular": "Prestadora", "Tipo": "A receber"}},
     ]
 
     results = {}
@@ -38,6 +94,8 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
     config = processor.get_pdf_config()
     styles = config['styles']
     cell_style = config['cell_style']
+    generation_date = datetime.now().strftime('%d/%m/%Y')
+    footer_cb = make_footer_callback(generation_date)
 
     required_columns = ['CodigoTipoRecebimento', 'TipoSingular', 'Tipo', 'DATA', 'valor', 'complemento', 'Debito', 'Credito', 'Historico']
     missing_columns = [col for col in required_columns if col not in df.columns]
@@ -55,7 +113,6 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
                 filtered_df = filtered_df[filtered_df[key] == value]
             else:
                 if display_result:
-                    # usar st se disponível via processor context
                     try:
                         import streamlit as st
                         st.warning(f"Coluna {key} não encontrada para o relatório {report_config['title']}")
@@ -78,18 +135,24 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
 
         pdf_file = os.path.join(output_dir, f"{report_config['name']}.pdf")
 
-        # Manter apenas o código nas colunas de conta/histórico (não inserir descrições longas)
+        # Manter apenas o código nas colunas de conta/histórico
         filtered_df['Debito_Code'] = filtered_df['Debito'].apply(lambda x: str(int(x)) if pd_notnull_and_digits(x) else '')
         filtered_df['Credito_Code'] = filtered_df['Credito'].apply(lambda x: str(int(x)) if pd_notnull_and_digits(x) else '')
         filtered_df['Historico_Code'] = filtered_df['Historico'].apply(lambda x: str(int(x)) if pd_notnull_and_digits(x) else '')
 
-        # Criar PDF usando configurações do processor
         doc = SimpleDocTemplate(pdf_file, pagesize=config['pagesize'],
                                 leftMargin=config['margins']['left'], rightMargin=config['margins']['right'],
                                 topMargin=config['margins']['top'], bottomMargin=config['margins']['bottom'])
         elements = []
 
-        elements.append(Paragraph(report_config["title"], styles['Title']))
+        # header / folha de rosto (nome da empresa)
+        company_name = get_company_name(processor, config)
+        if company_name:
+            elements.append(Paragraph(company_name, styles['Title']))
+            elements.append(Spacer(1, 0.2 * inch))
+            elements.append(Paragraph(report_config['title'], styles['Title']))
+        else:
+            elements.append(Paragraph(report_config['title'], styles['Title']))
         elements.append(Spacer(1, 0.25 * inch))
 
         date_str = filtered_df['DATA'].iloc[0] if not filtered_df.empty else ""
@@ -101,7 +164,7 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
 
         summary_data = [
             ["Total de registros", str(record_count)],
-            ["Valor total", f"R$ {total_value:.2f}".replace('.', ',')]
+            ["Valor total", format_brl(total_value)]
         ]
 
         summary_table = Table(summary_data, colWidths=[1.5*inch, 1.5*inch])
@@ -123,24 +186,20 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
             row_data = []
             for col, val in row.items():
                 if col == 'Valor' and isinstance(val, (int, float)):
-                    val_str = f"R$ {val:.2f}".replace('.', ',')
-                    val = Paragraph(val_str, cell_style)
+                    row_data.append(Paragraph(format_brl(val), cell_style))
                 elif col == 'Complemento':
-                    val_str = str(val)
-                    complemento_formatado = processor.truncate_lines(val_str, max_chars_per_line=55, max_lines=3)
-                    val = Paragraph(complemento_formatado, cell_style)
+                    complemento_formatado = processor.truncate_lines(str(val), max_chars_per_line=55, max_lines=3)
+                    row_data.append(Paragraph(complemento_formatado, cell_style))
                 elif col in ['Débito', 'Crédito', 'Histórico']:
-                    # Exibir apenas o código (mais compacto)
-                    val = Paragraph(str(val), cell_style)
+                    row_data.append(Paragraph(str(val), cell_style))
                 elif col == 'Data':
-                    val = Paragraph(str(val), cell_style)
+                    row_data.append(Paragraph(str(val), cell_style))
                 else:
-                    val = str(val)
-                row_data.append(val)
+                    row_data.append(str(val))
             data.append(row_data)
 
-        total_row = ['', 'TOTAL', Paragraph(f"R$ {total_value:.2f}".replace('.', ','), cell_style), '', '', '']
-        data.append(total_row)
+        # total row
+        data.append(['', 'TOTAL', Paragraph(format_brl(total_value), cell_style), '', '', ''])
 
         col_widths = [0.6*inch, 3.2*inch, 0.7*inch, 0.7*inch, 0.7*inch, 0.7*inch]
 
@@ -175,7 +234,8 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
         elements.append(Spacer(1, 0.5 * inch))
         elements.append(Paragraph(f"Relatório gerado em: {datetime.now().strftime('%d/%m/%Y %H:%M')}", styles['Normal']))
 
-        doc.build(elements)
+        # build with footer
+        doc.build(elements, onFirstPage=footer_cb, onLaterPages=footer_cb)
 
         results[report_config["name"]] = {"count": record_count, "sum": total_value, "file": pdf_file}
         pdf_files.append(pdf_file)
@@ -183,7 +243,7 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
         if display_result:
             try:
                 import streamlit as st
-                st.success(f"✅ Relatório gerado: {report_config['title']} - {record_count} registros, Total: R$ {total_value:.2f}")
+                st.success(f"✅ Relatório gerado: {report_config['title']} - {record_count} registros, Total: {format_brl(total_value)}")
             except Exception:
                 pass
 
@@ -191,6 +251,8 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
     summary_file = os.path.join(output_dir, "resumo_relatorios.pdf")
     config = processor.get_pdf_config()
     styles = config['styles']
+    generation_date = datetime.now().strftime('%d/%m/%Y')
+    footer_cb = make_footer_callback(generation_date)
 
     doc = SimpleDocTemplate(summary_file, pagesize=config['pagesize'],
                             leftMargin=config['margins']['left'], rightMargin=config['margins']['right'],
@@ -207,10 +269,10 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
         report_name = report_config["name"]
         if report_name in results:
             report_result = results[report_name]
-            summary_data.append([report_config["title"], str(report_result["count"]), f"R$ {report_result['sum']:.2f}".replace('.', ',')])
+            summary_data.append([report_config["title"], str(report_result["count"]), format_brl(report_result["sum"])])
             total_overall += report_result["sum"]
 
-    summary_data.append(["TOTAL GERAL", "", f"R$ {total_overall:.2f}".replace('.', ',')])
+    summary_data.append(["TOTAL GERAL", "", format_brl(total_overall)])
 
     summary_table = Table(summary_data, colWidths=[3*inch, 0.8*inch, 1.2*inch])
     summary_style = TableStyle([
@@ -230,12 +292,11 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
     elements.append(Spacer(1, 0.5 * inch))
     elements.append(Paragraph(f"Resumo gerado em: {datetime.now().strftime('%d/%m/%Y %H:%M')}", styles['Normal']))
 
-    doc.build(elements)
+    doc.build(elements, onFirstPage=footer_cb, onLaterPages=footer_cb)
     pdf_files.append(summary_file)
 
     # Merge all generated PDFs into a single PDF (preserving sequence)
     merged_file = os.path.join(output_dir, "relatorios_contabeis_unificados.pdf")
-    # Primeiro, tente usar pypdf (PdfReader + PdfWriter)
     try:
         from pypdf import PdfReader, PdfWriter
         writer = PdfWriter()
@@ -246,7 +307,6 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
         with open(merged_file, "wb") as mf:
             writer.write(mf)
     except Exception:
-        # Fallback para PyPDF2 (PdfMerger)
         try:
             from PyPDF2 import PdfMerger
             merger = PdfMerger()
@@ -257,8 +317,6 @@ def generate_accounting_reports(processor, nomes_contas, df, output_dir=None, di
             merger.close()
         except Exception:
             raise RuntimeError("Biblioteca para mesclar PDFs não encontrada. Instale 'pypdf' (recomendado) ou 'PyPDF2': pip install pypdf")
-
-    # Não gerar ZIP: saída será apenas o PDF unificado (mantendo compatibilidade mínima)
 
     return {"reports": results, "summary_file": summary_file, "merged_file": merged_file}
 
@@ -291,6 +349,9 @@ def generate_unified_report(processor, df, output_dir=None, display_result=False
     config = processor.get_pdf_config()
     styles = config['styles']
     cell_style = config['cell_style']
+    generation_date = datetime.now().strftime('%d/%m/%Y')
+    footer_cb = make_footer_callback(generation_date)
+    company_name = get_company_name(processor, config)
 
     pdf_file = os.path.join(output_dir, "relatorio_camara_compensacao.pdf")
     doc = SimpleDocTemplate(pdf_file, pagesize=config['pagesize'],
@@ -298,78 +359,10 @@ def generate_unified_report(processor, df, output_dir=None, display_result=False
                             topMargin=config['margins']['top'], bottomMargin=config['margins']['bottom'])
     elements = []
 
-    def create_csv_table(data_df, section_title):
-        section_elements = []
-        if data_df.empty:
-            section_elements.append(Paragraph(f"{section_title} - Nenhum registro encontrado", styles['Heading2']))
-            return section_elements, 0, 0
-
-        section_elements.append(Paragraph(section_title, styles['Heading2']))
-        section_elements.append(Spacer(1, 0.1 * inch))
-
-        table_data = [['Data', 'Complemento', 'Valor Bruto', 'IRRF', 'Valor Líquido', 'Débito', 'Crédito', 'Histórico']]
-        total_bruto = total_irrf = total_liquido = 0
-
-        for _, row in data_df.iterrows():
-            is_irrf_lancamento = processor.is_irrf_record(pd.DataFrame([row]))
-            if is_irrf_lancamento.iloc[0]:
-                valor_bruto = 0
-                irrf = row['valor']
-                valor_liquido = 0
-            else:
-                valor_bruto = row['valor']
-                irrf = 0
-                if 'IRRF' in row and pd_notnull(row.get('IRRF', 0)):
-                    irrf = processor.normalize_value(row['IRRF'])
-                valor_liquido = valor_bruto - irrf
-
-            total_bruto += valor_bruto
-            total_irrf += irrf
-            total_liquido += valor_liquido
-
-            complemento_texto = str(row['complemento'])
-            complemento_formatado = processor.truncate_lines(complemento_texto, max_chars_per_line=55, max_lines=3)
-            complemento = Paragraph(complemento_formatado, cell_style)
-
-            table_data.append([
-                row['DATA'],
-                complemento,
-                processor.format_currency(valor_bruto),
-                processor.format_currency(irrf),
-                processor.format_currency(valor_liquido),
-                str(row['Debito']),
-                str(row['Credito']),
-                str(row['Historico'])
-            ])
-
-        col_widths = [0.6*inch, 3.2*inch, 0.7*inch, 0.5*inch, 0.7*inch, 0.7*inch, 0.7*inch, 0.6*inch]
-        table = Table(table_data, colWidths=col_widths, repeatRows=1, splitByRow=True)
-        table_style = TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-            ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 6),
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 6),
-            ('TOPPADDING', (0, 0), (-1, 0), 6),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.white),
-            ('ALIGN', (0, 1), (0, -1), 'CENTER'),
-            ('ALIGN', (2, 1), (4, -1), 'RIGHT'),
-            ('ALIGN', (5, 1), (-1, -1), 'CENTER'),
-            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-            ('FONTSIZE', (0, 1), (-1, -1), 6),
-            ('GRID', (0, 0), (-1, -1), 1, colors.black),
-            ('LEFTPADDING', (0, 0), (-1, -1), 4),
-            ('RIGHTPADDING', (0, 0), (-1, -1), 4),
-            ('TOPPADDING', (0, 1), (-1, -1), 6),
-            ('BOTTOMPADDING', (0, 1), (-1, -1), 6),
-            ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.lightgrey]),
-        ])
-        table.setStyle(table_style)
-        section_elements.append(table)
-        section_elements.append(Spacer(1, 0.2 * inch))
-        return section_elements, total_liquido, total_irrf
-
+    # header
+    if company_name:
+        elements.append(Paragraph(company_name, styles['Title']))
+        elements.append(Spacer(1, 0.2 * inch))
     elements.append(Paragraph("RELATÓRIO DA CÂMARA DE COMPENSAÇÃO", styles['Title']))
     elements.append(Spacer(1, 0.3 * inch))
 
@@ -383,11 +376,11 @@ def generate_unified_report(processor, df, output_dir=None, display_result=False
     resumo_data = [
         ['RESUMO EXECUTIVO', '', '', '', ''],
         ['Categoria', 'Registros', 'Valor Bruto', 'IRRF', 'Valor Líquido'],
-        ['A Pagar', str(len(df_a_pagar_bruto)), processor.format_currency(valor_bruto_a_pagar), processor.format_currency(irrf_info['irrf_a_pagar']), processor.format_currency(valor_liquido_a_pagar)],
-        ['A Receber', str(len(df_a_receber_bruto)), processor.format_currency(valor_bruto_a_receber), processor.format_currency(irrf_info['irrf_a_receber']), processor.format_currency(valor_liquido_a_receber)],
+        ['A Pagar', str(len(df_a_pagar_bruto)), format_brl(valor_bruto_a_pagar), format_brl(irrf_info['irrf_a_pagar']), format_brl(valor_liquido_a_pagar)],
+        ['A Receber', str(len(df_a_receber_bruto)), format_brl(valor_bruto_a_receber), format_brl(irrf_info['irrf_a_receber']), format_brl(valor_liquido_a_receber)],
         ['', '', '', '', ''],
-        ['SALDO BRUTO', '', processor.format_currency(saldo_bruto), '', ''],
-        ['SALDO LÍQUIDO', '', '', '', processor.format_currency(saldo_liquido)]
+        ['SALDO BRUTO', '', format_brl(saldo_bruto), '', ''],
+        ['SALDO LÍQUIDO', '', '', '', format_brl(saldo_liquido)]
     ]
 
     resumo_table = Table(resumo_data, colWidths=[1.5*inch, 0.8*inch, 1*inch, 0.8*inch, 1*inch])
@@ -430,17 +423,17 @@ def generate_unified_report(processor, df, output_dir=None, display_result=False
     elements.append(Spacer(1, 0.3 * inch))
     elements.append(Paragraph(f"Relatório gerado em: {datetime.now().strftime('%d/%m/%Y %H:%M')}", styles['Normal']))
 
-    doc.build(elements)
+    doc.build(elements, onFirstPage=footer_cb, onLaterPages=footer_cb)
 
     if display_result:
         try:
             import streamlit as st
             st.success(f"✅ Relatório unificado gerado com sucesso!")
-            st.info(f"📊 A Pagar: {len(df_a_pagar_bruto)} registros - {processor.format_currency(valor_liquido_a_pagar)}")
-            st.info(f"📈 A Receber: {len(df_a_receber_bruto)} registros - {processor.format_currency(valor_liquido_a_receber)}")
-            st.info(f"🧾 IRRF Total: {processor.format_currency(irrf_info['total_irrf'])} (A Pagar: {processor.format_currency(irrf_info['irrf_a_pagar'])}, A Receber: {processor.format_currency(irrf_info['irrf_a_receber'])})")
-            st.info(f"💰 Saldo Bruto: {processor.format_currency(saldo_bruto)}")
-            st.info(f"💰 Saldo Líquido: {processor.format_currency(saldo_liquido)}")
+            st.info(f"📊 A Pagar: {len(df_a_pagar_bruto)} registros - {format_brl(valor_liquido_a_pagar)}")
+            st.info(f"📈 A Receber: {len(df_a_receber_bruto)} registros - {format_brl(valor_liquido_a_receber)}")
+            st.info(f"🧾 IRRF Total: {format_brl(irrf_info['total_irrf'])} (A Pagar: {format_brl(irrf_info['irrf_a_pagar'])}, A Receber: {format_brl(irrf_info['irrf_a_receber'])})")
+            st.info(f"💰 Saldo Bruto: {format_brl(saldo_bruto)}")
+            st.info(f"💰 Saldo Líquido: {format_brl(saldo_liquido)}")
         except Exception:
             pass
 
@@ -480,6 +473,9 @@ def generate_irrf_report(processor, df, output_dir=None, display_result=False):
     config = processor.get_pdf_config()
     styles = config['styles']
     cell_style = config['cell_style']
+    generation_date = datetime.now().strftime('%d/%m/%Y')
+    footer_cb = make_footer_callback(generation_date)
+    company_name = get_company_name(processor, config)
 
     pdf_file = os.path.join(output_dir, "relatorio_irrf.pdf")
     doc = SimpleDocTemplate(pdf_file, pagesize=config['pagesize'],
@@ -487,6 +483,10 @@ def generate_irrf_report(processor, df, output_dir=None, display_result=False):
                             topMargin=config['margins']['top'], bottomMargin=config['margins']['bottom'])
     elements = []
 
+    # header
+    if company_name:
+        elements.append(Paragraph(company_name, styles['Title']))
+        elements.append(Spacer(1, 0.2 * inch))
     elements.append(Paragraph("RELATÓRIO DE IRRF - IMPOSTO DE RENDA RETIDO NA FONTE", styles['Title']))
     elements.append(Spacer(1, 0.3 * inch))
 
@@ -500,9 +500,9 @@ def generate_irrf_report(processor, df, output_dir=None, display_result=False):
         entidade = str(row.get('NomeSingular', 'N/A'))
         if len(entidade) > 30:
             entidade = entidade[:27] + '...'
-        table_data.append([row['Tipo'], Paragraph(entidade, cell_style), processor.format_currency(valor_irrf), "IRRF dos dados originais"])
+        table_data.append([row['Tipo'], Paragraph(entidade, cell_style), format_brl(valor_irrf), "IRRF dos dados originais"])
 
-    table_data.append(['', Paragraph('<b>TOTAL</b>', cell_style), f'<b>{processor.format_currency(irrf_info["total_irrf"])}</b>', ''])
+    table_data.append(['', Paragraph('<b>TOTAL</b>', cell_style), f'<b>{format_brl(irrf_info["total_irrf"])}</b>', ''])
 
     col_widths = [0.8*inch, 1.8*inch, 1*inch, 1.8*inch]
     table = Table(table_data, colWidths=col_widths, repeatRows=1, splitByRow=True)
@@ -538,9 +538,9 @@ def generate_irrf_report(processor, df, output_dir=None, display_result=False):
 
     resumo_data = [
         ['Categoria', 'Registros', 'Total IRRF'],
-        ['A Pagar', str(len(df_irrf[df_irrf['Tipo'] == 'A pagar'])), processor.format_currency(irrf_info['irrf_a_pagar'])],
-        ['A Receber', str(len(df_irrf[df_irrf['Tipo'] == 'A receber'])), processor.format_currency(irrf_info['irrf_a_receber'])],
-        ['TOTAL GERAL', str(irrf_info['registros_com_irrf']), processor.format_currency(irrf_info['total_irrf'])]
+        ['A Pagar', str(len(df_irrf[df_irrf['Tipo'] == 'A pagar'])), format_brl(irrf_info['irrf_a_pagar'])],
+        ['A Receber', str(len(df_irrf[df_irrf['Tipo'] == 'A receber'])), format_brl(irrf_info['irrf_a_receber'])],
+        ['TOTAL GERAL', str(irrf_info['registros_com_irrf']), format_brl(irrf_info['total_irrf'])]
     ]
 
     resumo_table = Table(resumo_data, colWidths=[1.5*inch, 1.2*inch, 1.3*inch])
@@ -570,16 +570,16 @@ def generate_irrf_report(processor, df, output_dir=None, display_result=False):
     elements.append(Spacer(1, 0.2 * inch))
     elements.append(Paragraph(f"Relatório gerado em: {datetime.now().strftime('%d/%m/%Y %H:%M')}", styles['Normal']))
 
-    doc.build(elements)
+    doc.build(elements, onFirstPage=footer_cb, onLaterPages=footer_cb)
 
     if display_result:
         try:
             import streamlit as st
             st.success(f"✅ Relatório de IRRF gerado com sucesso!")
             st.info(f"📊 Total de registros com IRRF: {irrf_info['registros_com_irrf']}")
-            st.info(f"💰 Total IRRF: {processor.format_currency(irrf_info['total_irrf'])}")
-            st.info(f"🔸 IRRF A Pagar: {processor.format_currency(irrf_info['irrf_a_pagar'])}")
-            st.info(f"🔹 IRRF A Receber: {processor.format_currency(irrf_info['irrf_a_receber'])}")
+            st.info(f"💰 Total IRRF: {format_brl(irrf_info['total_irrf'])}")
+            st.info(f"🔸 IRRF A Pagar: {format_brl(irrf_info['irrf_a_pagar'])}")
+            st.info(f"🔹 IRRF A Receber: {format_brl(irrf_info['irrf_a_receber'])}")
         except Exception:
             pass
 
