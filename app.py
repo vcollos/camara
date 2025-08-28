@@ -656,24 +656,53 @@ class UniodontoCsvProcessor:
                                 tipo = str(original_row.get('Tipo', '')) if pd.notnull(original_row.get('Tipo')) else ''
                                 export_df.at[idx, 'complemento'] = f"{nome} | {desc_tipo} | {desc} | {tipo}"
         else:
-            # Arquivo original: remover apenas colunas extras de controle
-            if 'TipoSingular' in export_df.columns:
-                export_df = export_df.drop(['TipoSingular', 'CodigoTipoRecebimento', 'Tipo'], axis=1, errors='ignore')
-        
-        # Escreve o cabeçalho
+            # Arquivo original: manter todas as colunas fornecidas pelo usuário (não remover colunas importantes)
+            # Assume-se que, quando o usuário pede o "Arquivo Editado (Original)", o DataFrame
+            # já foi preparado com exatamente as colunas originais esperadas. Portanto, NÃO
+            # removemos colunas aqui para preservar ordem e valores.
+            # (Se necessário, a seleção/ordenação deve ser feita antes de chamar esta função.)
+            pass
+
+        # Escreve o cabeçalho mantendo a ordem atual das colunas
         csv_buffer.write(';'.join(export_df.columns) + '\n')
         
         # Escreve as linhas sem aspas
         for _, row in export_df.iterrows():
             line_values = []
             for col, val in row.items():
-                # Formata valores numéricos com vírgula decimal
-                if col == 'valor' and isinstance(val, (int, float)):
-                    line_values.append(f"{val:.2f}".replace('.', ','))
-                elif isinstance(val, (int, float)) and col not in ['Debito', 'Credito', 'Historico']:
-                    line_values.append(str(val).replace('.', ','))
-                else:
+                # Tratar valores ausentes
+                if pd.isna(val):
+                    line_values.append('')
+                    continue
+
+                # Coluna 'valor' sempre formatada como monetária (duas casas, vírgula decimal)
+                if col == 'valor':
+                    try:
+                        num = float(val)
+                        line_values.append(f"{num:.2f}".replace('.', ','))
+                        continue
+                    except Exception:
+                        # Se não for possível converter, escrever como está
+                        line_values.append(str(val))
+                        continue
+
+                # Números (int/float): evitar mostrar '.0' para inteiros e usar vírgula decimal apenas quando necessário
+                if isinstance(val, float):
+                    # Se float representa inteiro (ex.: 373109.0) escrever como inteiro sem decimal
+                    if val.is_integer():
+                        line_values.append(str(int(val)))
+                    else:
+                        # Float com casas decimais -> formatar com 2 casas e vírgula
+                        line_values.append(f"{val:.2f}".replace('.', ','))
+                    continue
+                elif isinstance(val, int):
                     line_values.append(str(val))
+                    continue
+
+                # Strings que já contêm formatação (ex: "121,22") devem ser mantidas como estão
+                # Para qualquer outro tipo, usar str()
+                line_values.append(str(val))
+
             csv_buffer.write(';'.join(line_values) + '\n')
         
         return csv_buffer.getvalue()
@@ -1640,7 +1669,7 @@ class UniodontoCsvProcessor:
             
             return section_elements, total_liquido, total_irrf
 
-    # Removido método truncate_lines conforme solicitado
+        # Removido método truncate_lines conforme solicitado
         
         # PÁGINA 1: RESUMO EXECUTIVO
         title_text = "RELATÓRIO DA CÂMARA DE COMPENSAÇÃO"
