@@ -1431,7 +1431,7 @@ class UniodontoCsvProcessor:
         Retorna o caminho absoluto do PNG do logo conforme solicitado pelo usuário.
         Somente retorna o PNG se existir; não faz fallback para SVG.
         """
-        png_path = "/Users/vitor/Documents/Dev/contag/camara/imagem/logo_contag.png"
+        png_path = "/imagem/logo_contag.png"
         if os.path.exists(png_path):
             return png_path
         return None
@@ -2106,7 +2106,7 @@ class UniodontoCsvProcessor:
 def main():
     # Cabeçalho com logo e título alinhados verticalmente ao centro (proporção 2/6 e 4/6)
     # Construímos um bloco HTML flex para garantir alinhamento vertical consistente.
-    logo_png_path = "/Users/vitor/Documents/Dev/contag/camara/imagem/logo_contag.png"
+    logo_png_path = "/imagem/logo_contag.png"
     try:
         # Tentar carregar PNG e transformar em base64 para embutir no HTML
         with open(logo_png_path, "rb") as _f:
@@ -2139,7 +2139,7 @@ def main():
 
     # Se o embed do PNG não funcionou, exibimos também com st.image (fallback seguro)
     if not _img_src:
-        logo_path = "/Users/vitor/Documents/Dev/contag/camara/imagem/logo_contag.png"
+        logo_path = "/imagem/logo_contag.png"
         try:
             st.image(logo_path, width=160)
         except Exception:
