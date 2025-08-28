@@ -1431,7 +1431,7 @@ class UniodontoCsvProcessor:
         Retorna o caminho absoluto do PNG do logo conforme solicitado pelo usuário.
         Somente retorna o PNG se existir; não faz fallback para SVG.
         """
-        png_path = "/imagem/logo_contag.png"
+        png_path = "https://collos.com.br/wp-content/uploads/2024/12/logo_contag.png"
         if os.path.exists(png_path):
             return png_path
         return None
@@ -1468,7 +1468,7 @@ class UniodontoCsvProcessor:
             # Silenciosamente falhar caso algo dê errado (preservar geração do PDF)
             pass
 
-    def generate_unified_report(self, df, output_dir=None, display_result=False):
+    def generate_unified_report(self, df, output_dir=None, display_result=False, company_name=None):
         """
         Gera um relatório simples: CSV convertido em PDF + página de resumo.
         """
@@ -1643,7 +1643,10 @@ class UniodontoCsvProcessor:
     # Removido método truncate_lines conforme solicitado
         
         # PÁGINA 1: RESUMO EXECUTIVO
-        elements.append(Paragraph("RELATÓRIO DA CÂMARA DE COMPENSAÇÃO", styles['Title']))
+        title_text = "RELATÓRIO DA CÂMARA DE COMPENSAÇÃO"
+        if company_name and str(company_name).strip():
+            title_text = f"{title_text} - {str(company_name).strip()}"
+        elements.append(Paragraph(title_text, styles['Title']))
         elements.append(Spacer(1, 0.3 * inch))
         
         # Calcular totais para o resumo
@@ -2106,7 +2109,7 @@ class UniodontoCsvProcessor:
 def main():
     # Cabeçalho com logo e título alinhados verticalmente ao centro (proporção 2/6 e 4/6)
     # Construímos um bloco HTML flex para garantir alinhamento vertical consistente.
-    logo_png_path = "/imagem/logo_contag.png"
+    logo_png_path = "https://collos.com.br/wp-content/uploads/2024/12/logo_contag.png"
     try:
         # Tentar carregar PNG e transformar em base64 para embutir no HTML
         with open(logo_png_path, "rb") as _f:
@@ -2139,7 +2142,7 @@ def main():
 
     # Se o embed do PNG não funcionou, exibimos também com st.image (fallback seguro)
     if not _img_src:
-        logo_path = "/imagem/logo_contag.png"
+        logo_path = "https://collos.com.br/wp-content/uploads/2024/12/logo_contag.png"
         try:
             st.image(logo_path, width=160)
         except Exception:
@@ -2566,6 +2569,7 @@ def main():
                     # Todos os relatórios selecionados
                     selected_report_names = None
                 
+                company_name = st.text_input("Nome da Empresa (opcional) para o título do Relatório Unificado:", value="", key="company_name")
                 if st.button("Gerar Relatórios Contábeis"):
                     # Criar diretório temporário para os relatórios
                     import tempfile
@@ -2695,7 +2699,7 @@ def main():
                     try:
                         if report_options == "Relatório Unificado da Câmara de Compensação":
                             # Gerar relatório unificado
-                            unified_results = processor.generate_unified_report(consolidated_df, output_dir, display_result=True)
+                            unified_results = processor.generate_unified_report(consolidated_df, output_dir, display_result=True, company_name=company_name)
                             
                             # Criar link de download para o relatório unificado
                             if "pdf_file" in unified_results and os.path.exists(unified_results["pdf_file"]):
