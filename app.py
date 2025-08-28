@@ -59,7 +59,7 @@ NOMES_CONTAS_CONTABEIS = {
     179: "VL. MULTAS/JUROS"
 }
 
-class NeodontoCsvProcessor:
+class UniodontoCsvProcessor:
     def __init__(self):
         self.today = datetime.today()
         self.first_day_of_current_month = self.today.replace(day=1)
@@ -508,32 +508,7 @@ class NeodontoCsvProcessor:
         # Normaliza e converte a coluna valor para float
         df['valor'] = df['valor'].apply(self.normalize_value)
         
-        # VERIFICAÇÃO: Detectar valores convertidos incorretamente (muito grandes)
-        problematic_values = df[df['valor'] > 100000]  # Valores maiores que 100k são suspeitos
-        if len(problematic_values) > 0:
-            st.warning(f"⚠️ **ATENÇÃO**: {len(problematic_values)} valores parecem ter sido convertidos incorretamente (muito grandes)")
-            
-            # Tentar corrigir valores problemáticos
-            for idx in problematic_values.index:
-                original_val = original_valor_bruto.iloc[idx]
-                converted_val = df.loc[idx, 'valor']
-                
-                # Se o valor original era uma string com vírgula como decimal
-                if isinstance(original_val, str) and ',' in str(original_val):
-                    # Tentar reconverter usando lógica mais cuidadosa
-                    corrected_val = self.normalize_value(original_val)
-                    
-                    # Se ainda está muito grande, tentar dividir por 100
-                    if corrected_val > 10000:
-                        corrected_val = corrected_val / 100
-                    
-                    df.loc[idx, 'valor'] = corrected_val
-                    st.info(f"🔧 Valor corrigido: {original_val} → {corrected_val} (era {converted_val})")
-                elif converted_val > 10000:
-                    # Para valores numéricos muito grandes, tentar dividir por 100
-                    corrected_val = converted_val / 100
-                    df.loc[idx, 'valor'] = corrected_val
-                    st.info(f"🔧 Valor corrigido: {converted_val} → {corrected_val}")
+       
         
         # Cria a coluna complemento com o formato especificado + tipo
         df['complemento'] = (df['NomeSingular'].fillna('') + " | " + 
@@ -758,7 +733,7 @@ class NeodontoCsvProcessor:
             # Aplicar mapeamentos
             df_mapped = df_mapped.rename(columns=column_mapping)
             
-            # Determinar o valor bruto baseado no tipo
+            # Determinar o Bruto baseado no tipo
             if 'Valor a Receber' in available_columns and 'Valor a Pagar' in available_columns:
                 def calculate_valor_bruto(row):
                     valor_receber = self.normalize_value(row.get('Valor a Receber', 0))
@@ -854,7 +829,7 @@ class NeodontoCsvProcessor:
             'TipoSingular': ['tipo_singular', 'tipo singular', 'TipoSing', 'TIPO_SINGULAR'],
             'CodigoTipoRecebimento': ['codigo_tipo_recebimento', 'cod_tipo_receb', 'CodTipoReceb', 'CODIGO_TIPO_RECEBIMENTO'],
             'DescricaoTipoRecebimento': ['descricao_tipo_recebimento', 'desc_tipo_receb', 'DescTipoReceb', 'DESCRICAO_TIPO_RECEBIMENTO'],
-            'ValorBruto': ['valor_bruto', 'valor bruto', 'Valor', 'VALOR_BRUTO', 'ValorTotal'],
+            'ValorBruto': ['valor_bruto', 'Bruto', 'Valor', 'VALOR_BRUTO', 'ValorTotal'],
             'IRRF': ['irrf', 'ir', 'IR', 'ImpostoRenda'],
             'Descricao': ['descricao', 'desc', 'Desc', 'DESCRICAO', 'Observacao']
         }
@@ -1069,8 +1044,9 @@ class NeodontoCsvProcessor:
         
         # Criar estilo personalizado para células da tabela
         cell_style = styles['Normal'].clone('CellStyle')
-        cell_style.fontSize = 7
-        cell_style.leading = 9
+        # Fonte das células das tabelas fixada em 6 conforme solicitado
+        cell_style.fontSize = 6
+        cell_style.leading = 8
         cell_style.alignment = 0  # Alinhamento à esquerda
         cell_style.wordWrap = 'CJK'
         
@@ -1126,16 +1102,16 @@ class NeodontoCsvProcessor:
                 lambda x: f"{x} - {NOMES_CONTAS_CONTABEIS.get(int(x), 'Descrição não encontrada')}" if pd.notnull(x) and str(x).isdigit() else "")
             
             # Gerar PDF com totalizações
-            doc = SimpleDocTemplate(pdf_file, pagesize=letter, leftMargin=1.2*cm, rightMargin=1.2*cm, topMargin=1.2*cm, bottomMargin=1.2*cm)
+            doc = SimpleDocTemplate(pdf_file, pagesize=letter, leftMargin=1*cm, rightMargin=1*cm, topMargin=1.5*cm, bottomMargin=1*cm)
             elements = []
-            
             # Título
             elements.append(Paragraph(report_config["title"], styles['Title']))
             elements.append(Spacer(1, 0.25 * inch))
             
             # Dados do relatório
             date_str = filtered_df['DATA'].iloc[0] if not filtered_df.empty else ""
-            elements.append(Paragraph(f"Data de referência: {date_str}", styles['Normal']))
+            # Data de referência será exibida no rodapé de todas as páginas
+            self._current_report_date = date_str
             elements.append(Spacer(1, 0.15 * inch))
             
             # Totalizações
@@ -1148,7 +1124,7 @@ class NeodontoCsvProcessor:
                 ["Valor total", f"R$ {total_value:.2f}".replace('.', ',')]
             ]
             
-            summary_table = Table(summary_data, colWidths=[1.5*inch, 1.5*inch])
+            summary_table = Table(summary_data, colWidths=[3.81*cm, 3.81*cm])
             summary_table.setStyle(TableStyle([
                 ('BACKGROUND', (0, 0), (-1, -1), colors.white),
                 ('GRID', (0, 0), (-1, -1), 1, colors.black),
@@ -1220,8 +1196,8 @@ class NeodontoCsvProcessor:
             total_row = ['', 'TOTAL', f"R$ {total_value:.2f}".replace('.', ','), '', '', '']
             data.append(total_row)
             
-            # Criar tabela com larguras de coluna otimizadas para retrato A4
-            col_widths = [0.6*inch, 1.8*inch, 0.7*inch, 1.4*inch, 1.4*inch, 0.8*inch]
+            # Criar tabela com larguras de coluna otimizadas para retrato A4 (convertidas para cm)
+            col_widths = [1.5*cm, 4.5*cm, 1.2*cm, 3.556*cm, 3.556*cm, 2.032*cm]
             
             # Estilo da tabela melhorado
             table_style = TableStyle([
@@ -1230,8 +1206,8 @@ class NeodontoCsvProcessor:
                 ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
                 ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
                 ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                ('FONTSIZE', (0, 0), (-1, 0), 9),
-                ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+                ('FONTSIZE', (0, 0), (-1, 0), 6),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 6),
                 ('TOPPADDING', (0, 0), (-1, 0), 8),
                 
                 # Dados
@@ -1242,7 +1218,7 @@ class NeodontoCsvProcessor:
                 # Linha de total
                 ('BACKGROUND', (0, -1), (-1, -1), colors.lightgrey),
                 ('FONTNAME', (0, -1), (-1, -1), 'Helvetica-Bold'),
-                ('FONTSIZE', (0, -1), (-1, -1), 8),
+                ('FONTSIZE', (0, -1), (-1, -1), 6),
                 ('ALIGN', (2, -1), (2, -1), 'RIGHT'),  # Total à direita
                 
                 # Borda
@@ -1266,14 +1242,15 @@ class NeodontoCsvProcessor:
 
             # Aplicar o estilo à tabela
             table.setStyle(table_style)
+            elements.append(Spacer(1, 1 * cm))
             elements.append(table)
             
             # Adicionar informações adicionais
             elements.append(Spacer(1, 0.5 * inch))
             elements.append(Paragraph(f"Relatório gerado em: {datetime.now().strftime('%d/%m/%Y %H:%M')}", styles['Normal']))
             
-            # Gerar o PDF
-            doc.build(elements)
+            # Gerar o PDF (adiciona logo no topo direito)
+            doc.build(elements, onFirstPage=self._draw_logo, onLaterPages=self._draw_logo)
             
             # Armazenar os resultados
             results[report_config["name"]] = {
@@ -1290,9 +1267,8 @@ class NeodontoCsvProcessor:
         
         # Criar um relatório de resumo geral
         summary_file = os.path.join(output_dir, "resumo_relatorios.pdf")
-        doc = SimpleDocTemplate(summary_file, pagesize=letter)
+        doc = SimpleDocTemplate(summary_file, pagesize=letter, leftMargin=1*cm, rightMargin=1*cm, topMargin=1*cm, bottomMargin=1*cm)
         elements = []
-        
         # Título
         elements.append(Paragraph("Resumo dos Relatórios Contábeis", styles['Title']))
         elements.append(Spacer(1, 0.5 * inch))
@@ -1315,8 +1291,8 @@ class NeodontoCsvProcessor:
         # Adicionar linha de total geral
         summary_data.append(["TOTAL GERAL", "", f"R$ {total_overall:.2f}".replace('.', ',')])
         
-        # Criar tabela (ajustada para formato retrato A4)
-        summary_table = Table(summary_data, colWidths=[3*inch, 0.8*inch, 1.2*inch])
+        # Criar tabela (ajustada para formato retrato A4) - colunas em cm
+        summary_table = Table(summary_data, colWidths=[7.62*cm, 2.032*cm, 3.048*cm])
         
         # Estilo da tabela
         summary_style = TableStyle([
@@ -1325,7 +1301,7 @@ class NeodontoCsvProcessor:
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
             ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BOTTOMPADDING', (0, 0), (-1, 0),6),
             
             # Dados
             ('BACKGROUND', (0, 1), (-1, -2), colors.beige),
@@ -1346,8 +1322,8 @@ class NeodontoCsvProcessor:
         elements.append(Spacer(1, 0.5 * inch))
         elements.append(Paragraph(f"Resumo gerado em: {datetime.now().strftime('%d/%m/%Y %H:%M')}", styles['Normal']))
         
-        # Gerar o PDF de resumo
-        doc.build(elements)
+        # Gerar o PDF de resumo (adiciona logo no topo direito)
+        doc.build(elements, onFirstPage=self._draw_logo, onLaterPages=self._draw_logo)
         pdf_files.append(summary_file)
         
         if display_result:
@@ -1449,6 +1425,49 @@ class NeodontoCsvProcessor:
         formatted = formatted.replace(',', 'TEMP').replace('.', ',').replace('TEMP', '.')
         return formatted
 
+    # --- Helpers para inserir logo nos PDFs ---
+    def _get_logo_png_path(self):
+        """
+        Retorna o caminho absoluto do PNG do logo conforme solicitado pelo usuário.
+        Somente retorna o PNG se existir; não faz fallback para SVG.
+        """
+        png_path = "/Users/vitor/Documents/Dev/contag/camara/imagem/logo_contag.png"
+        if os.path.exists(png_path):
+            return png_path
+        return None
+
+    def _draw_logo(self, canvas, doc):
+        """
+        Callback para desenhar o logo no canto superior direito com margem
+        superior e direita de 1cm. O logo fica isolado e o conteúdo do layout
+        é posicionado considerando um espaçamento adicional de 0.5cm no topo.
+        Em vez de manipular o canvas (que pode acumular transforms), esta função
+        só desenha o logo; o espaçamento do conteúdo é aplicado ajustando as
+        margens (topMargin = 1.5cm) nos SimpleDocTemplate.
+        """
+        try:
+            from reportlab.lib.utils import ImageReader
+            logo_path = self._get_logo_png_path()
+            if not os.path.exists(logo_path):
+                return
+            img = ImageReader(logo_path)
+            iw, ih = img.getSize()
+            # Largura desejada em pontos (3cm)
+            desired_width = 3 * cm
+            scale = desired_width / float(iw)
+            desired_height = float(ih) * scale
+            # Coordenadas: origem (0,0) em bottom-left
+            x = doc.pagesize[0] - (1 * cm) - desired_width
+            y = doc.pagesize[1] - (1 * cm) - desired_height
+
+            # Desenhar imagem sem afetar o sistema de coordenadas
+            canvas.saveState()
+            canvas.drawImage(logo_path, x, y, width=desired_width, height=desired_height, mask='auto')
+            canvas.restoreState()
+        except Exception:
+            # Silenciosamente falhar caso algo dê errado (preservar geração do PDF)
+            pass
+
     def generate_unified_report(self, df, output_dir=None, display_result=False):
         """
         Gera um relatório simples: CSV convertido em PDF + página de resumo.
@@ -1488,8 +1507,9 @@ class NeodontoCsvProcessor:
         
         # Criar estilo personalizado para células da tabela
         cell_style = styles['Normal'].clone('CellStyle')
-        cell_style.fontSize = 7
-        cell_style.leading = 9
+        # Fonte das células das tabelas fixada em 6 conforme solicitado
+        cell_style.fontSize = 6
+        cell_style.leading = 8
         cell_style.alignment = 0
         cell_style.wordWrap = 'CJK'
         
@@ -1498,10 +1518,20 @@ class NeodontoCsvProcessor:
         
         # Gerar PDF
         doc = SimpleDocTemplate(pdf_file, pagesize=letter, 
-                              leftMargin=1.2*cm, rightMargin=1.2*cm, 
-                              topMargin=1.2*cm, bottomMargin=1.2*cm)
+                              leftMargin=1*cm, rightMargin=1*cm, 
+                              topMargin=1.5*cm, bottomMargin=1*cm)
+        doc = SimpleDocTemplate(pdf_file, pagesize=letter, 
+                              leftMargin=1*cm, rightMargin=1*cm, 
+                              topMargin=1.5*cm, bottomMargin=1*cm)
         elements = []
-        
+        doc = SimpleDocTemplate(pdf_file, pagesize=letter, 
+                              leftMargin=1*cm, rightMargin=1*cm, 
+                              topMargin=1.5*cm, bottomMargin=1*cm)
+        elements = []
+        doc = SimpleDocTemplate(pdf_file, pagesize=letter, 
+                              leftMargin=1*cm, rightMargin=1*cm, 
+                              topMargin=1.5*cm, bottomMargin=1*cm)
+        elements = []
         # Função para criar tabela simples do CSV
         def create_csv_table(data_df, section_title):
             section_elements = []
@@ -1515,7 +1545,7 @@ class NeodontoCsvProcessor:
             section_elements.append(Spacer(1, 0.1 * inch))
             
             # Preparar dados para a tabela (formato CSV simples)
-            table_data = [['Data', 'Complemento', 'Valor Bruto', 'IRRF', 'Valor Líquido', 'Débito', 'Crédito', 'Histórico']]
+            table_data = [['Data', 'Complemento', 'Bruto', 'IRRF', 'Líquido', 'Débito', 'Crédito', 'Histórico']]
             
             total_bruto = 0
             total_irrf = 0
@@ -1564,8 +1594,8 @@ class NeodontoCsvProcessor:
             
             # Totais removidos - já estão no resumo da primeira página
             
-            # Configurar larguras das colunas (ajustadas para formato retrato A4)
-            col_widths = [0.6*inch, 3.2*inch, 0.7*inch, 0.5*inch, 0.7*inch, 0.7*inch, 0.7*inch, 0.6*inch]
+            # Configurar larguras das colunas (ajustadas para formato retrato A4) - em cm
+            col_widths = [1.5*cm, 8.1*cm, 1.2*cm, 1.2*cm, 1.2*cm, 1.2*cm, 1.2*cm, 1.2*cm]
             
             # Criar tabela com suporte a quebra de linha
             table = Table(table_data, colWidths=col_widths, repeatRows=1, splitByRow=True)
@@ -1577,7 +1607,7 @@ class NeodontoCsvProcessor:
                 ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
                 ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
                 ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                ('FONTSIZE', (0, 0), (-1, 0), 8),
+                ('FONTSIZE', (0, 0), (-1, 0), 6),
                 ('BOTTOMPADDING', (0, 0), (-1, 0), 6),
                 ('TOPPADDING', (0, 0), (-1, 0), 6),
                 
@@ -1587,7 +1617,8 @@ class NeodontoCsvProcessor:
                 ('ALIGN', (2, 1), (4, -1), 'RIGHT'),   # Valores à direita
                 ('ALIGN', (5, 1), (-1, -1), 'CENTER'), # Códigos centralizados
                 ('VALIGN', (0, 0), (-1, -1), 'TOP'),   # Alinhamento vertical superior
-                ('FONTSIZE', (0, 1), (-1, -1), 7),
+                ('FONTSIZE', (0, 1), (-1, -1), 6),
+                ('FONTSIZE', (0, 1), (-1, -1), 6),
                 
                 # Bordas simples
                 ('GRID', (0, 0), (-1, -1), 1, colors.black),
@@ -1603,6 +1634,7 @@ class NeodontoCsvProcessor:
             ])
             
             table.setStyle(table_style)
+            section_elements.append(Spacer(1, 1 * cm))
             section_elements.append(table)
             section_elements.append(Spacer(1, 0.2 * inch))
             
@@ -1624,32 +1656,58 @@ class NeodontoCsvProcessor:
         df_a_pagar = df[df['Tipo'] == 'A pagar'].copy()
         df_a_receber = df[df['Tipo'] == 'A receber'].copy()
         
-        # Data de referência
+        # Data de referência será exibida no rodapé de todas as páginas
         date_str = df['DATA'].iloc[0] if not df.empty else ""
-        elements.append(Paragraph(f"Data de referência: {date_str}", styles['Normal']))
+        self._current_report_date = date_str
         elements.append(Spacer(1, 0.3 * inch))
         
-        # Tabela de resumo executivo atualizada
-        resumo_data = [
-            ['RESUMO EXECUTIVO', '', '', '', ''],
-            ['Categoria', 'Registros', 'Valor Bruto', 'IRRF', 'Valor Líquido'],
-            ['A Pagar', str(len(df_a_pagar_bruto)), 
-             self.format_currency(valor_bruto_a_pagar), 
-             self.format_currency(irrf_info['irrf_a_pagar']),
-             self.format_currency(valor_liquido_a_pagar)],
-            ['A Receber', str(len(df_a_receber_bruto)), 
-             self.format_currency(valor_bruto_a_receber), 
-             self.format_currency(irrf_info['irrf_a_receber']),
-             self.format_currency(valor_liquido_a_receber)],
-            ['', '', '', '', ''],
-            ['SALDO BRUTO', '', self.format_currency(saldo_bruto), '', ''],
-            ['SALDO LÍQUIDO', '', '', '', self.format_currency(saldo_liquido)]
+        # Tabela de resumo executivo atualizada (com subdivisões por categoria)
+        # Definir categorias e ordem desejada
+        categories = [
+            ("taxas_manutencao", "Taxas de Manutenção", {"CodigoTipoRecebimento": 3}),
+            ("taxas_marketing", "Taxas de Marketing", {"CodigoTipoRecebimento": 4}),
+            ("multas_juros", "Multas e Juros", {"CodigoTipoRecebimento": 5}),
+            ("outras", "Outras", {"CodigoTipoRecebimento": 6}),
+            ("pre_pagamento_operadoras", "Pré-pagamento - Operadoras", {"CodigoTipoRecebimento": 1, "TipoSingular": "Operadora"}),
+            ("pre_pagamento_prestadoras", "Pré-pagamento - Prestadoras", {"CodigoTipoRecebimento": 1, "TipoSingular": "Prestadora"}),
+            ("custo_operacional_operadoras", "Custo Operacional - Operadoras", {"CodigoTipoRecebimento": 2, "TipoSingular": "Operadora"}),
+            ("custo_operacional_prestadoras", "Custo Operacional - Prestadoras", {"CodigoTipoRecebimento": 2, "TipoSingular": "Prestadora"}),
         ]
         
-        resumo_table = Table(resumo_data, colWidths=[1.5*inch, 0.8*inch, 1*inch, 0.8*inch, 1*inch])
+        # Construir resumo com linhas por tipo e por categoria
+        resumo_data = [['RESUMO EXECUTIVO', '', '', '', '']]
+        resumo_data.append(['Categoria', 'Registros', 'Bruto', 'IRRF', 'Líquido'])
+        
+        for tipo_label, df_tipo_bruto, valor_bruto_tipo, irrf_tipo, valor_liquido_tipo in [
+            ('A pagar', df_a_pagar_bruto, valor_bruto_a_pagar, irrf_info['irrf_a_pagar'], valor_liquido_a_pagar),
+            ('A receber', df_a_receber_bruto, valor_bruto_a_receber, irrf_info['irrf_a_receber'], valor_liquido_a_receber)
+        ]:
+            # Cabeçalho do tipo
+            resumo_data.append([tipo_label.upper(), str(len(df_tipo_bruto)), self.format_currency(valor_bruto_tipo), self.format_currency(irrf_tipo), self.format_currency(valor_liquido_tipo)])
+            
+            # Linhas por categoria dentro do tipo
+            for _key, title, filters in categories:
+                filt_df = df[df['Tipo'] == tipo_label].copy()
+                # aplicar filtros da categoria
+                for k, v in filters.items():
+                    if k in filt_df.columns:
+                        filt_df = filt_df[filt_df[k] == v]
+                count = len(filt_df)
+                total = filt_df['valor'].sum() if count > 0 else 0
+                # IRRF somado a partir da coluna IRRF original, quando presente
+                irrf_sum = 0
+                if 'IRRF' in filt_df.columns and not filt_df.empty:
+                    irrf_sum = filt_df['IRRF'].apply(self.normalize_value).sum()
+                liquido = total - irrf_sum
+                resumo_data.append([f"  - {title}", str(count), self.format_currency(total), self.format_currency(irrf_sum), self.format_currency(liquido)])
+        
+        resumo_data.append(['', '', '', '', ''])
+        resumo_data.append(['SALDO BRUTO', '', self.format_currency(saldo_bruto), '', ''])
+        resumo_data.append(['SALDO LÍQUIDO', '', '', '', self.format_currency(saldo_liquido)])
+        
+        resumo_table = Table(resumo_data, colWidths=[7.62*cm, 2.1*cm, 2.5*cm, 2*cm, 2.5*cm])
         
         resumo_style = TableStyle([
-            # Título
             ('SPAN', (0, 0), (-1, 0)),
             ('BACKGROUND', (0, 0), (-1, 0), colors.darkgrey),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
@@ -1657,28 +1715,22 @@ class NeodontoCsvProcessor:
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
             ('FONTSIZE', (0, 0), (-1, 0), 12),
             
-            # Cabeçalho
             ('BACKGROUND', (0, 1), (-1, 1), colors.grey),
             ('TEXTCOLOR', (0, 1), (-1, 1), colors.whitesmoke),
             ('ALIGN', (0, 1), (-1, 1), 'CENTER'),
             ('FONTNAME', (0, 1), (-1, 1), 'Helvetica-Bold'),
             ('FONTSIZE', (0, 1), (-1, 1), 9),
             
-            # Dados
-            ('BACKGROUND', (0, 2), (-1, 4), colors.white),
+            ('BACKGROUND', (0, 2), (-1, -2), colors.white),
             ('ALIGN', (1, 2), (-1, -1), 'RIGHT'),
-            ('FONTSIZE', (0, 2), (-1, 4), 9),
+            ('FONTSIZE', (0, 2), (-1, -1), 9),
             
-            # Saldo
-            ('BACKGROUND', (0, 5), (-1, -1), colors.lightgrey),
-            ('FONTNAME', (0, 5), (-1, -1), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 5), (-1, -1), 10),
-            ('ALIGN', (4, 5), (4, -1), 'RIGHT'),
+            ('BACKGROUND', (0, -1), (-1, -1), colors.lightgrey),
+            ('FONTNAME', (0, -1), (-1, -1), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, -1), (-1, -1), 10),
+            ('ALIGN', (4, -1), (4, -1), 'RIGHT'),
             
-            # Bordas
             ('GRID', (0, 0), (-1, -1), 1, colors.black),
-            
-            # Padding
             ('LEFTPADDING', (0, 0), (-1, -1), 8),
             ('RIGHTPADDING', (0, 0), (-1, -1), 8),
             ('TOPPADDING', (0, 0), (-1, -1), 6),
@@ -1688,25 +1740,35 @@ class NeodontoCsvProcessor:
         resumo_table.setStyle(resumo_style)
         elements.append(resumo_table)
         
-        # PÁGINA 2: DETALHAMENTO A PAGAR
+        # DETALHAMENTO POR TIPO E CATEGORIA (cada categoria inicia em nova página)
         from reportlab.platypus import PageBreak
-        elements.append(PageBreak())
         
-        a_pagar_elements, _, _ = create_csv_table(df[df['Tipo'] == 'A pagar'], "DETALHAMENTO - A PAGAR")
-        elements.extend(a_pagar_elements)
-        
-        # PÁGINA 3: DETALHAMENTO A RECEBER
-        elements.append(PageBreak())
-        
-        a_receber_elements, _, _ = create_csv_table(df[df['Tipo'] == 'A receber'], "DETALHAMENTO - A RECEBER")
-        elements.extend(a_receber_elements)
+        tipos = ['A pagar', 'A receber']
+        # Para cada tipo, criar páginas por categoria (sem a página geral que gerava duplicação)
+        for tipo_label in tipos:
+            # Páginas por categoria conforme ordem em 'categories'
+            for _key, title, filters in categories:
+                # Filtrar por tipo e pelos filtros da categoria
+                filt_df = df[df['Tipo'] == tipo_label].copy()
+                for k, v in filters.items():
+                    if k in filt_df.columns:
+                        filt_df = filt_df[filt_df[k] == v]
+                # Se não há registros para essa categoria, pular (não gerar página vazia)
+                if filt_df.empty:
+                    # Não gerar PageBreak nem seção para categorias sem registros
+                    continue
+                # Inserir quebra de página e adicionar seção da categoria
+                elements.append(PageBreak())
+                cat_title = f"DETALHAMENTO - {tipo_label.upper()} - {title}"
+                cat_elements, _, _ = create_csv_table(filt_df, cat_title)
+                elements.extend(cat_elements)
         
         # Informações finais
         elements.append(Spacer(1, 0.3 * inch))
         elements.append(Paragraph(f"Relatório gerado em: {datetime.now().strftime('%d/%m/%Y %H:%M')}", styles['Normal']))
         
-        # Gerar o PDF
-        doc.build(elements)
+        # Gerar o PDF (adiciona logo no topo direito)
+        doc.build(elements, onFirstPage=self._draw_logo, onLaterPages=self._draw_logo)
         
         if display_result:
             st.success(f"✅ Relatório unificado gerado com sucesso!")
@@ -1764,8 +1826,16 @@ class NeodontoCsvProcessor:
         
         # Criar estilo personalizado para células da tabela
         cell_style = styles['Normal'].clone('CellStyle')
-        cell_style.fontSize = 8
-        cell_style.leading = 10
+        # Fonte das células das tabelas fixada em 6 conforme solicitado
+        cell_style.fontSize = 6
+        cell_style.leading = 8
+        cell_style.alignment = 0
+        cell_style.wordWrap = 'CJK'
+        # Criar estilo personalizado para células da tabela
+        cell_style = styles['Normal'].clone('CellStyle')
+        # Fonte das células das tabelas fixada em 6 conforme solicitado
+        cell_style.fontSize = 6
+        cell_style.leading = 8
         cell_style.alignment = 0
         cell_style.wordWrap = 'CJK'
         
@@ -1774,17 +1844,16 @@ class NeodontoCsvProcessor:
         
         # Gerar PDF
         doc = SimpleDocTemplate(pdf_file, pagesize=letter, 
-                              leftMargin=1.2*cm, rightMargin=1.2*cm, 
-                              topMargin=1.2*cm, bottomMargin=1.2*cm)
+                              leftMargin=1*cm, rightMargin=1*cm, 
+                              topMargin=1.5*cm, bottomMargin=1*cm)
         elements = []
-        
         # Título principal
         elements.append(Paragraph("RELATÓRIO DE IRRF - IMPOSTO DE RENDA RETIDO NA FONTE", styles['Title']))
         elements.append(Spacer(1, 0.3 * inch))
         
-        # Data de referência
+        # Data de referência será exibida no rodapé de todas as páginas
         date_str = df_irrf['DATA'].iloc[0] if not df_irrf.empty else ""
-        elements.append(Paragraph(f"Data de referência: {date_str}", styles['Normal']))
+        self._current_report_date = date_str
         elements.append(Spacer(1, 0.2 * inch))
         
         # Preparar dados para a tabela
@@ -1814,8 +1883,8 @@ class NeodontoCsvProcessor:
             ''
         ])
         
-        # Configurar larguras das colunas (ajustadas para formato retrato A4)
-        col_widths = [0.8*inch, 1.8*inch, 1*inch, 1.8*inch]
+        # Configurar larguras das colunas (ajustadas para formato retrato A4) - em cm
+        col_widths = [2*cm, 4.5*cm, 2.54*cm, 4.5*cm]
         
         # Criar tabela
         table = Table(table_data, colWidths=col_widths, repeatRows=1, splitByRow=True)
@@ -1827,7 +1896,7 @@ class NeodontoCsvProcessor:
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
             ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 8),
+            ('FONTSIZE', (0, 0), (-1, 0), 6),
             ('BOTTOMPADDING', (0, 0), (-1, 0), 6),
             ('TOPPADDING', (0, 0), (-1, 0), 6),
             
@@ -1835,12 +1904,12 @@ class NeodontoCsvProcessor:
             ('BACKGROUND', (0, 1), (-1, -2), colors.white),
             ('ALIGN', (2, 1), (-1, -1), 'RIGHT'),   # Valores à direita
             ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-            ('FONTSIZE', (0, 1), (-1, -2), 7),
+            ('FONTSIZE', (0, 1), (-1, -2), 6),
             
             # Linha de total
             ('BACKGROUND', (0, -1), (-1, -1), colors.lightgrey),
             ('FONTNAME', (0, -1), (-1, -1), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, -1), (-1, -1), 8),
+            ('FONTSIZE', (0, -1), (-1, -1), 6),
             ('ALIGN', (2, -1), (-1, -1), 'RIGHT'),
             
             # Bordas
@@ -1871,7 +1940,7 @@ class NeodontoCsvProcessor:
             ['TOTAL GERAL', str(irrf_info['registros_com_irrf']), self.format_currency(irrf_info['total_irrf'])]
         ]
         
-        resumo_table = Table(resumo_data, colWidths=[1.5*inch, 1.2*inch, 1.3*inch])
+        resumo_table = Table(resumo_data, colWidths=[3.81*cm, 3.048*cm, 3.302*cm])
         resumo_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
@@ -1901,7 +1970,7 @@ class NeodontoCsvProcessor:
         elements.append(Paragraph(f"Relatório gerado em: {datetime.now().strftime('%d/%m/%Y %H:%M')}", styles['Normal']))
         
         # Gerar o PDF
-        doc.build(elements)
+        doc.build(elements, onFirstPage=self._draw_logo, onLaterPages=self._draw_logo)
         
         if display_result:
             st.success(f"✅ Relatório de IRRF gerado com sucesso!")
@@ -2035,27 +2104,130 @@ class NeodontoCsvProcessor:
         )
 
 def main():
-    st.title("Processador de Arquivos CSV da Câmara de Compensação")
+    # Cabeçalho com logo e título alinhados verticalmente ao centro (proporção 2/6 e 4/6)
+    # Construímos um bloco HTML flex para garantir alinhamento vertical consistente.
+    logo_png_path = "/Users/vitor/Documents/Dev/contag/camara/imagem/logo_contag.png"
+    try:
+        # Tentar carregar PNG e transformar em base64 para embutir no HTML
+        with open(logo_png_path, "rb") as _f:
+            import base64 as _base64
+            _png_b64 = _base64.b64encode(_f.read()).decode()
+            _img_src = f"data:image/png;base64,{_png_b64}"
+    except Exception:
+        # fallback: não embutir (logo ficará ausente se não houver PNG)
+        _img_src = None
+
+    header_html = """
+    <div style="display:flex; align-items:center; gap:20px; padding:6px 0;">
+      <div style="flex: 0 0 33.333%; display:flex; align-items:center; justify-content:flex-start;">
+        {img}
+      </div>
+      <div style="flex: 0 0 66.666%; display:flex; flex-direction:column; justify-content:center;">
+        <h1 style="margin:0; padding:0; font-size:28px;">Processador de Arquivos CSV da Câmara de Compensação</h1>
+        <div style="color:#555; margin-top:4px;">Este aplicativo processa arquivos CSV da Câmara de Compensação do Uniodonto e gera relatórios contábeis.</div>
+      </div>
+    </div>
+    """
+
+    if _img_src:
+        img_html = f'<img src="{_img_src}" alt="logo" style="height:72px; width:auto; max-width:100%;">'
+    else:
+        # fallback para st.image caso embutir não funcione
+        img_html = '<div></div>'
+
+    st.markdown(header_html.format(img=img_html), unsafe_allow_html=True)
+
+    # Se o embed do PNG não funcionou, exibimos também com st.image (fallback seguro)
+    if not _img_src:
+        logo_path = "/Users/vitor/Documents/Dev/contag/camara/imagem/logo_contag.png"
+        try:
+            st.image(logo_path, width=160)
+        except Exception:
+            # silencioso se falhar
+            pass
     
     # Adiciona CSS personalizado
     st.markdown("""
         <style>
-            /* Configurações existentes */
-            .download-button {
-                display: inline-block;
-                padding: 0.5em 1em;
-                background-color: #4CAF50;
-                color: white;
-                text-align: center;
-                text-decoration: none;
-                font-size: 16px;
-                border-radius: 4px;
-                transition: background-color 0.3s;
-                margin: 10px 0;
+            /* Botões e links: fundo azul e texto branco em todos os estados.
+               Alvo abrangente: anchors com classe download-button, botões do Streamlit e elementos button padrão.
+               Uso intensivo de !important para garantir prioridade sobre estilos do Streamlit. */
+            .download-button,
+            a.download-button,
+            .stButton>button,
+            .stButton button,
+            button.download-button,
+            button {
+                display: inline-block !important;
+                padding: 0.5em 1em !important;
+                background-color: #0d6efd !important; /* Azul bootstrap */
+                color: #ffffff !important;
+                text-align: center !important;
+                text-decoration: none !important;
+                font-size: 16px !important;
+                border-radius: 6px !important;
+                transition: background-color 0.12s ease-in-out, box-shadow 0.12s !important;
+                margin: 10px 0 !important;
+                border: none !important;
+                cursor: pointer !important;
             }
-            .download-button:hover {
-                background-color: #45a049;
+
+            /* Garantir cor branca e sem sublinhado em todos os estados visuais relevantes */
+            .download-button:visited,
+            .download-button:active,
+            .download-button:focus,
+            .download-button:hover,
+            a.download-button,
+            a.download-button:visited,
+            a.download-button:active,
+            a.download-button:focus,
+            a.download-button:hover,
+            .stButton>button:visited,
+            .stButton>button:active,
+            .stButton>button:focus,
+            .stButton>button:hover,
+            button:visited,
+            button:active,
+            button:focus,
+            button:hover {
+                color: #ffffff !important;
+                text-decoration: none !important;
+                background-color: #0b5ed7 !important; /* Leve escurecimento */
+                box-shadow: 0 2px 6px rgba(11,93,215,0.14) !important;
             }
+
+            /* Estados mais escuros ao pressionar (active) para feedback visual */
+            .download-button:active,
+            a.download-button:active,
+            .stButton>button:active,
+            button:active {
+                background-color: #0a53c8 !important;
+                transform: translateY(0.5px) !important;
+            }
+
+            /* Foco acessível */
+            .download-button:focus,
+            a.download-button:focus,
+            .stButton>button:focus,
+            button:focus {
+                outline: 3px solid rgba(13,110,253,0.22) !important;
+                outline-offset: 2px !important;
+            }
+
+            /* Forçar que links dentro de botões mantenham cor e sem sublinhado */
+            .download-button a,
+            .download-button a:visited,
+            .download-button a:active,
+            .download-button a:focus,
+            .report-box a,
+            .report-box a:visited,
+            .report-box a:active,
+            .report-box a:focus {
+                color: #ffffff !important;
+                text-decoration: none !important;
+            }
+
+            /* Pequenos ajustes visuais do app */
             .file-header {
                 margin-top: 20px;
                 padding: 10px;
@@ -2128,12 +2300,7 @@ def main():
         </style>
         """, unsafe_allow_html=True)
     
-    st.write("""
-    Este aplicativo processa arquivos CSV da câmara de compensação de singulares do Neodonto.
-    Arraste e solte os arquivos CSV para processá-los conforme as regras estabelecidas.
-    """)
-    
-    processor = NeodontoCsvProcessor()
+    processor = UniodontoCsvProcessor()
     
     # Criando abas principais
     tab1, tab2, tab3 = st.tabs(["Processamento de Arquivos", "Relatórios Contábeis", "Edição de Dados"])
@@ -2230,5 +2397,993 @@ def main():
                         st.markdown(href, unsafe_allow_html=True)
                     except Exception as e:
                         st.error(f"Erro ao criar arquivo ZIP: {str(e)}")
+            
+            # Se não for processamento em lote, mostrar detalhes de cada arquivo
+            else:
+                st.write("## Arquivos processados")
                 
-                # (o arquivo completo foi escrito)
+                for i, uploaded_file in enumerate(uploaded_files):
+                    progress_bar.progress((i) / total_files)
+                    status_text.text(f"Processando arquivo {i+1} de {total_files}")
+                    
+                    st.markdown(f"<div class='file-header'><h3>Arquivo: {uploaded_file.name}</h3></div>", unsafe_allow_html=True)
+                    
+                    # Mostrar prévia se solicitado
+                    if show_preview:
+                        try:
+                            # Ler arquivo para prévia
+                            uploaded_file.seek(0)
+                            df_preview = pd.read_csv(uploaded_file, sep=';', encoding='utf-8', nrows=10)
+                            self.show_file_preview(df_preview, uploaded_file.name)
+                            
+                            # Perguntar se deve continuar
+                            if not st.button(f"Processar {uploaded_file.name}", key=f"process_{i}"):
+                                st.info("Clique no botão acima para processar este arquivo.")
+                                continue
+                        except Exception as e:
+                            st.warning(f"Não foi possível mostrar prévia: {str(e)}")
+                    
+                    # Processamento do arquivo
+                    processed_df, original_df = processor.process_csv_file(uploaded_file)
+                    
+                    if processed_df is not None:
+                        # Salvar também o DataFrame original
+                        processed_dfs[uploaded_file.name] = processed_df
+                        original_dfs[uploaded_file.name] = original_df
+                        
+                        # Exibe uma prévia dos dados processados
+                        st.write("Prévia dos dados processados:")
+                        
+                        # Opção para escolher quantas linhas mostrar
+                        col1, col2 = st.columns([2, 1])
+                        with col1:
+                            st.write(f"**Total de {len(processed_df)} registros processados**")
+                        with col2:
+                            show_all = st.checkbox("Mostrar todos os registros", key=f"show_all_{i}")
+                        
+                        if show_all:
+                            # Mostrar todos os registros
+                            st.dataframe(processed_df, use_container_width=True, height=400)
+                        else:
+                            # Mostrar apenas as primeiras linhas com opção de escolher quantas
+                            num_rows = st.slider(
+                                "Número de linhas para mostrar:", 
+                                min_value=5, 
+                                max_value=min(50, len(processed_df)), 
+                                value=min(preview_rows, len(processed_df)),
+                                key=f"num_rows_{i}"
+                            )
+                            st.dataframe(processed_df.head(num_rows), use_container_width=True)
+                        
+                        # Estatísticas básicas
+                        st.write("Resumo do processamento:")
+                        col1, col2, col3 = st.columns(3)
+                        with col1:
+                            st.metric("Total de registros", len(processed_df))
+                        with col2:
+                            # Conta registros de IRRF (adicionais)
+                            original_rows = len(processed_df) - sum(1 for _, row in processed_df.iterrows() 
+                                                                 if row['Historico'] in [22, 2341])
+                            st.metric("Registros originais", original_rows)
+                        with col3:
+                            irrf_rows = sum(1 for _, row in processed_df.iterrows() 
+                                          if row['Historico'] in [22, 2341])
+                            st.metric("Registros IRRF adicionados", irrf_rows)
+                        
+                        # Cria nome do arquivo de saída
+                        output_filename = f"contabil_{uploaded_file.name}"
+                        
+                        # Cria link de download
+                        download_link = processor.create_download_link(processed_df, output_filename)
+                        st.markdown(download_link, unsafe_allow_html=True)
+                    else:
+                        st.error(f"Não foi possível processar o arquivo {uploaded_file.name}")
+                    
+                    # Adiciona separador visual
+                    st.markdown("---")
+                    
+                    # Atualiza a barra de progresso
+                    progress_bar.progress((i+1) / total_files)
+                
+                # Se opção de ZIP selecionada, gerar download ZIP
+                if download_zip and processed_dfs:
+                    try:
+                        import zipfile
+                        from io import BytesIO
+                        
+                        # Criar arquivo ZIP em memória
+                        zip_buffer = BytesIO()
+                        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+                            for filename, df in processed_dfs.items():
+                                # Converter DataFrame para CSV em string
+                                csv_content = processor.df_to_csv_string(df)
+                                # Adicionar ao ZIP
+                                zip_file.writestr(f"contabil_{filename}", csv_content.encode('utf-8'))
+                        
+                        # Criar link de download para o ZIP
+                        zip_buffer.seek(0)
+                        b64 = base64.b64encode(zip_buffer.read()).decode()
+                        st.markdown("<h3>Download em lote</h3>", unsafe_allow_html=True)
+                        href = f'<a href="data:application/zip;base64,{b64}" download="contabil_todos_arquivos.zip" class="download-button">Baixar todos os arquivos em ZIP</a>'
+                        st.markdown(href, unsafe_allow_html=True)
+                    except Exception as e:
+                        st.error(f"Erro ao criar arquivo ZIP: {str(e)}")
+                
+                # Finaliza a barra de progresso
+                progress_bar.progress(1.0)
+                status_text.text("Processamento concluído!")
+            
+            # Armazenar os DataFrames processados na sessão para uso na aba de relatórios
+            st.session_state.processed_dfs = processed_dfs
+            st.session_state.original_dfs = original_dfs
+            st.session_state.original_dfs = original_dfs
+    
+    with tab2:
+        st.header("Relatórios Contábeis")
+        
+        if 'processed_dfs' not in st.session_state or not st.session_state.processed_dfs:
+            st.info("Processe arquivos na aba 'Processamento de Arquivos' para gerar relatórios contábeis.")
+        else:
+            st.write("Selecione os arquivos para gerar relatórios contábeis:")
+            
+            # Mostrar lista de arquivos processados para seleção
+            processed_files = list(st.session_state.processed_dfs.keys())
+            selected_files = st.multiselect("Arquivos disponíveis", processed_files, default=processed_files)
+            
+            if selected_files:
+                # Opção para processar todos os relatórios ou apenas alguns específicos
+                report_options = st.radio(
+                    "Escolha os relatórios a serem gerados:",
+                    ["Relatório Unificado da Câmara de Compensação", "Relatório de IRRF", "Todos os relatórios solicitados pelo contador", "Relatórios específicos"]
+                )
+                
+                if report_options == "Relatórios específicos":
+                    # Lista de relatórios disponíveis
+                    report_types = [
+                        {"name": "taxas_manutencao", "title": "Taxas de Manutenção (3) - Para todas"},
+                        {"name": "taxas_marketing", "title": "Taxas de Marketing (4) - Para todas"},
+                        {"name": "multas_juros", "title": "Multas e Juros (5) - Para todas"},
+                        {"name": "outras", "title": "Outras (6) - Para todas"},
+                        {"name": "pre_pagamento_operadoras", "title": "Pré-pagamento (1) - Operadoras"},
+                        {"name": "custo_operacional_operadoras", "title": "Custo Operacional (2) - Operadoras"},
+                        {"name": "pre_pagamento_prestadoras", "title": "Pré-pagamento (1) - Prestadoras"},
+                        {"name": "custo_operacional_prestadoras", "title": "Custo Operacional (2) - Prestadoras"}
+                    ]
+                    
+                    selected_reports = st.multiselect(
+                        "Selecione os relatórios específicos a serem gerados:",
+                        options=[report["title"] for report in report_types],
+                        default=[report["title"] for report in report_types]
+                    )
+                    
+                    # Mapear títulos selecionados para nomes de relatórios
+                    report_name_to_title = {report["name"]: report["title"] for report in report_types}
+                    title_to_report_name = {report["title"]: report["name"] for report in report_types}
+                    
+                    # Filtrar reports_config com base nos relatórios selecionados
+                    selected_report_names = [title_to_report_name[title] for title in selected_reports]
+                else:
+                    # Todos os relatórios selecionados
+                    selected_report_names = None
+                
+                if st.button("Gerar Relatórios Contábeis"):
+                    # Criar diretório temporário para os relatórios
+                    import tempfile
+                    output_dir = tempfile.mkdtemp()
+                    
+                    # Opção de debug (movida para cá para evitar problemas de estado)
+                    debug_mode = st.checkbox("Modo debug (mostrar informações detalhadas)", value=False, key="debug_mode_reports")
+                    
+                    # VERIFICAR SE HÁ DADOS EDITADOS
+                    dados_editados = False
+                    arquivos_editados = []
+                    
+                    # Verificar se há versões editadas dos arquivos selecionados
+                    for filename in selected_files:
+                        edited_key = f"{filename}_edited"
+                        if edited_key in st.session_state:
+                            arquivos_editados.append(filename)
+                            dados_editados = True
+                    
+                    # Decidir quais dados usar para o relatório
+                    if dados_editados:
+                        st.info(f"✏️ **Usando dados editados** para {len(arquivos_editados)} arquivo(s): {', '.join(arquivos_editados)}")
+                        
+                        # Consolidar DataFrames - usar versão editada quando disponível
+                        dfs_to_process = []
+                        for filename in selected_files:
+                            edited_key = f"{filename}_edited"
+                            if edited_key in st.session_state:
+                                # Usar versão editada reprocessada
+                                reprocessed_key = f"{filename}_reprocessed"
+                                if reprocessed_key in st.session_state:
+                                    dfs_to_process.append(st.session_state[reprocessed_key])
+                                else:
+                                    # Fallback para versão editada
+                                    dfs_to_process.append(st.session_state[edited_key])
+                            else:
+                                # Usar versão original
+                                dfs_to_process.append(st.session_state.processed_dfs[filename])
+                        
+                        consolidated_df = pd.concat(dfs_to_process, ignore_index=True)
+                    else:
+                        st.info("📄 **Usando dados originais** (nenhuma edição detectada)")
+                        # Consolidar DataFrames originais
+                        dfs_to_process = [st.session_state.processed_dfs[filename] for filename in selected_files]
+                        consolidated_df = pd.concat(dfs_to_process, ignore_index=True)
+                    
+                    st.write(f"Gerando relatórios contábeis a partir de {len(consolidated_df)} registros...")
+                    
+                    # Mostrar barra de progresso
+                    progress_bar = st.progress(0)
+                    status_text = st.empty()
+                    status_text.text("Processando relatórios contábeis...")
+                    
+                    # CRIAR RESUMO EXECUTIVO COM VALORES BRUTOS E LÍQUIDOS
+                    st.subheader("💰 Resumo Executivo")
+                    
+                    # Calcular valores usando a nova função
+                    irrf_info = processor.calculate_irrf_from_original_data(consolidated_df)
+                    
+                    # Usar valores calculados da função
+                    valor_bruto_a_pagar = irrf_info['valor_bruto_a_pagar']
+                    valor_bruto_a_receber = irrf_info['valor_bruto_a_receber']
+                    valor_liquido_a_pagar = irrf_info['valor_liquido_a_pagar']
+                    valor_liquido_a_receber = irrf_info['valor_liquido_a_receber']
+                    saldo_liquido = valor_liquido_a_receber - valor_liquido_a_pagar
+                    saldo_bruto = valor_bruto_a_receber - valor_bruto_a_pagar
+                    
+                    # Contar registros (filtrar apenas registros originais, não lançamentos de IRRF)
+                    mask_nao_irrf = ~processor.is_irrf_record(consolidated_df)
+                    df_a_pagar_bruto = consolidated_df[(consolidated_df['Tipo'] == 'A pagar') & mask_nao_irrf]
+                    df_a_receber_bruto = consolidated_df[(consolidated_df['Tipo'] == 'A receber') & mask_nao_irrf]
+                    
+                    # Exibir resumo em colunas (sem IRRF - tem seção dedicada)
+                    col1, col2, col3 = st.columns(3)
+                    
+                    with col1:
+                        st.metric("💸 Valor A Pagar (Bruto)", processor.format_currency(valor_bruto_a_pagar))
+                        st.metric("💸 Valor A Pagar (Líquido)", processor.format_currency(valor_liquido_a_pagar))
+                        st.metric("📊 Registros A Pagar", len(df_a_pagar_bruto))
+                    
+                    with col2:
+                        st.metric("💰 Valor A Receber (Bruto)", processor.format_currency(valor_bruto_a_receber))
+                        st.metric("💰 Valor A Receber (Líquido)", processor.format_currency(valor_liquido_a_receber))
+                        st.metric("📊 Registros A Receber", len(df_a_receber_bruto))
+                    
+                    with col3:
+                        saldo_color = "normal" if saldo_bruto >= 0 else "inverse"
+                        st.metric("🏦 Saldo Final (Bruto)", processor.format_currency(saldo_bruto), delta_color=saldo_color)
+                        saldo_liquido_color = "normal" if saldo_liquido >= 0 else "inverse"
+                        st.metric("🏦 Saldo Final (Líquido)", processor.format_currency(saldo_liquido), delta_color=saldo_liquido_color)
+                        st.metric("📊 Total de Registros", len(df_a_pagar_bruto) + len(df_a_receber_bruto))
+                    
+                    # Alerta se há diferença significativa entre bruto e líquido
+                    if abs(saldo_bruto - saldo_liquido) > 0.01:
+                        st.warning(f"⚠️ **Atenção**: Diferença de {processor.format_currency(abs(saldo_bruto - saldo_liquido))} entre saldo bruto e líquido devido ao IRRF")
+                    
+                    # SEÇÃO DE DETALHAMENTO DO IRRF
+                    if irrf_info['total_irrf'] > 0:
+                        st.subheader("🧾 Detalhamento do IRRF")
+                        
+                        col1, col2 = st.columns(2)
+                        
+                        with col1:
+                            st.write("**📊 Registros com IRRF nos dados originais:**")
+                            st.write(f"• **Registros com IRRF**: {irrf_info['registros_com_irrf']}")
+                            st.write(f"• **IRRF A Pagar**: {processor.format_currency(irrf_info['irrf_a_pagar'])}")
+                            st.write(f"• **IRRF A Receber**: {processor.format_currency(irrf_info['irrf_a_receber'])}")
+                            st.write(f"• **Total IRRF**: {processor.format_currency(irrf_info['total_irrf'])}")
+                        
+                        with col2:
+                            st.write("**💡 Cálculo do Líquido:**")
+                            st.write("*Valores líquidos = Valores brutos - IRRF correspondente*")
+                            st.write("")
+                            st.write(f"**A Pagar**: {processor.format_currency(valor_bruto_a_pagar)} - {processor.format_currency(irrf_info['irrf_a_pagar'])} = {processor.format_currency(valor_liquido_a_pagar)}")
+                            st.write(f"**A Receber**: {processor.format_currency(valor_bruto_a_receber)} - {processor.format_currency(irrf_info['irrf_a_receber'])} = {processor.format_currency(valor_liquido_a_receber)}")
+                            st.write("")
+                            st.write(f"**Saldo Líquido**: {processor.format_currency(saldo_liquido)}")
+                    else:
+                        st.info("ℹ️ Nenhum registro com IRRF encontrado nos dados originais.")
+                    
+                    # Verificação de segurança para output_dir
+                    if 'output_dir' not in locals() or output_dir is None:
+                        import tempfile
+                        output_dir = tempfile.mkdtemp()
+                        st.info("🔧 Diretório temporário criado para relatórios")
+                    
+                    try:
+                        if report_options == "Relatório Unificado da Câmara de Compensação":
+                            # Gerar relatório unificado
+                            unified_results = processor.generate_unified_report(consolidated_df, output_dir, display_result=True)
+                            
+                            # Criar link de download para o relatório unificado
+                            if "pdf_file" in unified_results and os.path.exists(unified_results["pdf_file"]):
+                                with open(unified_results["pdf_file"], "rb") as f:
+                                    pdf_data = f.read()
+                                    b64 = base64.b64encode(pdf_data).decode()
+                                    href = f'<a href="data:application/pdf;base64,{b64}" download="relatorio_camara_compensacao.pdf" class="download-button">Baixar Relatório Unificado (PDF)</a>'
+                                    st.markdown(href, unsafe_allow_html=True)
+                        
+                        elif report_options == "Relatório de IRRF":
+                            # Gerar relatório de IRRF
+                            irrf_results = processor.generate_irrf_report(consolidated_df, output_dir, display_result=True)
+                            
+                            # Criar link de download para o relatório de IRRF
+                            if "pdf_file" in irrf_results and os.path.exists(irrf_results["pdf_file"]):
+                                with open(irrf_results["pdf_file"], "rb") as f:
+                                    pdf_data = f.read()
+                                    b64 = base64.b64encode(pdf_data).decode()
+                                    href = f'<a href="data:application/pdf;base64,{b64}" download="relatorio_irrf.pdf" class="download-button">Baixar Relatório de IRRF (PDF)</a>'
+                                    st.markdown(href, unsafe_allow_html=True)
+                            
+                            # Exibir resumo do relatório de IRRF
+                            st.write("## Resumo do Relatório de IRRF")
+                            
+                            col1, col2, col3 = st.columns(3)
+                            with col1:
+                                st.metric("Total IRRF", processor.format_currency(irrf_results['total_irrf']))
+                            with col2:
+                                st.metric("Registros com IRRF", irrf_results['total_registros'])
+                            with col3:
+                                st.metric("IRRF A Pagar", processor.format_currency(irrf_results['irrf_a_pagar']))
+                                st.metric("IRRF A Receber", processor.format_currency(irrf_results['irrf_a_receber']))
+                        
+                        else:
+                            # Gerar relatórios tradicionais
+                            report_results = processor.generate_accounting_reports(consolidated_df, output_dir, display_result=False, debug=debug_mode)
+                            
+                            # Criar link de download para o ZIP com todos os relatórios
+                            if "zip_file" in report_results and os.path.exists(report_results["zip_file"]):
+                                with open(report_results["zip_file"], "rb") as f:
+                                    zip_data = f.read()
+                                    b64 = base64.b64encode(zip_data).decode()
+                                    href = f'<a href="data:application/zip;base64,{b64}" download="relatorios_contabeis.zip" class="download-button">Baixar todos os relatórios (ZIP)</a>'
+                                    st.markdown(href, unsafe_allow_html=True)
+                            
+                            # Exibir resultados dos relatórios
+                            st.write("## Resumo dos Relatórios Gerados")
+                            
+                            # Calcular total geral
+                            total_overall = sum(result["sum"] for _, result in report_results["reports"].items() if result["file"] is not None)
+                            st.metric("Total Geral", f"R$ {total_overall:.2f}")
+                            
+                            # Exibir detalhes de cada relatório
+                            for report_name, result in report_results["reports"].items():
+                                if result["file"] is not None and result["count"] > 0:
+                                    st.markdown(f"<div class='report-box'>", unsafe_allow_html=True)
+                                    st.markdown(f"<div class='report-header'>{report_name.replace('_', ' ').title()}</div>", unsafe_allow_html=True)
+                                    
+                                    col1, col2 = st.columns(2)
+                                    with col1:
+                                        st.markdown(f"<div class='metric'><div>Registros</div><div class='metric-value'>{result['count']}</div></div>", unsafe_allow_html=True)
+                                    with col2:
+                                        st.markdown(f"<div class='metric'><div>Valor Total</div><div class='metric-value'>R$ {result['sum']:.2f}</div></div>", unsafe_allow_html=True)
+                                    
+                                    # Link para download do relatório específico
+                                    if os.path.exists(result["file"]):
+                                        with open(result["file"], "rb") as f:
+                                            pdf_data = f.read()
+                                            b64 = base64.b64encode(pdf_data).decode()
+                                            href = f'<a href="data:application/pdf;base64,{b64}" download="{os.path.basename(result["file"])}" target="_blank">Visualizar PDF</a>'
+                                            st.markdown(href, unsafe_allow_html=True)
+                                    
+                                    st.markdown("</div>", unsafe_allow_html=True)
+                        
+                        # Concluir barra de progresso
+                        progress_bar.progress(1.0)
+                        status_text.text("Processamento concluído!")
+                        st.success("✅ Relatórios contábeis gerados com sucesso!")
+                    
+                    except Exception as e:
+                        st.error(f"Erro ao gerar relatórios contábeis: {str(e)}")
+    
+    # Adiciona informações de rodapé
+    st.markdown("---")
+    with st.expander("Informações sobre o processamento"):
+        st.markdown("""
+        # 📋 Documentação Completa do Sistema
+        
+        ## 🎯 Visão Geral
+        Sistema desenvolvido em Python com Streamlit para processar arquivos CSV da Câmara de Compensação do Sistema Uniodonto, gerando lançamentos contábeis e relatórios financeiros.
+        
+        ## ⚙️ Regras de Processamento
+        
+        ### Estrutura do Arquivo CSV
+        O arquivo CSV deve conter as seguintes colunas obrigatórias:
+        
+        | Coluna | Descrição | Tipo |
+        |--------|-----------|------|
+        | Tipo | Tipo de transação (A pagar/A receber) | Texto |
+        | CodigoSingular | Código único da entidade | Número |
+        | NomeSingular | Nome da entidade | Texto |
+        | TipoSingular | Classificação (Operadora/Prestadora) | Texto |
+        | CodigoTipoRecebimento | Código do tipo de recebimento | Número |
+        | Descricao | Descrição da transação | Texto |
+        | ValorBruto | Bruto | Moeda |
+        | TaxaAdministrativa | Taxa administrativa | Moeda |
+        | Subtotal | Valor subtotal | Moeda |
+        | IRRF | Imposto de Renda Retido na Fonte | Moeda |
+        | OutrosTributos | Outros tributos | Moeda |
+        | ValorLiquido | Líquido | Moeda |
+        
+        ### Regras de Lançamentos Contábeis
+        
+        #### Regras de Débito
+        
+        ##### A pagar - Operadora
+        | CodigoTipoRecebimento | Conta |
+        |----------------------|--------|
+        | 1 | 31731 |
+        | 2 | 40507 |
+        | 3 | 52631 (UNIODONTO DO BRASIL) / 52632 (outros) |
+        | 4 | 52532 |
+        | 5 | 51818 |
+        | 6 | 51202 |
+        
+        ##### A pagar - Prestadora
+        | CodigoTipoRecebimento | Conta |
+        |----------------------|--------|
+        | 1,2 | 40140 |
+        | 3 | 52631 (UNIODONTO DO BRASIL) / 52632 (outros) |
+        | 4 | 52532 |
+        | 5 | 51818 |
+        | 6 | 51202 |
+        
+        ##### A receber - Operadora
+        | CodigoTipoRecebimento | Conta |
+        |----------------------|--------|
+        | 1 | 19958 |
+        | 2 | 85433 |
+        | 3,4,5 | 84679 |
+        | 6 | 19253 |
+        
+        ##### A receber - Prestadora
+        | CodigoTipoRecebimento | Conta |
+        |----------------------|--------|
+        | 1,2 | 19253 |
+        | 3,4,5 | 84679 |
+        | 6 | 19253 |
+        
+        #### Regras de Crédito
+        
+        ##### A pagar - Operadora
+        | CodigoTipoRecebimento | Conta |
+        |----------------------|--------|
+        | 1 | 90918 |
+        | 2 | 90919 |
+        | 3 | 21898 (UNIODONTO DO BRASIL) / 22036 (outros) |
+        | 4 | 21898 (UNIODONTO DO BRASIL) / 22036 (outros) |
+        | 5 | 51818 |
+        | 6 | 90919 |
+        
+        ##### A pagar - Prestadora
+        | CodigoTipoRecebimento | Conta |
+        |----------------------|--------|
+        | 1,2 | 92003 |
+        | 3 | 21898 (UNIODONTO DO BRASIL) / 22036 (outros) |
+        | 4 | 21898 (UNIODONTO DO BRASIL) / 22036 (outros) |
+        | 5 | 51818 |
+        | 6 | 90919 |
+        
+        ##### A receber - Operadora/Prestadora
+        | CodigoTipoRecebimento | Conta |
+        |----------------------|--------|
+        | 1 | 30203 |
+        | 2 | 40413 |
+        | 3 | 30069 |
+        | 4 | 30071 |
+        | 5 | 31426 |
+        | 6 | 30127 |
+        
+        #### Regras de Histórico
+        
+        ##### A pagar
+        | CodigoTipoRecebimento | Histórico |
+        |----------------------|-----------|
+        | 1,2,6 | 2005 |
+        | 3 | 361 (UNIODONTO DO BRASIL) / 368 (outros) |
+        | 4 | 365 |
+        | 5 | 179 |
+        
+        ##### A receber
+        | CodigoTipoRecebimento | Histórico |
+        |----------------------|-----------|
+        | 1,2,6 | 1021 |
+        | 3 | 361 (UNIODONTO DO BRASIL) / 368 (outros) |
+        | 4 | 365 |
+        | 5 | 179 |
+        
+        ### Regras Especiais
+        
+        #### LGPD e Atuário
+        Quando CodigoTipoRecebimento = 5 e descrição contém:
+        - **"LGPD"**:
+          - Débito: 52129
+          - Crédito: 22036
+          - Histórico: 2005
+        - **"ATUARIO"/"ATUÁRIO"**:
+          - Débito: 52451
+          - Crédito: 22036
+          - Histórico: 2005
+        
+        ## 🚀 Funcionalidades Principais
+        
+        ### 1. Processamento de Arquivos
+        - Leitura de arquivos CSV
+        - Validação de dados
+        - Processamento em lote
+        - Detecção automática de formato
+        
+        ### 2. Lançamentos Contábeis
+        - Cálculo automático de débito
+        - Cálculo automático de crédito
+        - Geração de histórico
+        - Processamento de IRRF
+        
+        ### 3. Relatórios
+        - Exportação em CSV
+        - Exportação em PDF
+        - Visualização na interface web
+        - Download individual ou em lote
+        
+        ### 4. Interface Web
+        - Upload de múltiplos arquivos
+        - Visualização prévia
+        - Configuração de data personalizada
+        - Opções avançadas de processamento
+        
+        ## 💻 Códigos das Contas Contábeis
+        
+        ### Principais Contas de Débito
+        - **85433**: Contraprestação assumida em Pós-pagamento
+        - **40507**: Despesas com Eventos/ Sinistros
+        - **19958**: Contraprestação Corresponsabilidade Assumida Pré-pagamento
+        - **52631**: Taxa para Manutenção da Central
+        - **52532**: Propaganda e Marketing - Matriz
+        - **84679**: Outras Contas a Receber
+        
+        ### Principais Contas de Crédito
+        - **90919**: Intercâmbio a Pagar de Corresponsabilidade Cedida
+        - **21898**: Contrap. Corresp. Assumida Pós
+        - **22036**: Federação Paulista
+        - **30203**: Corresponsabilidade Assumida Pré
+        - **40413**: (-) Recup.Reemb. Contratante Assumida Pós-pagamento
+        
+        ### Códigos de Histórico
+        - **1021**: VL. N/NFF. INTERC. RECEB.ODONT
+        - **2005**: VL. S/NFF. INTERC. A PAGAR
+        - **361**: VL. TAXA MANUT. DA CENTRAL S/N
+        - **365**: VL. FUNDO DE MARKTING S/NFF
+        - **179**: VL. MULTAS/JUROS
+        
+        ## ⚠️ Observações Importantes
+        
+        ### Formato dos Arquivos
+        1. Arquivos CSV devem seguir o formato especificado
+        2. Valores monetários no formato brasileiro (vírgula como separador decimal)
+        3. Datas no formato DD/MM/YYYY
+        4. Separador de colunas: ponto e vírgula (;)
+        
+        ### Processamento
+        1. Sistema processa múltiplos arquivos simultaneamente
+        2. Relatórios são gerados automaticamente
+        3. Validações são realizadas durante o processamento
+        4. Suporte a formatos simplificados com conversão automática
+        
+        ### Segurança
+        1. Não armazena dados sensíveis
+        2. Processamento local dos arquivos
+        3. Exportação segura dos relatórios
+        4. Dados temporários são limpos automaticamente
+        
+        ---
+        
+        **Para mais informações ou suporte, consulte o código fonte ou entre em contato com a equipe de desenvolvimento.**
+        """)
+        
+        st.write("""
+        ### Relatórios Contábeis Disponíveis
+        
+        1. **Taxas de Manutenção (3)** - Para todas (operadoras e prestadoras)
+        2. **Taxas de Marketing (4)** - Para todas (operadoras e prestadoras)
+        3. **Multas e Juros (5)** - Para todas (operadoras e prestadoras)
+        4. **Outras (6)** - Para todas (operadoras e prestadoras)
+        5. **Pré-pagamento (1)** - Somente operadoras
+        6. **Custo Operacional (2)** - Somente operadoras
+        7. **Pré-pagamento (1)** - Somente prestadoras
+        8. **Custo Operacional (2)** - Somente prestadoras
+        
+        Cada relatório inclui o total de registros, o valor total e uma listagem detalhada com as descrições das contas contábeis.
+        """)
+    
+    with tab3:
+        st.header("Edição de Dados")
+        
+        # Seção de seleção e upload de arquivos
+        st.subheader("📁 Seleção de Arquivos")
+        
+        col1, col2 = st.columns([2, 1])
+        
+        with col1:
+            # Upload de múltiplos arquivos CSV
+            uploaded_edit_files = st.file_uploader(
+                "Faça upload de novos arquivos CSV para edição", 
+                type=["csv"], 
+                accept_multiple_files=True,
+                key="upload_edit_files"
+            )
+            
+            # Processar arquivos carregados
+            if uploaded_edit_files:
+                progress_bar = st.progress(0)
+                status_text = st.empty()
+                
+                for i, uploaded_file in enumerate(uploaded_edit_files):
+                    status_text.text(f"Processando {uploaded_file.name}...")
+                    progress_bar.progress((i) / len(uploaded_edit_files))
+                    
+                    try:
+                        processed_df, original_df = processor.process_csv_file(uploaded_file)
+                        
+                        if processed_df is not None:
+                            # Inicializar session_state se necessário
+                            if 'processed_dfs' not in st.session_state:
+                                st.session_state.processed_dfs = {}
+                            if 'original_dfs' not in st.session_state:
+                                st.session_state.original_dfs = {}
+                            
+                            # Adicionar à sessão
+                            st.session_state.processed_dfs[uploaded_file.name] = processed_df
+                            st.session_state.original_dfs[uploaded_file.name] = original_df
+                            
+                        progress_bar.progress((i+1) / len(uploaded_edit_files))
+                    
+                    except Exception as e:
+                        st.error(f"Erro ao processar {uploaded_file.name}: {str(e)}")
+                
+                progress_bar.progress(1.0)
+                status_text.text("Upload concluído!")
+                st.success(f"✅ {len(uploaded_edit_files)} arquivo(s) carregado(s) com sucesso!")
+        
+        with col2:
+            st.write("**Arquivos disponíveis:**")
+            if 'processed_dfs' in st.session_state and st.session_state.processed_dfs:
+                st.write(f"📄 {len(st.session_state.processed_dfs)} arquivo(s)")
+                for filename in st.session_state.processed_dfs.keys():
+                    st.write(f"• {filename}")
+            else:
+                st.write("📄 Nenhum arquivo carregado")
+        
+        if 'processed_dfs' not in st.session_state or not st.session_state.processed_dfs:
+            st.info("📤 Faça upload de arquivos CSV ou processe arquivos na aba 'Processamento de Arquivos' para editar dados.")
+        else:
+            st.markdown("---")
+            
+            # Seleção do arquivo para edição
+            st.subheader("🎯 Arquivo para Edição")
+            processed_files = list(st.session_state.processed_dfs.keys())
+            selected_file = st.selectbox("Selecione o arquivo que deseja editar:", processed_files)
+            
+            if selected_file:
+                # Obter DataFrame ORIGINAL do arquivo selecionado
+                if 'original_dfs' in st.session_state and selected_file in st.session_state.original_dfs:
+                    df_edit = st.session_state.original_dfs[selected_file].copy()
+                else:
+                    # Fallback para dados processados se não houver originais
+                    df_edit = st.session_state.processed_dfs[selected_file].copy()
+                
+                # Verificar se há arquivo editado salvo na sessão
+                edited_key = f'edited_{selected_file}'
+                if edited_key in st.session_state:
+                    df_edit = st.session_state[edited_key].copy()
+                    st.info("📝 Exibindo arquivo com alterações salvas")
+                
+                # Adicionar ID único para cada linha se não existir
+                if 'row_id' not in df_edit.columns:
+                    df_edit['row_id'] = range(len(df_edit))
+                
+                # Estatísticas do arquivo
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("📄 Arquivo Selecionado", selected_file)
+                with col2:
+                    st.metric("📊 Total de Registros", len(df_edit))
+                with col3:
+                    # Verificar se há alterações pendentes
+                    if edited_key in st.session_state:
+                        st.metric("✏️ Status", "Editado", delta="Alterações salvas")
+                    else:
+                        st.metric("✏️ Status", "Original")
+                
+                st.markdown("---")
+                
+                # Seção de filtro simplificado
+                st.subheader("🔍 Filtro")
+                filtro_texto = st.text_input(
+                    "Digite qualquer texto para buscar em todas as colunas:",
+                    help="Busca em: Nome Singular, Descrição, Tipo, Código, etc."
+                )
+                
+                # Aplicar filtro por texto em todas as colunas
+                df_filtrado = df_edit.copy()
+                
+                if filtro_texto:
+                    mask = pd.Series([False] * len(df_filtrado))
+                    
+                    # Buscar em todas as colunas de texto
+                    for col in df_filtrado.columns:
+                        if col != 'row_id':  # Excluir apenas a coluna de ID
+                            try:
+                                mask |= df_filtrado[col].astype(str).str.contains(
+                                    filtro_texto, case=False, na=False, regex=False
+                                )
+                            except:
+                                continue  # Ignorar colunas que não podem ser convertidas para string
+                    
+                    df_filtrado = df_filtrado[mask]
+                
+                # Informações sobre o filtro
+                if filtro_texto:
+                    st.write(f"**🔍 Filtrados:** {len(df_filtrado)} de {len(df_edit)} registros")
+                else:
+                    st.write(f"**📋 Exibindo:** {len(df_filtrado)} registros")
+                
+                if len(df_filtrado) > 0:
+                    # Seção de seleção
+                    st.subheader("✅ Seleção de Registros")
+                    
+                    col1, col2 = st.columns([1, 1])
+                    
+                    with col1:
+                        selecionar_todos = st.checkbox("Selecionar todos os registros filtrados")
+                    
+                    with col2:
+                        if st.button("🗑️ Limpar seleção"):
+                            st.session_state.selected_rows = []
+                    
+                    # Inicializar seleção se não existir
+                    if 'selected_rows' not in st.session_state:
+                        st.session_state.selected_rows = []
+                    
+                    # Se "selecionar todos" foi marcado, adicionar todos os IDs filtrados
+                    if selecionar_todos:
+                        st.session_state.selected_rows = df_filtrado['row_id'].tolist()
+                    
+                    # Tabela para edição
+                    st.subheader("📋 Dados para Edição")
+                    
+                    # Preparar dados para exibição - APENAS colunas originais
+                    colunas_exibicao = ['row_id']
+                    colunas_originais = ['Tipo', 'CodigoSingular', 'NomeSingular', 'TipoSingular', 'RegistroANS',
+                                       'CodigoTipoRecebimento', 'DescricaoTipoRecebimento', 'NumeroDocumento', 
+                                       'Descricao', 'ValorBruto', 'TaxaAdministrativa', 'Subtotal', 
+                                       'IRRF', 'OutrosTributos', 'ValorLiquido']
+                    
+                    for col in colunas_originais:
+                        if col in df_filtrado.columns:
+                            colunas_exibicao.append(col)
+                    
+                    df_display = df_filtrado[colunas_exibicao].copy()
+                    
+                    # Adicionar coluna de seleção
+                    df_display['Selecionar'] = df_display['row_id'].isin(st.session_state.selected_rows)
+                    
+                    # Reordenar colunas
+                    cols = ['Selecionar'] + [col for col in df_display.columns if col != 'Selecionar']
+                    df_display = df_display[cols]
+                    
+                    # Exibir tabela editável
+                    edited_df = st.data_editor(
+                        df_display,
+                        use_container_width=True,
+                        height=400,
+                        column_config={
+                            "Selecionar": st.column_config.CheckboxColumn(
+                                "Selecionar",
+                                help="Selecione os registros para edição",
+                                default=False,
+                            ),
+                            "row_id": st.column_config.NumberColumn(
+                                "ID",
+                                help="ID único do registro",
+                                disabled=True,
+                            ),
+                            "CodigoTipoRecebimento": st.column_config.NumberColumn(
+                                "Código",
+                                help="Código do tipo de recebimento",
+                                width="small",
+                            ),
+                            "DescricaoTipoRecebimento": st.column_config.TextColumn(
+                                "Descrição",
+                                help="Descrição do tipo de recebimento",
+                                width="medium",
+                            ),
+                            "ValorBruto": st.column_config.NumberColumn(
+                                "Bruto",
+                                help="Bruto da transação",
+                                format="R$ %.2f",
+                            ),
+                        },
+                        disabled=[col for col in colunas_exibicao if col not in ["Selecionar"]],
+                        key="data_editor_edit"
+                    )
+                    
+                    # Atualizar seleção baseada na tabela editada
+                    selected_rows = edited_df[edited_df['Selecionar']]['row_id'].tolist()
+                    st.session_state.selected_rows = selected_rows
+                    
+                    # Mostrar registros selecionados
+                    if selected_rows:
+                        st.success(f"✅ {len(selected_rows)} registro(s) selecionado(s)")
+                        
+                        # Seção de edição
+                        st.subheader("✏️ Edição")
+                        
+                        # Seleção do novo CodigoTipoRecebimento
+                        opcoes_codigo = {
+                            1: "1 - Repasse em Pré-pagamento",
+                            2: "2 - Repasse em Custo Operacional", 
+                            3: "3 - Taxa de Manutenção",
+                            4: "4 - Fundo de Marketing",
+                            5: "5 - Juros",
+                            6: "6 - Outros"
+                        }
+                            
+                        col1, col2 = st.columns([2, 1])
+                        
+                        with col1:
+                            novo_codigo = st.selectbox(
+                                "Novo Código e Descrição:",
+                                options=list(opcoes_codigo.keys()),
+                                format_func=lambda x: opcoes_codigo[x],
+                                key="novo_codigo_edit"
+                            )
+                            
+                            # Mapeamento das descrições
+                            mapeamento_descricao = {
+                                1: "Repasse em Pré-pagamento",
+                                2: "Repasse em Custo Operacional",
+                                3: "Taxa de Manutenção",
+                                4: "Fundo de Marketing", 
+                                5: "Juros",
+                                6: "Outros"
+                            }
+                            
+                            st.info(f"📝 **Código:** {novo_codigo} | **Descrição:** {mapeamento_descricao[novo_codigo]}")
+                        
+                        with col2:
+                            st.write("")  # Espaçamento
+                            st.write("")  # Espaçamento
+                            
+                            # Botão para aplicar alteração
+                            if st.button("💾 Salvar Alterações", type="primary", use_container_width=True):
+                                # Aplicar alterações
+                                for row_id in selected_rows:
+                                    # Encontrar o índice no DataFrame
+                                    idx = df_edit[df_edit['row_id'] == row_id].index[0]
+                                    
+                                    # Atualizar CodigoTipoRecebimento e DescricaoTipoRecebimento
+                                    df_edit.loc[idx, 'CodigoTipoRecebimento'] = novo_codigo
+                                    df_edit.loc[idx, 'DescricaoTipoRecebimento'] = mapeamento_descricao[novo_codigo]
+                                
+                                # Salvar arquivo editado na sessão
+                                st.session_state[edited_key] = df_edit
+                                
+                                # Gerar arquivo reprocessado automaticamente
+                                colunas_originais = ['Tipo', 'CodigoSingular', 'NomeSingular', 'TipoSingular', 'RegistroANS',
+                                                   'CodigoTipoRecebimento', 'DescricaoTipoRecebimento', 'NumeroDocumento', 
+                                                   'Descricao', 'ValorBruto', 'TaxaAdministrativa', 'Subtotal', 
+                                                   'IRRF', 'OutrosTributos', 'ValorLiquido']
+                                
+                                colunas_disponveis = [col for col in colunas_originais if col in df_edit.columns]
+                                df_reprocessar = df_edit[colunas_disponveis].copy()
+                                
+                                # Remover row_id para reprocessamento
+                                if 'row_id' in df_reprocessar.columns:
+                                    df_reprocessar = df_reprocessar.drop('row_id', axis=1)
+                                
+                                # Reprocessar com lógica contábil
+                                df_reprocessado = processor.process_dataframe(df_reprocessar)
+                                
+                                # Salvar arquivo reprocessado na sessão
+                                reprocessed_key = f'reprocessed_{selected_file}'
+                                st.session_state[reprocessed_key] = df_reprocessado
+                                
+                                # Atualizar dados processados para usar nos relatórios
+                                st.session_state.processed_dfs[selected_file] = df_reprocessado
+                                
+                                st.success(f"✅ {len(selected_rows)} registro(s) alterado(s) e arquivo reprocessado!")
+                                st.info("🔄 Arquivo reprocessado automaticamente e disponível para relatórios")
+                                
+                                # Limpar seleção
+                                st.session_state.selected_rows = []
+                                
+                                # Recarregar para mostrar mudanças
+                                st.rerun()
+                        
+                    # Seção de download - sempre visível se há arquivo editado
+                    if edited_key in st.session_state:
+                        st.markdown("---")
+                        st.subheader("📥 Download")
+                        
+                        col1, col2 = st.columns(2)
+                        
+                        with col1:
+                            # Download do arquivo editado (formato original)
+                            if st.button("📄 Baixar Arquivo Editado (Original)", type="secondary"):
+                                # Filtrar apenas colunas originais
+                                colunas_originais = ['Tipo', 'CodigoSingular', 'NomeSingular', 'TipoSingular', 'RegistroANS',
+                                                   'CodigoTipoRecebimento', 'DescricaoTipoRecebimento', 'NumeroDocumento', 
+                                                   'Descricao', 'ValorBruto', 'TaxaAdministrativa', 'Subtotal', 
+                                                   'IRRF', 'OutrosTributos', 'ValorLiquido']
+                                
+                                df_download = st.session_state[edited_key].copy()
+                                colunas_disponveis = [col for col in colunas_originais if col in df_download.columns]
+                                df_download = df_download[colunas_disponveis]
+                                
+                                # Remover row_id se existir
+                                if 'row_id' in df_download.columns:
+                                    df_download = df_download.drop('row_id', axis=1)
+                                
+                                output_filename = f"editado_{selected_file}"
+                                download_link = processor.create_download_link(df_download, output_filename)
+                                st.markdown(download_link, unsafe_allow_html=True)
+                                st.success("✅ Arquivo editado pronto para download!")
+                        
+                        with col2:
+                            # Download do arquivo reprocessado (com colunas contábeis)
+                            if st.button("📊 Baixar Arquivo Reprocessado (Contábil)", type="primary"):
+                                # REPROCESSAR ARQUIVO COM NOVAS REGRAS DE DÉBITO/CRÉDITO
+                                st.info("🔄 Reprocessando arquivo com as novas regras contábeis...")
+                                
+                                # Pegar o arquivo editado atual
+                                df_para_reprocessar = st.session_state[edited_key].copy()
+                                
+                                # Filtrar apenas colunas originais e remover row_id
+                                colunas_originais = ['Tipo', 'CodigoSingular', 'NomeSingular', 'TipoSingular', 'RegistroANS',
+                                                   'CodigoTipoRecebimento', 'DescricaoTipoRecebimento', 'NumeroDocumento', 
+                                                   'Descricao', 'ValorBruto', 'TaxaAdministrativa', 'Subtotal', 
+                                                   'IRRF', 'OutrosTributos', 'ValorLiquido']
+                                
+                                colunas_disponveis = [col for col in colunas_originais if col in df_para_reprocessar.columns]
+                                df_clean = df_para_reprocessar[colunas_disponveis].copy()
+                            
+                                # Remover row_id se existir
+                                if 'row_id' in df_clean.columns:
+                                    df_clean = df_clean.drop('row_id', axis=1)
+                                
+                                # REAPLICAR REGRAS CONTÁBEIS com os novos códigos usando process_dataframe
+                                st.info("📋 Recalculando contas de Débito, Crédito e Histórico...")
+                                
+                                # Usar process_dataframe que já faz tudo: aplica regras contábeis E adiciona IRRF
+                                df_export = processor.process_dataframe(df_clean)
+                                
+                                # Salvar arquivo reprocessado atualizado na sessão
+                                reprocessed_key = f'reprocessed_{selected_file}'
+                                st.session_state[reprocessed_key] = df_export
+                                
+                                # Atualizar também nos dados processados para relatórios
+                                st.session_state.processed_dfs[selected_file] = df_export
+                                
+                                # Gerar download
+                                output_filename = f"contabil_{selected_file}"
+                                download_link = processor.create_download_link(df_export, output_filename)
+                                st.markdown(download_link, unsafe_allow_html=True)
+                                st.success("✅ Arquivo reprocessado com novas regras contábeis pronto para download!")
+                                st.info("🎯 **Contas de Débito, Crédito e Histórico recalculadas** baseadas nos novos códigos selecionados")
+                        
+                        # Informações sobre os arquivos
+                        st.info("""
+                        📋 **Informações sobre os Downloads:**
+                        - **Arquivo Editado**: Mantém formato original do CSV, ideal para reimportar no sistema
+                        - **Arquivo Reprocessado**: Inclui colunas contábeis (Débito, Crédito, Histórico), pronto para contabilidade
+                        - **Relatórios**: Agora usarão automaticamente o arquivo reprocessado com suas alterações
+                        """)
+                
+                else:
+                    st.warning("🔍 Nenhum registro encontrado com o filtro aplicado.")
+                    st.write("💡 **Dica:** Tente usar termos diferentes ou remova o filtro para ver todos os registros.")
+
+if __name__ == "__main__":
+    main()
