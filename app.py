@@ -2478,14 +2478,18 @@ def main():
                             st.dataframe(processed_df, use_container_width=True, height=400)
                         else:
                             # Mostrar apenas as primeiras linhas com opção de escolher quantas
-                            num_rows = st.slider(
-                                "Número de linhas para mostrar:", 
-                                min_value=5, 
-                                max_value=min(50, len(processed_df)), 
-                                value=min(preview_rows, len(processed_df)),
-                                key=f"num_rows_{i}"
-                            )
-                            st.dataframe(processed_df.head(num_rows), use_container_width=True)
+                            if len(processed_df) == 0:
+                                st.info("Nenhum registro processado para exibir.")
+                            else:
+                                max_rows = min(50, len(processed_df))
+                                num_rows = st.slider(
+                                    "Número de linhas para mostrar:",
+                                    min_value=1,
+                                    max_value=max_rows,
+                                    value=min(preview_rows, max_rows),
+                                    key=f"num_rows_{i}"
+                                )
+                                st.dataframe(processed_df.head(num_rows), use_container_width=True)
                         
                         # Estatísticas básicas
                         st.write("Resumo do processamento:")
