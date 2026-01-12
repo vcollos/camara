@@ -633,7 +633,8 @@ class UniodontoCsvProcessor:
             # Recriar o campo complemento com dados atualizados
             if all(col in df.columns for col in ['NomeSingular', 'DescricaoTipoRecebimento', 'Descricao']):
                 # Verificar se existe flag de IRRF no complemento
-                irrf_mask = export_df['complemento'].str.contains('IRRF', na=False)
+                complemento_series = export_df['complemento'].astype('string')
+                irrf_mask = complemento_series.str.contains('IRRF', na=False)
                 
                 # Para registros normais, recriar o complemento
                 normal_mask = ~irrf_mask
